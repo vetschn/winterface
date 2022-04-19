@@ -4,7 +4,7 @@
 /** @mainpage Winterface - Wannier Interface
  * Any g++ supporting c++17 or above should work.
  * Other compilers may work but are not tested.
- * 
+ *
  * Dependencies are:
  * - libblas
  * - liblapack

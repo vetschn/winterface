@@ -2,16 +2,15 @@
 // Authors: Christian Stieger
 
 #include "testTools.h"
-
-#include "test_tMat_basic_modification.h"
 #include "test_tMat_basic_modification.cc"
-
+#include "test_tMat_basic_modification.h"
 
 // test id
-template<>
-const char* test_tMat_basic_modification<CPX__,RE__,CPX__>::test_id() noexcept {
-	return "test_cMat_basic_modification";
+template <>
+const char*
+test_tMat_basic_modification<CPX__, RE__, CPX__>::test_id() noexcept {
+  return "test_cMat_basic_modification";
 }
 
 // instantiation
-template class test_tMat_basic_modification<CPX__,RE__,CPX__>;
+template class test_tMat_basic_modification<CPX__, RE__, CPX__>;

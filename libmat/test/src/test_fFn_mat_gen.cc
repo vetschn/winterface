@@ -2,16 +2,14 @@
 // Authors: Christian Stieger
 
 #include "testTools.h"
-
-#include "test_tFn_mat_gen.h"
 #include "test_tFn_mat_gen.cc"
-
+#include "test_tFn_mat_gen.h"
 
 // test id
-template<>
-const char* test_tFn_mat_gen<RE__,RE__,CPX__>::test_id() noexcept {
-	return "test_fFn_mat_gen";
+template <>
+const char* test_tFn_mat_gen<RE__, RE__, CPX__>::test_id() noexcept {
+  return "test_fFn_mat_gen";
 }
 
 // instantiation
-template class test_tFn_mat_gen<RE__,RE__,CPX__>;
+template class test_tFn_mat_gen<RE__, RE__, CPX__>;

@@ -4,19 +4,20 @@
 #ifndef _TEST_MTOL_
 #define _TEST_MTOL_
 
-#include "lm_defs.h"
 #include <cppunit/extensions/HelperMacros.h>
 
-class test_mtol: public CppUnit::TestFixture {
-public:
-	// tests
-	void test_all();
+#include "lm_defs.h"
 
-protected:
-	static const char* test_id() noexcept;
+class test_mtol : public CppUnit::TestFixture {
+ public:
+  // tests
+  void test_all();
 
-public:
-	static CppUnit::Test* suite();
+ protected:
+  static const char* test_id() noexcept;
+
+ public:
+  static CppUnit::Test* suite();
 };
 
-#endif // _TEST_MTOL_
+#endif  // _TEST_MTOL_

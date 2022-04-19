@@ -2,38 +2,38 @@
 // Authors: Christian Stieger
 
 #include "testTools.h"
-
-#include "test_tVecItr_all.h"
 #include "test_tVecItr_all.cc"
+#include "test_tVecItr_all.h"
 
+template <>
+void test_tVecItr_all<CPX__, RE__, CPX__,
+                      lm_tRow<CPX__, RE__, CPX__>>::test_dereference() {
+  const size_t M = genRndST();
+  const size_t N = genRndST();
 
-template<>
-void test_tVecItr_all<CPX__,RE__,CPX__,lm_tRow<CPX__,RE__,CPX__>>::test_dereference() {
+  auto tMat1 = rnd<cMat>(M, N);
 
-	const size_t M = genRndST();
-	const size_t N = genRndST();
-	
-	auto tMat1 = rnd<cMat>(M,N);
+  c_tVecItr tItr1(&tMat1, 0);
+  for (size_t m = 0; m != tMat1.M(); ++m)
+    CPPUNIT_ASSERT(tMat1.rAt(m) == tItr1[m]);
 
-	c_tVecItr tItr1(&tMat1,0);
-	for (size_t m=0; m!=tMat1.M(); ++m)
-		CPPUNIT_ASSERT(tMat1.rAt(m)==tItr1[m]);
-	
-	for (size_t m=0; m!=tMat1.M(); ++m,++tItr1)
-		CPPUNIT_ASSERT(tMat1.rAt(m)==*tItr1);
-	
-	tVecItr tItr2(&tMat1,0);
-	const size_t m_ = genRndST(0,M-1);
-	
-	*tItr2=tItr2[m_];
-	CPPUNIT_ASSERT(*tItr2==tItr2[m_]);
+  for (size_t m = 0; m != tMat1.M(); ++m, ++tItr1)
+    CPPUNIT_ASSERT(tMat1.rAt(m) == *tItr1);
+
+  tVecItr tItr2(&tMat1, 0);
+  const size_t m_ = genRndST(0, M - 1);
+
+  *tItr2 = tItr2[m_];
+  CPPUNIT_ASSERT(*tItr2 == tItr2[m_]);
 }
 
 // test id
-template<>
-const char* test_tVecItr_all<CPX__,RE__,CPX__,lm_tRow<CPX__,RE__,CPX__>>::test_id() noexcept {
-	return "test_cRowItr_all";
+template <>
+const char* test_tVecItr_all<CPX__, RE__, CPX__,
+                             lm_tRow<CPX__, RE__, CPX__>>::test_id() noexcept {
+  return "test_cRowItr_all";
 }
 
 // instantiation
-template class test_tVecItr_all<CPX__,RE__,CPX__,lm_tRow<CPX__,RE__,CPX__>>;
+template class test_tVecItr_all<CPX__, RE__, CPX__,
+                                lm_tRow<CPX__, RE__, CPX__>>;

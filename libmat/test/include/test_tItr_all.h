@@ -4,28 +4,29 @@
 #ifndef _TEST_TITR_ALL_
 #define _TEST_TITR_ALL_
 
-#include "lm_tItr.h"
 #include <cppunit/extensions/HelperMacros.h>
 
-template<class TT>
-class test_tItr_all: public CppUnit::TestFixture {
-public:
-	// types
-	typedef lm_c_tItr<TT> c_tItr;
-	typedef lm_tItr<TT> tItr;
+#include "lm_tItr.h"
 
-	// tests
-	void test_ctor_assign();
-	void test_swap();
-	void test_comparison();
-	void test_dereference();
-	void test_arithmetic_difference();
+template <class TT>
+class test_tItr_all : public CppUnit::TestFixture {
+ public:
+  // types
+  typedef lm_c_tItr<TT> c_tItr;
+  typedef lm_tItr<TT> tItr;
 
-protected:
-	static const char* test_id() noexcept;
+  // tests
+  void test_ctor_assign();
+  void test_swap();
+  void test_comparison();
+  void test_dereference();
+  void test_arithmetic_difference();
 
-public:
-	static CppUnit::Test* suite();
+ protected:
+  static const char* test_id() noexcept;
+
+ public:
+  static CppUnit::Test* suite();
 };
 
-#endif // _TEST_TITR_ALL_
+#endif  // _TEST_TITR_ALL_

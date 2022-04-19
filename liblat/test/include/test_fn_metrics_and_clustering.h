@@ -6,16 +6,16 @@
 
 #include <cppunit/extensions/HelperMacros.h>
 
-class test_fn_metrics_and_clustering: public CppUnit::TestFixture {
-public:
-	void test_genNNmat();
-	void test_dist_distb();
-	void test_genDmat();
-	void test_com();
-	void test_dbscan();
+class test_fn_metrics_and_clustering : public CppUnit::TestFixture {
+ public:
+  void test_genNNmat();
+  void test_dist_distb();
+  void test_genDmat();
+  void test_com();
+  void test_dbscan();
 
-	static CppUnit::Test* suite();
-	static const char* test_id() noexcept;
+  static CppUnit::Test* suite();
+  static const char* test_id() noexcept;
 };
 
-#endif // _TEST_FN_METRICS_AND_CLUSTERING_
+#endif  // _TEST_FN_METRICS_AND_CLUSTERING_

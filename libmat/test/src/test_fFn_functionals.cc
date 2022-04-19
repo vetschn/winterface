@@ -2,16 +2,14 @@
 // Authors: Christian Stieger
 
 #include "testTools.h"
-
-#include "test_tFn_functionals.h"
 #include "test_tFn_functionals.cc"
-
+#include "test_tFn_functionals.h"
 
 // test id
-template<>
-const char* test_tFn_functionals<RE__,RE__,CPX__>::test_id() noexcept {
-	return "test_fFn_functionals";
+template <>
+const char* test_tFn_functionals<RE__, RE__, CPX__>::test_id() noexcept {
+  return "test_fFn_functionals";
 }
 
 // instantiation
-template class test_tFn_functionals<RE__,RE__,CPX__>;
+template class test_tFn_functionals<RE__, RE__, CPX__>;

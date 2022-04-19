@@ -6,12 +6,12 @@
 
 #include <cppunit/extensions/HelperMacros.h>
 
-class test_fn_linear_path_generation: public CppUnit::TestFixture {
-public:
-	void test_genPath();
+class test_fn_linear_path_generation : public CppUnit::TestFixture {
+ public:
+  void test_genPath();
 
-	static CppUnit::Test* suite();
-	static const char* test_id() noexcept;
+  static CppUnit::Test* suite();
+  static const char* test_id() noexcept;
 };
 
-#endif // _TEST_FN_LINEAR_PATH_GENERATION_
+#endif  // _TEST_FN_LINEAR_PATH_GENERATION_

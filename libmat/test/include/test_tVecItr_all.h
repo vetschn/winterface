@@ -4,34 +4,35 @@
 #ifndef _TEST_TVECITR_ALL_
 #define _TEST_TVECITR_ALL_
 
-#include "lm_tVecItr.h"
 #include <cppunit/extensions/HelperMacros.h>
 
-template<class TT, class FT, class CT>
+#include "lm_tVecItr.h"
+
+template <class TT, class FT, class CT>
 class lm_tMat;
 
-template<class TT, class FT, class CT, class VT>
-class test_tVecItr_all: public CppUnit::TestFixture {
-public:
-	// types
-	typedef lm_tMat<FT,FT,CT> fMat;
-	typedef lm_tMat<CT,FT,CT> cMat;
-	typedef lm_tMat<TT,FT,CT> tMat;
-	typedef lm_c_tVecItr<tMat,VT> c_tVecItr;
-	typedef lm_tVecItr<tMat,VT> tVecItr;
+template <class TT, class FT, class CT, class VT>
+class test_tVecItr_all : public CppUnit::TestFixture {
+ public:
+  // types
+  typedef lm_tMat<FT, FT, CT> fMat;
+  typedef lm_tMat<CT, FT, CT> cMat;
+  typedef lm_tMat<TT, FT, CT> tMat;
+  typedef lm_c_tVecItr<tMat, VT> c_tVecItr;
+  typedef lm_tVecItr<tMat, VT> tVecItr;
 
-	// tests
-	void test_ctor_assign();
-	void test_swap();
-	void test_comparison();
-	void test_dereference();
-	void test_arithmetic_difference();
+  // tests
+  void test_ctor_assign();
+  void test_swap();
+  void test_comparison();
+  void test_dereference();
+  void test_arithmetic_difference();
 
-protected:
-	static const char* test_id() noexcept;
+ protected:
+  static const char* test_id() noexcept;
 
-public:
-	static CppUnit::Test* suite();
+ public:
+  static CppUnit::Test* suite();
 };
 
-#endif // _TEST_TVECITR_ALL_
+#endif  // _TEST_TVECITR_ALL_

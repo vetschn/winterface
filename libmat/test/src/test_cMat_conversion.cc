@@ -2,16 +2,14 @@
 // Authors: Christian Stieger
 
 #include "testTools.h"
-
-#include "test_tMat_conversion.h"
 #include "test_tMat_conversion.cc"
-
+#include "test_tMat_conversion.h"
 
 // test id
-template<>
-const char* test_tMat_conversion<CPX__,RE__,CPX__>::test_id() noexcept {
-	return "test_cMat_conversion";
+template <>
+const char* test_tMat_conversion<CPX__, RE__, CPX__>::test_id() noexcept {
+  return "test_cMat_conversion";
 }
 
 // instantiation
-template class test_tMat_conversion<CPX__,RE__,CPX__>;
+template class test_tMat_conversion<CPX__, RE__, CPX__>;

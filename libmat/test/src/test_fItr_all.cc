@@ -2,14 +2,13 @@
 // Authors: Christian Stieger
 
 #include "testTools.h"
-
-#include "test_tItr_all.h"
 #include "test_tItr_all.cc"
+#include "test_tItr_all.h"
 
 // test id
-template<>
+template <>
 const char* test_tItr_all<RE__>::test_id() noexcept {
-	return "test_fItr_all";
+  return "test_fItr_all";
 }
 
 // instantiation

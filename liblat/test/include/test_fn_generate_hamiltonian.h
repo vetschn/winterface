@@ -6,13 +6,13 @@
 
 #include <cppunit/extensions/HelperMacros.h>
 
-class test_fn_generate_hamiltonian: public CppUnit::TestFixture {
-public:
-	void test_genHam_from_trans();
-	void test_genHam_from_wbh();
+class test_fn_generate_hamiltonian : public CppUnit::TestFixture {
+ public:
+  void test_genHam_from_trans();
+  void test_genHam_from_wbh();
 
-	static CppUnit::Test* suite();
-	static const char* test_id() noexcept;
+  static CppUnit::Test* suite();
+  static const char* test_id() noexcept;
 };
 
-#endif // _TEST_FN_GENERATE_HAMILTONIAN_
+#endif  // _TEST_FN_GENERATE_HAMILTONIAN_
