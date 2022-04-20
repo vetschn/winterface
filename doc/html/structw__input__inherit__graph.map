@@ -1,0 +1,5 @@
+<map id="w_input" name="w_input">
+<area shape="rect" id="node2" href="$structaux__parser.html" title="Basic parser struct to inherit from. " alt="" coords="49,5,143,32"/>
+<area shape="rect" id="node3" href="$structll__wmatching__input.html" title="Input for the wannier matching parameters. " alt="" coords="21,80,171,107"/>
+<area shape="rect" id="node4" href="$structll__BStest__input.html" title="input for bandstructure tests. " alt="" coords="195,80,313,107"/>
+</map>

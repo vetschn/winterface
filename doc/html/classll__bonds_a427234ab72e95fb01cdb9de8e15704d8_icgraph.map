@@ -1,0 +1,5 @@
+<map id="ll_bonds::ind" name="ll_bonds::ind">
+<area shape="rect" id="node2" href="$classll__bonds.html#abf9ab7213b5a7544881f5b57d071224e" title="returns the indices for a range of id strings " alt="" coords="173,5,309,46"/>
+<area shape="rect" id="node3" href="$classll__bonds.html#a1043e5de827c0f6f051fa5d1c62af0eb" title="returns the number of bonds starting or ending with an index. " alt="" coords="173,70,309,111"/>
+<area shape="rect" id="node4" href="$classll__bonds.html#a710573fec4bcf583f00f0655119f727c" title="returns the neighborhood for a bond index. " alt="" coords="158,135,325,177"/>
+</map>

@@ -4,61 +4,63 @@ include def.mk
 .PHONY: release_fpic release_lib release_headers release
 .PHONY: debug_fpic debug_lib debug_headers debug
 
-LIBMAT		= libmat
-LIBNAME		= lat
+LIBMAT = libmat
+LIBNAME = lat
 
-SRCS		= ll_types.cc \
-		  ll_cell.cc \
-		  ll_io.cc ll_fn.cc \
-		  ll_hio.cc \
-		  ll_bonds.cc ll_hbonds.cc ll_hbondss.cc \
-		  aux_parser.cc \
-		  ll_mesh.cc \
-		  ll_omen.cc ll_BStest.cc
-HDRS		= ll_defs.h \
-		  ll_types.h ll_compound.h \
-		  ll_cell.h \
-		  ll_io.h ll_fn.h \
-		  ll_hio.h \
-		  ll_bonds.h ll_hbonds.h ll_hbondss.h \
-		  aux_parser.h \
-		  ll_sparse.h ll_mesh.h \
-		  ll_omen.h ll_BStest.h
+SRCS = ll_types.cc \
+	ll_cell.cc \
+	ll_io.cc ll_fn.cc \
+	ll_hio.cc \
+	ll_bonds.cc ll_hbonds.cc ll_hbondss.cc \
+	aux_parser.cc \
+	ll_mesh.cc \
+	ll_omen.cc ll_BStest.cc
+
+HDRS = ll_defs.h \
+	ll_types.h ll_compound.h \
+	ll_cell.h \
+	ll_io.h ll_fn.h \
+	ll_hio.h \
+	ll_bonds.h ll_hbonds.h ll_hbondss.h \
+	aux_parser.h \
+	ll_sparse.h ll_mesh.h \
+	ll_omen.h ll_BStest.h
 
 
 
-#SRCS		= ll_types.cc \
-		  ll_cell.cc \
-		  ll_io.cc ll_fn.cc \
-		  ll_Hcont.cc \
-		  ll_input.cc \
-		  ll_bonds.cc \
-		  aux_parser.cc \
-		  omen_input.cc omen_io.cc omen_binding.cc \
-		  ll_mesh.cc
-#HDRS		= ll_defs.h \
-		  ll_types.h ll_compound.h \
-		  ll_cell.h \
-		  ll_io.h ll_fn.h \
-		  ll_Hcont.h \
-		  ll_input.h \
-		  ll_bonds.h \
-		  ll_sparse.h ll_mesh.h \
-		  aux_parser.h \
-		  omen_input.h omen_io.h omen_binding.h
+# SRCS = ll_types.cc \
+	ll_cell.cc \
+	ll_io.cc ll_fn.cc \
+	ll_Hcont.cc \
+	ll_input.cc \
+	ll_bonds.cc \
+	aux_parser.cc \
+	omen_input.cc omen_io.cc omen_binding.cc \
+	ll_mesh.cc
 
-OBJ		= $(SRCS:.cc=.o)
-OBJ_DBG		= $(addprefix dbg_, $(OBJ))
-OBJ_DBG_FPIC	= $(addprefix dbg_fpic_, $(OBJ))
-OBJ_RLS		= $(addprefix rls_, $(OBJ))
-OBJ_RLS_FPIC	= $(addprefix rls_fpic_, $(OBJ))
+# HDRS = ll_defs.h \
+	ll_types.h ll_compound.h \
+	ll_cell.h \
+	ll_io.h ll_fn.h \
+	ll_Hcont.h \
+	ll_input.h \
+	ll_bonds.h \
+	ll_sparse.h ll_mesh.h \
+	aux_parser.h \
+	omen_input.h omen_io.h omen_binding.h
 
-CXXFLAGS	+= -I$(INCLDIR) -I$(SRCDIR)
-RLSFLAGS	= $(CXXFLAGS) $(CPPFLAGS) -I$(LIBMAT)/$(RLSDIR)/$(INCLDIR) -DNDEBUG
-DBGFLAGS	= $(CXXFLAGS) $(CPPFLAGS) -I$(LIBMAT)/$(DBGDIR)/$(INCLDIR)
+OBJ = $(SRCS:.cc=.o)
+OBJ_DBG = $(addprefix dbg_, $(OBJ))
+OBJ_DBG_FPIC = $(addprefix dbg_fpic_, $(OBJ))
+OBJ_RLS = $(addprefix rls_, $(OBJ))
+OBJ_RLS_FPIC = $(addprefix rls_fpic_, $(OBJ))
 
-DEPDIR		:= .d
-DEPFLAGS	= -MT $@ -MMD -MP -MF
+CXXFLAGS += -I$(INCLDIR) -I$(SRCDIR)
+RLSFLAGS = $(CXXFLAGS) $(CPPFLAGS) -I$(LIBMAT)/$(RLSDIR)/$(INCLDIR) -DNDEBUG
+DBGFLAGS = $(CXXFLAGS) $(CPPFLAGS) -I$(LIBMAT)/$(DBGDIR)/$(INCLDIR)
+
+DEPDIR := .d
+DEPFLAGS = -MT $@ -MMD -MP -MF
 
 default: debug_lib debug_fpic debug_headers
 

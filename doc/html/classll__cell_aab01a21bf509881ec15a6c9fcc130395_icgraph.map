@@ -1,0 +1,4 @@
+<map id="ll_cell::stripId" name="ll_cell::stripId">
+<area shape="rect" id="node2" href="$classll__cell.html#a852d947f79c2802c7aa0f1d776421c21" title="returns the mass of the fundamental type of an id string. " alt="" coords="187,5,290,32"/>
+<area shape="rect" id="node3" href="$classll__cell.html#ad9b81caa90a4a4843c5862e0a4595903" title="returns a range of atomic types for whom the stripped id string is equal to s " alt="" coords="163,56,314,83"/>
+</map>

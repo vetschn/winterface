@@ -1,0 +1,7 @@
+<map id="lm_tArray::operator[]" name="lm_tArray::operator[]">
+<area shape="rect" id="node2" href="$classlm__tArray.html#a27515ed41333a07d841df1759cf7081e" title="returns the total number of elements " alt="" coords="225,31,325,57"/>
+<area shape="rect" id="node5" href="$classlm__tArray.html#ada636c68981b642f727392b69a22e901" title="pointer to underlying data " alt="" coords="213,81,336,108"/>
+<area shape="rect" id="node6" href="$classlm__tArray.html#ae64209c8de5b4bf8a77861dcae29ac2f" title="returns the increment in the data between successive elements " alt="" coords="216,132,333,159"/>
+<area shape="rect" id="node3" href="$classlm__tArray.html#a509e08b908623a36856d50c84149dd4d" title="returns the number of rows " alt="" coords="384,5,488,32"/>
+<area shape="rect" id="node4" href="$classlm__tArray.html#aedae1ace075d454fc5efc00ad68e1a6c" title="returns the number of columns " alt="" coords="385,56,487,83"/>
+</map>

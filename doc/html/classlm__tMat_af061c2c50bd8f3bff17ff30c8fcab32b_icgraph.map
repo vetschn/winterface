@@ -1,0 +1,4 @@
+<map id="lm_tMat::resize" name="lm_tMat::resize">
+<area shape="rect" id="node2" href="$classlm__tMat.html#a0e02d0bc2e686b37be33abbaea70b110" title="assignment operator from a real array " alt="" coords="178,5,345,46"/>
+<area shape="rect" id="node3" href="$classlm__tMat.html#a340cf3e9e857cbb863c1d2e63abbe5b4" title="push_back operator analogous to std::vector, overload for rows " alt="" coords="177,70,346,111"/>
+</map>

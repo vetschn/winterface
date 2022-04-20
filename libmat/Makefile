@@ -4,28 +4,29 @@ include def.mk
 .PHONY: release_fpic release_lib release_headers release
 .PHONY: debug_fpic debug_lib debug_headers debug
 
-LIBNAME		= mat
+LIBNAME = mat
 
-SRCS		= lm_fArray.cc lm_cArray.cc \
-		  lm_fRow.cc lm_cRow.cc lm_fCol.cc lm_cCol.cc \
-		  lm_fMat.cc lm_cMat.cc lm_fn.cc
-HDRS		= lm_tItr.h lm_cpxItr.h lm_tVecItr.h \
-		  lm_tArray.h lm_ref_tArray.h \
-		  lm_tCol.h lm_tRow.h \
-		  lm_tMat.h lm_fn.h \
-		  lm_lambda.h \
-		  lm_defs.h lm_types.h lm_ops.h lib$(LIBNAME).h
+SRCS = lm_fArray.cc lm_cArray.cc \
+	lm_fRow.cc lm_cRow.cc lm_fCol.cc lm_cCol.cc \
+	lm_fMat.cc lm_cMat.cc lm_fn.cc
 
-OBJ		= $(SRCS:.cc=.o)
-OBJ_DBG		= $(addprefix dbg_, $(OBJ))
-OBJ_DBG_FPIC	= $(addprefix dbg_fpic_, $(OBJ))
-OBJ_RLS		= $(addprefix rls_, $(OBJ))
-OBJ_RLS_FPIC	= $(addprefix rls_fpic_, $(OBJ))
+HDRS = lm_tItr.h lm_cpxItr.h lm_tVecItr.h \
+	lm_tArray.h lm_ref_tArray.h \
+	lm_tCol.h lm_tRow.h \
+	lm_tMat.h lm_fn.h \
+	lm_lambda.h \
+	lm_defs.h lm_types.h lm_ops.h lib$(LIBNAME).h
 
-CXXFLAGS	+= -I$(INCLDIR)
+OBJ = $(SRCS:.cc=.o)
+OBJ_DBG = $(addprefix dbg_, $(OBJ))
+OBJ_DBG_FPIC = $(addprefix dbg_fpic_, $(OBJ))
+OBJ_RLS = $(addprefix rls_, $(OBJ))
+OBJ_RLS_FPIC = $(addprefix rls_fpic_, $(OBJ))
 
-DEPDIR		:= .d
-DEPFLAGS	= -MT $@ -MMD -MP -MF
+CXXFLAGS += -I$(INCLDIR)
+
+DEPDIR := .d
+DEPFLAGS = -MT $@ -MMD -MP -MF
 
 default: debug
 

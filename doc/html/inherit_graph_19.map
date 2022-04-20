@@ -1,0 +1,5 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classll_____1_1mat__b.html" title="Wrapper for a matrix. " alt="" coords="6,5,173,32"/>
+<area shape="rect" id="node2" href="$classll_____1_1mat__vec__b.html" title="Wrapper for a class holding a matrix and vector of the same number of columns/elements. " alt="" coords="222,23,383,65"/>
+<area shape="rect" id="node3" href="$classll_____1_1vec__b.html" title="Wrapper for a vector (std::vector or otherwise). " alt="" coords="8,56,171,83"/>
+</map>

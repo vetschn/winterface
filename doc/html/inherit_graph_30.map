@@ -1,0 +1,8 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classll__writer.html" title="base Hamiltonian writer virtual class " alt="" coords="5,107,80,133"/>
+<area shape="rect" id="node2" href="$classll_____1_1omen_1_1writer.html" title="OMEN style binary sparse hamiltonian writer. " alt="" coords="142,5,277,32"/>
+<area shape="rect" id="node3" href="$classll__writerBIN.html" title="binary all in one file hamiltonian writer " alt="" coords="128,56,291,83"/>
+<area shape="rect" id="node4" href="$classll__writerMEM.html" title="write to memory writer " alt="" coords="132,107,287,133"/>
+<area shape="rect" id="node5" href="$classll__writerR0.html" title="write to memory writer, only R=0 version " alt="" coords="139,157,280,184"/>
+<area shape="rect" id="node6" href="$classll__writerW90.html" title="wannier90 hr style text writer " alt="" coords="157,208,261,235"/>
+</map>

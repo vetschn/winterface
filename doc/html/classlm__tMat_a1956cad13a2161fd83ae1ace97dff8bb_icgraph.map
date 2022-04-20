@@ -1,0 +1,10 @@
+<map id="lm_tMat::reserve" name="lm_tMat::reserve">
+<area shape="rect" id="node2" href="$structaux__parser_1_1parseKey__.html#a5c6cfaaca9136a328ce41be1bd666b0e" title="parse_ function for fMat. " alt="" coords="197,5,360,46"/>
+<area shape="rect" id="node3" href="$classll__bonds.html#addb2e481a58294d0a031c1db548f086a" title="returns unique R vectors, i.e. the range of unit cells where bonds exist " alt="" coords="211,70,347,111"/>
+<area shape="rect" id="node4" href="$classll__bonds.html#a710573fec4bcf583f00f0655119f727c" title="returns the neighborhood for a bond index. " alt="" coords="195,135,362,177"/>
+<area shape="rect" id="node5" href="$classll__bonds.html#a98a836f383669e9ed244337752f760f6" title="return the bonds starting at index i in simple format " alt="" coords="211,201,347,242"/>
+<area shape="rect" id="node6" href="$classll__bonds.html#a0ca1a9b1fcb762254f7b71df47298433" title="find the centers of bonds " alt="" coords="187,266,370,307"/>
+<area shape="rect" id="node7" href="$classlm__tMat.html#ab50fc99979ee0bfdbb422fc94f339610" title="see reserve " alt="" coords="190,331,367,373"/>
+<area shape="rect" id="node8" href="$classlm__tMat.html#af061c2c50bd8f3bff17ff30c8fcab32b" title="resizes the matrix " alt="" coords="202,397,355,438"/>
+<area shape="rect" id="node9" href="$classlm__tMat.html#abe323fef9f80b0cf18fee2fd80bcfceb" title="push_back operator analogous to std::vector, overload for arrays " alt="" coords="194,462,363,503"/>
+</map>

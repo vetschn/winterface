@@ -1,0 +1,5 @@
+<map id="ll_cell::isComposite" name="ll_cell::isComposite">
+<area shape="rect" id="node2" href="$classll__cell.html#aae558ac78ca48c046545d3df1303a9b6" title="returns the fundamental types, i.e. types that are not composite " alt="" coords="214,5,402,32"/>
+<area shape="rect" id="node3" href="$classll__cell.html#a17a7c7d97cbccfe380a2d040b61f5df3" title="returns the composite types " alt="" coords="221,56,395,83"/>
+<area shape="rect" id="node4" href="$classll__cell.html#ae99cb31c7d4b2239a5bf7fc8f08d60af" title="this will simplify composite ids since they can get very long in some cases. " alt="" coords="203,107,413,133"/>
+</map>

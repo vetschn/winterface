@@ -4,27 +4,27 @@ include def.mk
 
 MAKE = make
 
-all: dbg_libmat rls_libmat dbg_liblat rls_liblat dbg_ltool rls_ltool doc
+all: dbg-libmat rls-libmat dbg-liblat rls-liblat dbg-ltool rls-ltool doc
 
-dbg_libmat:
+dbg-libmat:
 	$(MAKE) -C libmat debug
 
-rls_libmat:
+rls-libmat:
 	$(MAKE) -C libmat release
 
-dbg_liblat:
+dbg-liblat:
 	$(MAKE) -C liblat debug
 
-rls_liblat:
+rls-liblat:
 	$(MAKE) -C liblat release
 
-dbg_ltool:
+dbg-ltool:
 	$(MAKE) -C ltool debug
 
-rls_ltool:
+rls-ltool:
 	$(MAKE) -C ltool release
 
-stat_ltool:
+stat-ltool:
 	$(MAKE) -C ltool static
 
 doc:
