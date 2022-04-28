@@ -295,12 +295,12 @@ void test_cell_comparison::test_operator_equal_unequal() {
   }
 }
 
-const char* test_cell_comparison::test_id() noexcept {
+const char *test_cell_comparison::test_id() noexcept {
   return "test_cell_comparison";
 }
 
-CppUnit::Test* test_cell_comparison::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_cell_comparison::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_cell_comparison>(
       "test_getPmat", &test_cell_comparison::test_getPmat));

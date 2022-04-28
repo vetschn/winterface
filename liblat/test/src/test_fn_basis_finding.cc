@@ -35,7 +35,8 @@ void test_fn_basis_finding::test_findBasis() {
     for (size_t i = 0; i < imax; ++i) {
       const auto R =
           tCell.B().prod(randi<fMat>(3, 3, -5, 5)).prod(diag(r.cAt(i)));
-      if (ll__::vol(R) < 0.25) continue;
+      if (ll__::vol(R) < 0.25)
+        continue;
 
       CPPUNIT_ASSERT_NO_THROW(findBasis(tCell.B(), R));
       auto CK = findBasis(tCell.B(), R);
@@ -58,7 +59,8 @@ void test_fn_basis_finding::test_findBasis() {
     for (size_t i = 0; i < imax; ++i) {
       const auto R =
           tCell.B().prod(randi<fMat>(3, 3, -5, 5).prod(diag(r.cAt(i))));
-      if (ll__::vol(R) < 3.0 * std::sqrt(3.0)) continue;
+      if (ll__::vol(R) < 3.0 * std::sqrt(3.0))
+        continue;
 
       auto CK = findBasis(tCell.B(), R);
 
@@ -88,7 +90,8 @@ void test_fn_basis_finding::test_findBasis() {
       for (size_t i = 0; i < imax; ++i) {
         const auto R =
             tCell.B().prod(randi<fMat>(s, s, -5, 5)).prod(diag(r.cAt(i)));
-        if (ll__::volnorm(R) < tCell.volnorm()) continue;
+        if (ll__::volnorm(R) < tCell.volnorm())
+          continue;
 
         auto CK = findBasis(tCell.B(), R);
 
@@ -113,7 +116,8 @@ void test_fn_basis_finding::test_findBasis() {
     for (size_t i = 0; i < imax; ++i) {
       const auto R =
           tCell.B().prod(randi<fMat>(3, 3, -5, 5).prod(diag(r.cAt(i))));
-      if (ll__::vol(R) < 3.0 * std::sqrt(3.0)) continue;
+      if (ll__::vol(R) < 3.0 * std::sqrt(3.0))
+        continue;
 
       auto CK = findBasis(tCell.B(), R);
 
@@ -145,15 +149,16 @@ void test_fn_basis_finding::test_orthogonalize() {
     CPPUNIT_ASSERT(tCell.B().get({}, ni) == OB.get({}, ni));
   }
   CPPUNIT_ASSERT(mnorm(tCell.B()) == mnorm(OB));
-  if (tCell.B().ob()) CPPUNIT_ASSERT(tCell.B() == OB);
+  if (tCell.B().ob())
+    CPPUNIT_ASSERT(tCell.B() == OB);
 }
 
-const char* test_fn_basis_finding::test_id() noexcept {
+const char *test_fn_basis_finding::test_id() noexcept {
   return "test_fn_basis_finding";
 }
 
-CppUnit::Test* test_fn_basis_finding::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_fn_basis_finding::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_fn_basis_finding>(
       "test_findBasis", &test_fn_basis_finding::test_findBasis));

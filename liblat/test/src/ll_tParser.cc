@@ -7,13 +7,13 @@
 #include "ll_defs.h"
 
 // constructor
-ll_tParser::ll_tParser(const std::string& fileName) : aux_parser(fileName) {
+ll_tParser::ll_tParser(const std::string &fileName) : aux_parser(fileName) {
   parseFile_();
 }
 
 // parse function
-void ll_tParser::parseKey_(const uint32_t key, std::sregex_token_iterator& i,
-                           std::sregex_token_iterator& e) {
+void ll_tParser::parseKey_(const uint32_t key, std::sregex_token_iterator &i,
+                           std::sregex_token_iterator &e) {
   switch (key) {
     PARSE_ENTRY__(tString);
     PARSE_ENTRY__(tStrings);

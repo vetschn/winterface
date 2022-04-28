@@ -201,7 +201,7 @@ void test_tMat_assign<TT, FT, CT>::test_operator_equal_move() {
   auto tMat1 = rnd<tMat>(M, N);
   auto tMat2 = rnd<tMat>(M / 2, N / 2);
 
-  TT* data;
+  TT *data;
   size_t lcap, ccap;
   {
     auto tMat3 = tMat2;
@@ -221,8 +221,8 @@ void test_tMat_assign<TT, FT, CT>::test_operator_equal_move() {
 }
 
 template <class TT, class FT, class CT>
-CppUnit::Test* test_tMat_assign<TT, FT, CT>::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_tMat_assign<TT, FT, CT>::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_tMat_assign>(
       "test_swap", &test_tMat_assign<TT, FT, CT>::test_swap));

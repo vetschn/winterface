@@ -120,12 +120,12 @@ void test_cell_information::test_validBasis() {
   CPPUNIT_ASSERT(tCell.validBasis(OB));
 }
 
-const char* test_cell_information::test_id() noexcept {
+const char *test_cell_information::test_id() noexcept {
   return "test_cell_information";
 }
 
-CppUnit::Test* test_cell_information::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_cell_information::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_cell_information>(
       "test_empty", &test_cell_information::test_empty));

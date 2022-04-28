@@ -158,7 +158,8 @@ void test_tMat_basic_modification<TT, FT, CT>::test_push_back_shift() {
     {
       tMat tMat4(M, 0);
       tMat4.reserve(N);
-      for (size_t i = 0; i < tMat1.N(); ++i) tMat4.push_back(tMat1.cGet(i));
+      for (size_t i = 0; i < tMat1.N(); ++i)
+        tMat4.push_back(tMat1.cGet(i));
       CPPUNIT_ASSERT(tMat4 == tMat1);
     }
     {
@@ -232,8 +233,8 @@ void test_tMat_basic_modification<TT, FT, CT>::test_pop_back() {
 }
 
 template <class TT, class FT, class CT>
-CppUnit::Test* test_tMat_basic_modification<TT, FT, CT>::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_tMat_basic_modification<TT, FT, CT>::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_tMat_basic_modification>(
       "test_R_C_T", &test_tMat_basic_modification<TT, FT, CT>::test_R_C_T));

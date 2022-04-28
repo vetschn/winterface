@@ -158,7 +158,7 @@ void test_cell_conversion::test_getBonds() {
     // check inversion symmetry
     CPPUNIT_ASSERT(b.bond(0, 1) + b.bond(1, 0) == 0.0);
     CPPUNIT_ASSERT(
-        std::all_of(b[0].ccBegin(), b[0].ccEnd(), [&b](const auto& i) -> bool {
+        std::all_of(b[0].ccBegin(), b[0].ccEnd(), [&b](const auto &i) -> bool {
           const auto itr =
               std::lower_bound(b[1].ccBegin(), b[1].ccEnd(), -i, vcmp);
           return itr != b[1].ccEnd() && *itr == -i;
@@ -191,7 +191,8 @@ void test_cell_conversion::test_getBonds() {
     CPPUNIT_ASSERT_EQUAL(F * I1.size(), I2.size());
 
     // check each index has 4 neighbours
-    for (const auto i : I2) CPPUNIT_ASSERT_EQUAL(size_t(4), b2.Nindex(i) / 2);
+    for (const auto i : I2)
+      CPPUNIT_ASSERT_EQUAL(size_t(4), b2.Nindex(i) / 2);
 
     // compare bonds, each bond vector in bb1 should appear F times in bb2
     const auto bb1 = b1.simple();
@@ -239,7 +240,7 @@ void test_cell_conversion::test_getBonds() {
     // check inversion symmetry
     CPPUNIT_ASSERT(b.bond(0, 1) + b.bond(1, 0) == 0.0);
     CPPUNIT_ASSERT(
-        std::all_of(b[0].ccBegin(), b[0].ccEnd(), [&b](const auto& i) -> bool {
+        std::all_of(b[0].ccBegin(), b[0].ccEnd(), [&b](const auto &i) -> bool {
           const auto itr =
               std::lower_bound(b[1].ccBegin(), b[1].ccEnd(), -i, vcmp);
           return itr != b[1].ccEnd() && *itr == -i;
@@ -257,12 +258,12 @@ void test_cell_conversion::test_getBonds() {
   }
 }
 
-const char* test_cell_conversion::test_id() noexcept {
+const char *test_cell_conversion::test_id() noexcept {
   return "test_cell_conversion";
 }
 
-CppUnit::Test* test_cell_conversion::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_cell_conversion::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_cell_conversion>(
       "test_getRB", &test_cell_conversion::test_getRB));

@@ -54,9 +54,9 @@ inline std::string md5(const std::string &fileName) {
 
   return aux::md5(raw.c_str(), raw.size());
 }
-}  // namespace aux
+} // namespace aux
 
-#endif  // _AUX_MD5_
+#endif // _AUX_MD5_
 
 /** @}
  */

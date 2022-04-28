@@ -70,8 +70,8 @@ void test_cell_ctor::test_B_Ap_() {
     auto tAp = Ap;
     const aCv N = {1, 1};
 
-    const double* tB_ptr = tB.data();
-    const double* tAp_ptr = tAp.data();
+    const double *tB_ptr = tB.data();
+    const double *tAp_ptr = tAp.data();
 
     const ll_cell tCell(std::move(tB), std::move(tAp), N);
     CPPUNIT_ASSERT(!tCell.empty());
@@ -91,9 +91,9 @@ void test_cell_ctor::test_B_Ap_() {
     const aCv N = {1, 1};
     idv id = {"Br", "I"};
 
-    const double* tB_ptr = tB.data();
-    const double* tAp_ptr = tAp.data();
-    const std::string* id_ptr = id.data();
+    const double *tB_ptr = tB.data();
+    const double *tAp_ptr = tAp.data();
+    const std::string *id_ptr = id.data();
 
     const ll_cell tCell(std::move(tB), std::move(tAp), N, std::move(id));
     CPPUNIT_ASSERT(!tCell.empty());
@@ -108,10 +108,10 @@ void test_cell_ctor::test_B_Ap_() {
 
   // try inserting unordered data, with id
   {
-    const fMat Ap(
-        {0.0, 0.0, 0.0, 0.25, 0.25, 0.25, 0.0, 0.5, 0.5, 0.25, 0.75, 0.75,
-         0.5, 0.0, 0.5, 0.75, 0.25, 0.75, 0.5, 0.5, 0.0, 0.75, 0.75, 0.25},
-        3, 8);
+    const fMat Ap({0.0,  0.0,  0.0,  0.25, 0.25, 0.25, 0.0,  0.5,
+                   0.5,  0.25, 0.75, 0.75, 0.5,  0.0,  0.5,  0.75,
+                   0.25, 0.75, 0.5,  0.5,  0.0,  0.75, 0.75, 0.25},
+                  3, 8);
     const idv id = {"Co", "Ni", "Co", "Ni", "Co", "Ni", "Co", "Ni"};
 
     const ll_cell tCell(eye<fMat>(3), Ap, id);
@@ -344,10 +344,10 @@ void test_cell_ctor::test_move() {
   CPPUNIT_ASSERT_EQUAL(id_ptr, tCell3.id().data());
 }
 
-const char* test_cell_ctor::test_id() noexcept { return "test_cell_ctor"; }
+const char *test_cell_ctor::test_id() noexcept { return "test_cell_ctor"; }
 
-CppUnit::Test* test_cell_ctor::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_cell_ctor::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_cell_ctor>(
       "test_default", &test_cell_ctor::test_default));

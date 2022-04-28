@@ -162,7 +162,8 @@ void test_tMat_data_access_itrs<TT, FT, CT>::test_diag_itr() {
       auto ie = tMat1.dend(m_, true);
 
       size_t m = m_, n = 0;
-      while (i != ie) CPPUNIT_ASSERT_EQUAL(tMat1(m++, n++), *i++);
+      while (i != ie)
+        CPPUNIT_ASSERT_EQUAL(tMat1(m++, n++), *i++);
       CPPUNIT_ASSERT(m == M || n == N);
     }
     {
@@ -172,7 +173,8 @@ void test_tMat_data_access_itrs<TT, FT, CT>::test_diag_itr() {
       auto ie = tMat1.cdend(m_, true);
 
       size_t m = m_, n = 0;
-      while (i != ie) CPPUNIT_ASSERT_EQUAL(tMat1(m++, n++), *i++);
+      while (i != ie)
+        CPPUNIT_ASSERT_EQUAL(tMat1(m++, n++), *i++);
       CPPUNIT_ASSERT(m == M || n == N);
     }
     {
@@ -210,7 +212,8 @@ void test_tMat_data_access_itrs<TT, FT, CT>::test_diag_itr() {
       auto ie = tMat1.dend(n_, false);
 
       size_t m = 0, n = n_;
-      while (i != ie) CPPUNIT_ASSERT_EQUAL(tMat1(m++, n++), *i++);
+      while (i != ie)
+        CPPUNIT_ASSERT_EQUAL(tMat1(m++, n++), *i++);
       CPPUNIT_ASSERT(m == M || n == N);
     }
     {
@@ -220,7 +223,8 @@ void test_tMat_data_access_itrs<TT, FT, CT>::test_diag_itr() {
       auto ie = tMat1.cdend(n_, false);
 
       size_t m = 0, n = n_;
-      while (i != ie) CPPUNIT_ASSERT_EQUAL(tMat1(m++, n++), *i++);
+      while (i != ie)
+        CPPUNIT_ASSERT_EQUAL(tMat1(m++, n++), *i++);
       CPPUNIT_ASSERT(m == M || n == N);
     }
     {
@@ -269,7 +273,8 @@ void test_tMat_data_access_itrs<TT, FT, CT>::test_diag_itr() {
     auto ie = tMat1.dend(m_, true);
 
     size_t m = m_, n = 0;
-    while (i != ie) CPPUNIT_ASSERT_EQUAL(tMat1(m++, n++), *i++);
+    while (i != ie)
+      CPPUNIT_ASSERT_EQUAL(tMat1(m++, n++), *i++);
     CPPUNIT_ASSERT(m == M || n == N);
   }
   {
@@ -279,7 +284,8 @@ void test_tMat_data_access_itrs<TT, FT, CT>::test_diag_itr() {
     auto ie = tMat1.cdend(m_, true);
 
     size_t m = m_, n = 0;
-    while (i != ie) CPPUNIT_ASSERT_EQUAL(tMat1(m++, n++), *i++);
+    while (i != ie)
+      CPPUNIT_ASSERT_EQUAL(tMat1(m++, n++), *i++);
     CPPUNIT_ASSERT(m == M || n == N);
   }
   {
@@ -317,7 +323,8 @@ void test_tMat_data_access_itrs<TT, FT, CT>::test_diag_itr() {
     auto ie = tMat1.dend(n_, false);
 
     size_t m = 0, n = n_;
-    while (i != ie) CPPUNIT_ASSERT_EQUAL(tMat1(m++, n++), *i++);
+    while (i != ie)
+      CPPUNIT_ASSERT_EQUAL(tMat1(m++, n++), *i++);
     CPPUNIT_ASSERT(m == M || n == N);
   }
   {
@@ -327,7 +334,8 @@ void test_tMat_data_access_itrs<TT, FT, CT>::test_diag_itr() {
     auto ie = tMat1.cdend(n_, false);
 
     size_t m = 0, n = n_;
-    while (i != ie) CPPUNIT_ASSERT_EQUAL(tMat1(m++, n++), *i++);
+    while (i != ie)
+      CPPUNIT_ASSERT_EQUAL(tMat1(m++, n++), *i++);
     CPPUNIT_ASSERT(m == M || n == N);
   }
   {
@@ -523,8 +531,8 @@ void test_tMat_data_access_itrs<TT, FT, CT>::test_col_itr() {
 }
 
 template <class TT, class FT, class CT>
-CppUnit::Test* test_tMat_data_access_itrs<TT, FT, CT>::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_tMat_data_access_itrs<TT, FT, CT>::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_tMat_data_access_itrs>(
       "test_data_access",

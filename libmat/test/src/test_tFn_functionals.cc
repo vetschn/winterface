@@ -176,7 +176,8 @@ void test_tFn_functionals<TT, FT, CT>::test_normsq() {
   {
     const auto tMat1 = rnd<tMat>(M, N);
     FT ref(0.0);
-    for (auto j : tMat1) ref += std::abs(j) * std::abs(j);
+    for (auto j : tMat1)
+      ref += std::abs(j) * std::abs(j);
     const FT act = normsq(tMat1);
     CPPUNIT_ASSERT_DELTA(ref, act, delta);
   }
@@ -184,7 +185,8 @@ void test_tFn_functionals<TT, FT, CT>::test_normsq() {
     const auto tMat1 = rnd<tMat>(M, N);
     for (auto i = tMat1.crBegin(), e = tMat1.crEnd(); i != e; ++i) {
       FT ref(0.0);
-      for (auto j : *i) ref += std::abs(j) * std::abs(j);
+      for (auto j : *i)
+        ref += std::abs(j) * std::abs(j);
       const FT act = normsq(*i);
       CPPUNIT_ASSERT_DELTA(ref, act, delta);
     }
@@ -193,7 +195,8 @@ void test_tFn_functionals<TT, FT, CT>::test_normsq() {
     const auto tMat1 = rnd<tMat>(M, N);
     for (auto i = tMat1.ccBegin(), e = tMat1.ccEnd(); i != e; ++i) {
       FT ref(0.0);
-      for (auto j : *i) ref += std::abs(j) * std::abs(j);
+      for (auto j : *i)
+        ref += std::abs(j) * std::abs(j);
       const FT act = normsq(*i);
       CPPUNIT_ASSERT_DELTA(ref, act, delta);
     }
@@ -208,7 +211,8 @@ void test_tFn_functionals<TT, FT, CT>::test_norm() {
   {
     const auto tMat1 = rnd<tMat>(M, N);
     FT ref(0.0);
-    for (auto j : tMat1) ref += std::abs(j) * std::abs(j);
+    for (auto j : tMat1)
+      ref += std::abs(j) * std::abs(j);
     ref = std::sqrt(ref);
     const FT act = norm(tMat1);
     CPPUNIT_ASSERT_DELTA(ref, act, delta);
@@ -217,7 +221,8 @@ void test_tFn_functionals<TT, FT, CT>::test_norm() {
     const auto tMat1 = rnd<tMat>(M, N);
     for (auto i = tMat1.crBegin(), e = tMat1.crEnd(); i != e; ++i) {
       FT ref(0.0);
-      for (auto j : *i) ref += std::abs(j) * std::abs(j);
+      for (auto j : *i)
+        ref += std::abs(j) * std::abs(j);
       ref = std::sqrt(ref);
       const FT act = norm(*i);
       CPPUNIT_ASSERT_DELTA(ref, act, delta);
@@ -227,7 +232,8 @@ void test_tFn_functionals<TT, FT, CT>::test_norm() {
     const auto tMat1 = rnd<tMat>(M, N);
     for (auto i = tMat1.ccBegin(), e = tMat1.ccEnd(); i != e; ++i) {
       FT ref(0.0);
-      for (auto j : *i) ref += std::abs(j) * std::abs(j);
+      for (auto j : *i)
+        ref += std::abs(j) * std::abs(j);
       ref = std::sqrt(ref);
       const FT act = norm(*i);
       CPPUNIT_ASSERT_DELTA(ref, act, delta);
@@ -241,7 +247,8 @@ void test_tFn_functionals<TT, FT, CT>::test_trace() {
   const auto tMat1 = rnd<tMat>(M, M);
 
   TT ref(0.0);
-  for (size_t m = 0; m != M; ++m) ref += tMat1(m, m);
+  for (size_t m = 0; m != M; ++m)
+    ref += tMat1(m, m);
   const auto act = trace(tMat1);
 
   CPPUNIT_ASSERT_DELTA(ref, act, delta);
@@ -260,8 +267,8 @@ void test_tFn_functionals<TT, FT, CT>::test_det() {
 }
 
 template <class TT, class FT, class CT>
-CppUnit::Test* test_tFn_functionals<TT, FT, CT>::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_tFn_functionals<TT, FT, CT>::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_tFn_functionals>(
       "test_sum", &test_tFn_functionals<TT, FT, CT>::test_sum));

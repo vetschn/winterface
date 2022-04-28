@@ -120,7 +120,8 @@ void test_tMat_conversion<TT, FT, CT>::test_get_getl() {
 
       auto j = tMat2.cbegin();
       for (size_t i = 0; i != tMat2.L(); ++i)
-        if (I[i]) CPPUNIT_ASSERT_EQUAL(*j++, tMat1[i]);
+        if (I[i])
+          CPPUNIT_ASSERT_EQUAL(*j++, tMat1[i]);
     }
 
     // col, row version
@@ -131,12 +132,14 @@ void test_tMat_conversion<TT, FT, CT>::test_get_getl() {
       std::vector<size_t> mlck;
       mlck.reserve(size_t(sum(ml)));
       for (size_t i = 0; i < ml.L(); ++i)
-        if (bool(ml[i])) mlck.push_back(i);
+        if (bool(ml[i]))
+          mlck.push_back(i);
 
       std::vector<size_t> nlck;
       nlck.reserve(size_t(sum(nl)));
       for (size_t i = 0; i < nl.L(); ++i)
-        if (bool(nl[i])) nlck.push_back(i);
+        if (bool(nl[i]))
+          nlck.push_back(i);
 
       CPPUNIT_ASSERT(tMat1.getl(ml, nl) == tMat1.get(mlck, nlck));
     }
@@ -205,7 +208,8 @@ void test_tMat_conversion<TT, FT, CT>::test_rWOGet_cWOGet() {
       CPPUNIT_ASSERT_EQUAL(tMat1.N(), tMat2.N());
       CPPUNIT_ASSERT_EQUAL(tMat1.L() - tMat1.N(), tMat2.L());
       for (size_t m = 0; m < tMat1.M(); ++m) {
-        if (m == i) continue;
+        if (m == i)
+          continue;
         for (size_t n = 0; n < tMat1.N(); ++n)
           CPPUNIT_ASSERT_EQUAL(tMat1(m, n), tMat2(m - (m > i), n));
       }
@@ -223,7 +227,8 @@ void test_tMat_conversion<TT, FT, CT>::test_rWOGet_cWOGet() {
       CPPUNIT_ASSERT_EQUAL(tMat1.N() - 1, tMat2.N());
       CPPUNIT_ASSERT_EQUAL(tMat1.L() - tMat1.M(), tMat2.L());
       for (size_t n = 0; n < tMat1.N(); ++n) {
-        if (n == i) continue;
+        if (n == i)
+          continue;
         for (size_t m = 0; m < tMat1.M(); ++m)
           CPPUNIT_ASSERT_EQUAL(tMat1(m, n), tMat2(m, n - (n > i)));
       }
@@ -260,7 +265,8 @@ void test_tMat_conversion<TT, FT, CT>::test_lower() {
   // M>N
   {
     auto S = genRndMEST();
-    if (S.M < S.N) std::swap(S.M, S.N);
+    if (S.M < S.N)
+      std::swap(S.M, S.N);
 
     const auto tMat1 = rnd<tMat>(S.M, S.N);
 
@@ -277,7 +283,8 @@ void test_tMat_conversion<TT, FT, CT>::test_lower() {
   // M<N
   {
     auto S = genRndMEST();
-    if (S.M > S.N) std::swap(S.M, S.N);
+    if (S.M > S.N)
+      std::swap(S.M, S.N);
 
     const auto tMat1 = rnd<tMat>(S.M, S.N);
 
@@ -313,13 +320,15 @@ void test_tMat_conversion<TT, FT, CT>::test_upper() {
 
     size_t i = 0;
     for (size_t n = 1; n < M; ++n)
-      for (size_t m = 0; m < n; ++m) CPPUNIT_ASSERT_EQUAL(tMat1(m, n), u[i++]);
+      for (size_t m = 0; m < n; ++m)
+        CPPUNIT_ASSERT_EQUAL(tMat1(m, n), u[i++]);
   }
 
   // M>N
   {
     auto S = genRndMEST();
-    if (S.M < S.N) std::swap(S.M, S.N);
+    if (S.M < S.N)
+      std::swap(S.M, S.N);
 
     const auto tMat1 = rnd<tMat>(S.M, S.N);
 
@@ -329,13 +338,15 @@ void test_tMat_conversion<TT, FT, CT>::test_upper() {
 
     size_t i = 0;
     for (size_t n = 1; n < S.N; ++n)
-      for (size_t m = 0; m < n; ++m) CPPUNIT_ASSERT_EQUAL(tMat1(m, n), u[i++]);
+      for (size_t m = 0; m < n; ++m)
+        CPPUNIT_ASSERT_EQUAL(tMat1(m, n), u[i++]);
   }
 
   // M<N
   {
     auto S = genRndMEST();
-    if (S.M > S.N) std::swap(S.M, S.N);
+    if (S.M > S.N)
+      std::swap(S.M, S.N);
 
     const auto tMat1 = rnd<tMat>(S.M, S.N);
 
@@ -345,7 +356,8 @@ void test_tMat_conversion<TT, FT, CT>::test_upper() {
 
     size_t i = 0;
     for (size_t n = 1; n < S.M; ++n)
-      for (size_t m = 0; m < n; ++m) CPPUNIT_ASSERT_EQUAL(tMat1(m, n), u[i++]);
+      for (size_t m = 0; m < n; ++m)
+        CPPUNIT_ASSERT_EQUAL(tMat1(m, n), u[i++]);
     for (size_t n = S.M; n < S.N; ++n)
       for (size_t m = 0; m < S.M; ++m)
         CPPUNIT_ASSERT_EQUAL(tMat1(m, n), u[i++]);
@@ -353,8 +365,8 @@ void test_tMat_conversion<TT, FT, CT>::test_upper() {
 }
 
 template <class TT, class FT, class CT>
-CppUnit::Test* test_tMat_conversion<TT, FT, CT>::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_tMat_conversion<TT, FT, CT>::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_tMat_conversion>(
       "test_copy_fcopy_ccopy",

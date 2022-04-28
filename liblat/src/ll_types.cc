@@ -38,4 +38,4 @@ const std::map<std::string, double> atom::mass(
      {"Np", 237.0},     {"Pu", 244.0},    {"Am", 243.0},     {"Cm", 247.0},
      {"Bk", 247.0},     {"Cf", 251.0},    {"Es", 252.0},     {"Fm", 257.0},
      {"Md", 258.0},     {"No", 259.0},    {"Lr", 262.0}});
-}  // namespace ll__
+} // namespace ll__

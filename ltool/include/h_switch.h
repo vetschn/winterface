@@ -20,22 +20,21 @@
  * parseKey_ and printHelp_.
  */
 struct h_input : public virtual ll_wf_input {
- public:
+public:
   /** @name filenames
    */
-  std::string layer_matrix = "Layer_Matrix.dat";  //!< layer matrix file
+  std::string layer_matrix = "Layer_Matrix.dat"; //!< layer matrix file
 
   /** @name parameters
    */
-  ll__::rv r = ll__::rv(DIM__, false);  //!< restriction vector
-  fMat device_definition =
-      {};  //!< specifies cuboid regions, empty -> all space
-  std::string hr_out = "wbh.hr";   //!< fileName for the output Hamiltonian
-  std::string hr_format = "omen";  //!< output format
-  size_t pprec = 6;                //!< floating point precision
-  fMat R = {};                     //!< manually specify R grid
+  ll__::rv r = ll__::rv(DIM__, false); //!< restriction vector
+  fMat device_definition = {}; //!< specifies cuboid regions, empty -> all space
+  std::string hr_out = "wbh.hr";  //!< fileName for the output Hamiltonian
+  std::string hr_format = "omen"; //!< output format
+  size_t pprec = 6;               //!< floating point precision
+  fMat R = {};                    //!< manually specify R grid
 
- public:
+public:
   //! parseKey_ redefinition
   struct parseKey_ : public virtual ll_wf_input::parseKey_ {
     /** constructor defining keys
@@ -52,45 +51,43 @@ struct h_input : public virtual ll_wf_input {
       using namespace aux;
 
       switch (key) {
-        // filenames
-        case "layer_matrix"_h:
-          PARSE__(p.layer_matrix);
-          return;
+      // filenames
+      case "layer_matrix"_h:
+        PARSE__(p.layer_matrix);
+        return;
 
-        // parameters
-        case "r"_h:
-          PARSE__(p.r, DIM__);
-          return;
-        case "device_definition"_h:
-          PARSE__(p.device_definition);
-          return;
-        case "hr_out"_h:
-          PARSE__(p.hr_out);
-          return;
-        case "hr_format"_h:
-          PARSE__(p.hr_format);
-          return;
-        case "pprec"_h:
-          PARSE__(p.pprec);
-          return;
-        case "R"_h:
-          PARSE__(p.R);
-          return;
+      // parameters
+      case "r"_h:
+        PARSE__(p.r, DIM__);
+        return;
+      case "device_definition"_h:
+        PARSE__(p.device_definition);
+        return;
+      case "hr_out"_h:
+        PARSE__(p.hr_out);
+        return;
+      case "hr_format"_h:
+        PARSE__(p.hr_format);
+        return;
+      case "pprec"_h:
+        PARSE__(p.pprec);
+        return;
+      case "R"_h:
+        PARSE__(p.R);
+        return;
       }
     }
   };
 
- public:
+public:
   //! printHelp_ redefinition
   struct printHelp_ : public virtual ll_wf_input::printHelp_ {
     /** constructor defining help messages
      */
     inline explicit printHelp_(const h_input &p, std::ostream &os)
-        : aux_parser::printHelp_(p, os),
-          ll_wmatching_input::printHelp_(p, os),
+        : aux_parser::printHelp_(p, os), ll_wmatching_input::printHelp_(p, os),
           ll_BStest_input::printHelp_(p, os),
-          ll_hbondss_input::printHelp_(p, os),
-          ll_wf_input::printHelp_(p, os) {
+          ll_hbondss_input::printHelp_(p, os), ll_wf_input::printHelp_(p, os) {
       printHelpTuple_(
           os, std::make_tuple(
                   TOPIC__("-h: FILENAMES"),
@@ -149,7 +146,7 @@ void h_switch(const h_input &inp, std::ostream &os = std::cout);
 void h_hctor(const h_input &inp, const lm__::fMat &B, const lm__::fMat &Ap,
              const ll__::idv &id, std::ostream &os);
 
-#endif  // _H_SWITCH_
+#endif // _H_SWITCH_
 
 /** @}
  */

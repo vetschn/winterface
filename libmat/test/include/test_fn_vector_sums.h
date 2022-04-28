@@ -9,7 +9,7 @@
 #include "lm_defs.h"
 
 class test_fn_vector_sums : public CppUnit::TestFixture {
- public:
+public:
   // tests
   void test_sum_r();
   void test_sum_c();
@@ -22,11 +22,11 @@ class test_fn_vector_sums : public CppUnit::TestFixture {
   static constexpr RE__ delta = 1e-5f;
 #endif
 
- protected:
-  static const char* test_id() noexcept;
+protected:
+  static const char *test_id() noexcept;
 
- public:
-  static CppUnit::Test* suite();
+public:
+  static CppUnit::Test *suite();
 };
 
-#endif  // _TEST_FN_VECTOR_SUMS_
+#endif // _TEST_FN_VECTOR_SUMS_

@@ -139,8 +139,8 @@ void test_tMat_logical<TT, FT, CT>::test_operator_or() {
 }
 
 template <class TT, class FT, class CT>
-CppUnit::Test* test_tMat_logical<TT, FT, CT>::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_tMat_logical<TT, FT, CT>::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_tMat_logical>(
       "test_logical", &test_tMat_logical<TT, FT, CT>::test_logical));

@@ -7,13 +7,13 @@
 #include <cppunit/extensions/HelperMacros.h>
 
 class test_fn_bandstructure_calc : public CppUnit::TestFixture {
- public:
+public:
   void test_findBandEdges();
   void test_calcBS();
   void test_calcFoldedBS();
 
-  static CppUnit::Test* suite();
-  static const char* test_id() noexcept;
+  static CppUnit::Test *suite();
+  static const char *test_id() noexcept;
 };
 
-#endif  // _TEST_FN_BANDSTRUCTURE_CALC_
+#endif // _TEST_FN_BANDSTRUCTURE_CALC_

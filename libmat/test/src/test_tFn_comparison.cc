@@ -269,7 +269,8 @@ void test_tFn_comparison<TT, FT, CT>::test_find() {
 
   std::vector<size_t> ref;
   for (size_t i = 0; i != tMat1.L(); ++i)
-    if (ops::nz(tMat1[i])) ref.push_back(i);
+    if (ops::nz(tMat1[i]))
+      ref.push_back(i);
   const auto act = find(tMat1);
 
   CPPUNIT_ASSERT(ref == act);
@@ -286,8 +287,8 @@ void test_tFn_comparison<TT, FT, CT>::test_nnz() {
 }
 
 template <class TT, class FT, class CT>
-CppUnit::Test* test_tFn_comparison<TT, FT, CT>::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_tFn_comparison<TT, FT, CT>::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_tFn_comparison>(
       "test_all", &test_tFn_comparison<TT, FT, CT>::test_all));

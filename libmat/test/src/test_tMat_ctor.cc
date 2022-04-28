@@ -67,7 +67,7 @@ template <class TT, class FT, class CT>
 void test_tMat_ctor<TT, FT, CT>::test_prealloc() {
   const size_t M = genRndST();
   const size_t N = genRndST();
-  TT* data_ = new TT[M * N];
+  TT *data_ = new TT[M * N];
 
   const tMat tMat1(data_, M, N);
 
@@ -77,7 +77,7 @@ void test_tMat_ctor<TT, FT, CT>::test_prealloc() {
   CPPUNIT_ASSERT_EQUAL(M * N, tMat1.L());
   CPPUNIT_ASSERT_EQUAL(tMat1.N(), tMat1.ccap());
   CPPUNIT_ASSERT_EQUAL(tMat1.L(), tMat1.lcap());
-  CPPUNIT_ASSERT_EQUAL(const_cast<const TT*>(data_), tMat1.data());
+  CPPUNIT_ASSERT_EQUAL(const_cast<const TT *>(data_), tMat1.data());
 }
 
 template <class TT, class FT, class CT>
@@ -269,7 +269,8 @@ void test_tMat_ctor<TT, FT, CT>::test_copy() {
   CPPUNIT_ASSERT_EQUAL(tMat1.N(), tMat2.N());
   CPPUNIT_ASSERT_EQUAL(tMat2.L(), tMat2.lcap());
   CPPUNIT_ASSERT_EQUAL(tMat2.N(), tMat2.ccap());
-  for (size_t i = 0; i != M * N; ++i) CPPUNIT_ASSERT_EQUAL(tMat1[i], tMat2[i]);
+  for (size_t i = 0; i != M * N; ++i)
+    CPPUNIT_ASSERT_EQUAL(tMat1[i], tMat2[i]);
 }
 
 template <class TT, class FT, class CT>
@@ -283,12 +284,12 @@ void test_tMat_ctor<TT, FT, CT>::test_move() {
   const auto tMat2 = std::move(tMat1);
   CPPUNIT_ASSERT_EQUAL(M, tMat2.M());
   CPPUNIT_ASSERT_EQUAL(N, tMat2.N());
-  CPPUNIT_ASSERT_EQUAL(const_cast<const TT*>(ptr), tMat2.data());
+  CPPUNIT_ASSERT_EQUAL(const_cast<const TT *>(ptr), tMat2.data());
 }
 
 template <class TT, class FT, class CT>
-CppUnit::Test* test_tMat_ctor<TT, FT, CT>::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_tMat_ctor<TT, FT, CT>::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_tMat_ctor>(
       "test_mn", &test_tMat_ctor<TT, FT, CT>::test_mn));

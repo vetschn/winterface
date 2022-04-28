@@ -144,7 +144,8 @@ void test_BStest_all::test_random_expansions() {
     inp.prefix = "outp/";
 
     fMat EXP;
-    do EXP = randi<fMat>(2, 2, -3, 3);
+    do
+      EXP = randi<fMat>(2, 2, -3, 3);
     while (det(EXP) == 0.0);
 
     EXP = fMat(
@@ -168,10 +169,10 @@ void test_BStest_all::test_random_expansions() {
   }
 }
 
-const char* test_BStest_all::test_id() noexcept { return "test_BStest"; }
+const char *test_BStest_all::test_id() noexcept { return "test_BStest"; }
 
-CppUnit::Test* test_BStest_all::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_BStest_all::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_BStest_all>(
       "test_exceptions", &test_BStest_all::test_exceptions));

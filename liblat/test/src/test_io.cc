@@ -29,7 +29,8 @@ fMat test_io::genRndP_(const size_t d) const noexcept {
 
   fMat res(d, 0);
   res.reserve(d);
-  for (const auto i : I) res.push_back(cId<fMat>(d, i));
+  for (const auto i : I)
+    res.push_back(cId<fMat>(d, i));
   return res;
 }
 
@@ -169,7 +170,8 @@ void test_io::test_printOlf() {
 
   idv id;
   id.reserve(tCell.N());
-  for (const auto t : tCell.type()) id.push_back("A" + std::to_string(t + 1));
+  for (const auto t : tCell.type())
+    id.push_back("A" + std::to_string(t + 1));
 
   // check exceptions
   {
@@ -253,8 +255,9 @@ void test_io::test_readOlf() {
 
   idv uid;
   uid.reserve(6);
-  for (const auto& s : inp.id)
-    if (std::find(uid.cbegin(), uid.cend(), s) == uid.cend()) uid.push_back(s);
+  for (const auto &s : inp.id)
+    if (std::find(uid.cbegin(), uid.cend(), s) == uid.cend())
+      uid.push_back(s);
   for (size_t i = 0; i != inp.id.size(); ++i)
     CPPUNIT_ASSERT_EQUAL(inp.id[i], uid[inp.T[i]]);
 }
@@ -345,10 +348,10 @@ void test_io::test_readAp() {
   // direct
   {
     const auto L = readAp(wpath + "wannier90.wout", true);
-    const fMat ck(
-        {0.0, 0.05620, 0.0, 0.33333, 0.27477, 0.66667, 0.33333, 0.0, 0.66667,
-         0.0, 0.33097, 0.0, 0.0, 0.21857, 0.0, 0.33333, 0.11240, 0.66667},
-        3, 6);
+    const fMat ck({0.0, 0.05620, 0.0, 0.33333, 0.27477, 0.66667, 0.33333, 0.0,
+                   0.66667, 0.0, 0.33097, 0.0, 0.0, 0.21857, 0.0, 0.33333,
+                   0.11240, 0.66667},
+                  3, 6);
     const idv ckid = {"Mo", "Mo", "S", "S", "S", "S"};
 
     CPPUNIT_ASSERT(L.Ap() == ck);
@@ -419,7 +422,7 @@ void test_io::test_readAp() {
     const auto Lc = readAp(wpath + "wannier90.wout", false, abl);
     const auto Lf = readAp(wpath + "wannier90.wout", true, abl);
 
-    set_mtol(1e-4);  // shitty tolerance due to wannier90 output accuracy
+    set_mtol(1e-4); // shitty tolerance due to wannier90 output accuracy
     CPPUNIT_ASSERT(B.prod(Lf.Ap()) == Lc.Ap());
     reset_mtol();
     CPPUNIT_ASSERT(Lf.id() == Lc.id());
@@ -520,12 +523,12 @@ void test_io::test_readWp() {
          -0.061165, 6.746088,  0.445236},
         3, 19);
 
-    const fMat ckspread(
-        {1.36059869, 1.41498919, 1.92502688, 1.98677354, 1.86081759, 1.94003709,
-         1.86943488, 1.98311332, 1.59689773, 2.37554007, 1.87489639, 1.91210902,
-         1.51071199, 2.14108509, 3.73373851, 1.86329425, 2.18784727, 3.56399432,
-         2.31241476},
-        1, 19);
+    const fMat ckspread({1.36059869, 1.41498919, 1.92502688, 1.98677354,
+                         1.86081759, 1.94003709, 1.86943488, 1.98311332,
+                         1.59689773, 2.37554007, 1.87489639, 1.91210902,
+                         1.51071199, 2.14108509, 3.73373851, 1.86329425,
+                         2.18784727, 3.56399432, 2.31241476},
+                        1, 19);
 
     CPPUNIT_ASSERT(Wp.Wp() == ck);
     CPPUNIT_ASSERT(Wp.s() == ckspread);
@@ -576,7 +579,7 @@ void test_io::test_readHr() {
 
     CPPUNIT_ASSERT_EQUAL(size_t(3), H.dim());
     CPPUNIT_ASSERT_EQUAL(NR, H.N());
-    CPPUNIT_ASSERT(std::all_of(H.begin(), H.end(), [](const cMat& i) {
+    CPPUNIT_ASSERT(std::all_of(H.begin(), H.end(), [](const cMat &i) {
       return i.M() == Nw && i.N() == Nw;
     }));
 
@@ -609,18 +612,19 @@ void test_io::test_readHr() {
     {
       const double tol = 0.1;
       const auto Htol = readHr(wpath + "wannier90_hr.dat", {},
-                               [tol](const cMat& inp) -> bool {
-                                 for (const auto& i : inp)
-                                   if (std::real(i) >= tol) return true;
+                               [tol](const cMat &inp) -> bool {
+                                 for (const auto &i : inp)
+                                   if (std::real(i) >= tol)
+                                     return true;
                                  return false;
                                });
 
       const size_t NR = 17;
-      const fMat Rck(
-          {-2, 0,  -2, -2, 0, -1, -2, 0, 0, -1, 0, -2, -1, 0, -1, -1, 0,
-           0,  -1, 0,  1,  0, 0,  -1, 0, 0, 0,  0, 0,  1,  1, 0,  -1, 1,
-           0,  0,  1,  0,  1, 1,  0,  2, 2, 0,  0, 2,  0,  1, 2,  0,  2},
-          3, NR);
+      const fMat Rck({-2, 0,  -2, -2, 0, -1, -2, 0, 0, -1, 0,  -2, -1,
+                      0,  -1, -1, 0,  0, -1, 0,  1, 0, 0,  -1, 0,  0,
+                      0,  0,  0,  1,  1, 0,  -1, 1, 0, 0,  1,  0,  1,
+                      1,  0,  2,  2,  0, 0,  2,  0, 1, 2,  0,  2},
+                     3, NR);
       CPPUNIT_ASSERT(Rck == Htol.R());
       CPPUNIT_ASSERT_EQUAL(NR, Htol.size());
 
@@ -646,9 +650,10 @@ void test_io::test_readAMN() {
 
   const auto amn = readAMN(wpath + "wannier90.amn");
   CPPUNIT_ASSERT_EQUAL(size_t(49), amn.size());
-  CPPUNIT_ASSERT(std::all_of(
-      amn.cbegin(), amn.cend(),
-      [](const auto& i) -> bool { return i.M() == 11 && i.N() == 11; }));
+  CPPUNIT_ASSERT(
+      std::all_of(amn.cbegin(), amn.cend(), [](const auto &i) -> bool {
+        return i.M() == 11 && i.N() == 11;
+      }));
 
   std::complex<double> ref1(-0.128058715695, 0.149159827634);
   CPPUNIT_ASSERT_EQUAL(ref1, amn[21 - 1](8 - 1, 10 - 1));
@@ -698,7 +703,7 @@ void test_io::test_readXYZ() {
 
     CPPUNIT_ASSERT(X.dim() == 3);
     CPPUNIT_ASSERT(X.N() == NR);
-    CPPUNIT_ASSERT(std::all_of(X.begin(), X.end(), [](const cMat& i) {
+    CPPUNIT_ASSERT(std::all_of(X.begin(), X.end(), [](const cMat &i) {
       return i.M() == Nw && i.N() == Nw;
     }));
 
@@ -734,9 +739,10 @@ void test_io::test_readXYZ() {
       const double tol = genRndDouble(1e-3, 1e-1);
 
       const auto Xtol =
-          readX(wpath + "wannier90_r.dat", {}, [tol](const cMat& inp) -> bool {
-            for (const auto& i : inp)
-              if (std::real(i) >= tol) return true;
+          readX(wpath + "wannier90_r.dat", {}, [tol](const cMat &inp) -> bool {
+            for (const auto &i : inp)
+              if (std::real(i) >= tol)
+                return true;
             return false;
           });
       const size_t NR = Xtol.N();
@@ -764,7 +770,7 @@ void test_io::test_readXYZ() {
 
     CPPUNIT_ASSERT(Y.dim() == 3);
     CPPUNIT_ASSERT(Y.N() == NR);
-    CPPUNIT_ASSERT(std::all_of(Y.begin(), Y.end(), [](const cMat& i) {
+    CPPUNIT_ASSERT(std::all_of(Y.begin(), Y.end(), [](const cMat &i) {
       return i.M() == Nw && i.N() == Nw;
     }));
 
@@ -800,9 +806,10 @@ void test_io::test_readXYZ() {
       const double tol = genRndDouble(1e-3, 1e-1);
 
       const auto Ytol =
-          readY(wpath + "wannier90_r.dat", {}, [tol](const cMat& inp) -> bool {
-            for (const auto& i : inp)
-              if (std::real(i) >= tol) return true;
+          readY(wpath + "wannier90_r.dat", {}, [tol](const cMat &inp) -> bool {
+            for (const auto &i : inp)
+              if (std::real(i) >= tol)
+                return true;
             return false;
           });
       const size_t NR = Ytol.N();
@@ -830,7 +837,7 @@ void test_io::test_readXYZ() {
 
     CPPUNIT_ASSERT(Z.dim() == 3);
     CPPUNIT_ASSERT(Z.N() == NR);
-    CPPUNIT_ASSERT(std::all_of(Z.begin(), Z.end(), [](const cMat& i) {
+    CPPUNIT_ASSERT(std::all_of(Z.begin(), Z.end(), [](const cMat &i) {
       return i.M() == Nw && i.N() == Nw;
     }));
 
@@ -865,9 +872,10 @@ void test_io::test_readXYZ() {
       const double tol = genRndDouble(1e-3, 1e-1);
 
       const auto Ztol =
-          readZ(wpath + "wannier90_r.dat", {}, [tol](const cMat& inp) -> bool {
-            for (const auto& i : inp)
-              if (std::real(i) >= tol) return true;
+          readZ(wpath + "wannier90_r.dat", {}, [tol](const cMat &inp) -> bool {
+            for (const auto &i : inp)
+              if (std::real(i) >= tol)
+                return true;
             return false;
           });
       const size_t NR = Ztol.N();
@@ -952,9 +960,10 @@ void test_io::test_readWannierTransf() {
     CPPUNIT_ASSERT_EQUAL(size_t(DIM__), WT.dim());
     CPPUNIT_ASSERT_EQUAL(size_t(16), WT.Nb());
     CPPUNIT_ASSERT_EQUAL(size_t(10), WT.Nw());
-    CPPUNIT_ASSERT(std::all_of(
-        WT.begin(), WT.end(),
-        [&WT](const cMat& i) -> bool { return size(WT.front()) == size(i); }));
+    CPPUNIT_ASSERT(
+        std::all_of(WT.begin(), WT.end(), [&WT](const cMat &i) -> bool {
+          return size(WT.front()) == size(i);
+        }));
     CPPUNIT_ASSERT(cunique(WT.k()));
   }
 
@@ -968,9 +977,10 @@ void test_io::test_readWannierTransf() {
     CPPUNIT_ASSERT_EQUAL(size_t(DIM__), WT.dim());
     CPPUNIT_ASSERT_EQUAL(size_t(22), WT.Nb());
     CPPUNIT_ASSERT_EQUAL(size_t(22), WT.Nw());
-    CPPUNIT_ASSERT(std::all_of(
-        WT.begin(), WT.end(),
-        [&WT](const cMat& i) -> bool { return size(WT.front()) == size(i); }));
+    CPPUNIT_ASSERT(
+        std::all_of(WT.begin(), WT.end(), [&WT](const cMat &i) -> bool {
+          return size(WT.front()) == size(i);
+        }));
     CPPUNIT_ASSERT(cunique(WT.k()));
   }
 }
@@ -1006,10 +1016,10 @@ void test_io::test_readChk() {
   }
 }
 
-const char* test_io::test_id() noexcept { return "test_io"; }
+const char *test_io::test_id() noexcept { return "test_io"; }
 
-CppUnit::Test* test_io::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_io::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_io>("test_writePOSCAR",
                                                   &test_io::test_writePOSCAR));

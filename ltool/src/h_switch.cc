@@ -9,16 +9,17 @@
 using namespace aux;
 using namespace ll__;
 
-void h_switch(const h_input& inp, std::ostream& os) {
+void h_switch(const h_input &inp, std::ostream &os) {
   using namespace aux;
 
   olf OLF;
   try {
     // try reading user defined layer matrix
     OLF = readOlf(inp.layer_matrix);
-  } catch (const std::exception& e) {
+  } catch (const std::exception &e) {
     // complain if no device length is specified
-    if (!inp.device_length) throw(e);
+    if (!inp.device_length)
+      throw(e);
 
     // check device definition
     if (!inp.device_definition.empty() &&
@@ -36,7 +37,8 @@ void h_switch(const h_input& inp, std::ostream& os) {
 
     // generate device structure
     {
-      if (inp.verbosity && PRINTBIT__) os << "Generating Layer matrix...\n";
+      if (inp.verbosity && PRINTBIT__)
+        os << "Generating Layer matrix...\n";
 
       // number of unit cells
       const size_t NC = std::ceil(inp.device_length / LD.B(0, 0));
@@ -74,7 +76,8 @@ void h_switch(const h_input& inp, std::ostream& os) {
                       e = inp.device_definition.ccEnd();
                  !keep && j != e; j += 2)
               keep |= all(j->leq(cont) & (j + 1)->geq(cont));
-            if (keep) OLF.Ap.push_back(cont), OLF.id.push_back(*j);
+            if (keep)
+              OLF.Ap.push_back(cont), OLF.id.push_back(*j);
           }
       }
     }
@@ -89,24 +92,25 @@ void h_switch(const h_input& inp, std::ostream& os) {
 
   // hr format switch
   switch (fnvHash(inp.hr_format.c_str())) {
-    case "omen"_h: {
-      // adapt L according to r
-      fMat L = lm__::diag(OLF.B);
-      for (size_t i = 1; i != L.size(); ++i)
-        if (inp.r[i]) L[i] = 1e8;
+  case "omen"_h: {
+    // adapt L according to r
+    fMat L = lm__::diag(OLF.B);
+    for (size_t i = 1; i != L.size(); ++i)
+      if (inp.r[i])
+        L[i] = 1e8;
 
-      // call OMEN matrix constructor
-      omen::hctor(inp, OLF.Ap, OLF.id, L, os);
-    } break;
-    default: {
-      // call generic matrix constructor
-      h_hctor(inp, OLF.B, OLF.Ap, OLF.id, os);
-    } break;
+    // call OMEN matrix constructor
+    omen::hctor(inp, OLF.Ap, OLF.id, L, os);
+  } break;
+  default: {
+    // call generic matrix constructor
+    h_hctor(inp, OLF.B, OLF.Ap, OLF.id, os);
+  } break;
   }
 }
 
-void h_hctor(const h_input& inp, const fMat& B, const fMat& LM, const idv& id,
-             std::ostream& os) {
+void h_hctor(const h_input &inp, const fMat &B, const fMat &LM, const idv &id,
+             std::ostream &os) {
   assert(B.M() == B.N());
   assert(B.M() == LM.M());
   assert(LM.N() == id.size());
@@ -142,102 +146,104 @@ void h_hctor(const h_input& inp, const fMat& B, const fMat& LM, const idv& id,
                                                    !inp.strict_matching);
   if (inp.verbosity & PRINTBIT__)
     os << "using R grid of " << BLUE__ << R.N() << RESET__ << " points\n";
-  if (inp.verbosity & VERBOBIT__) os << lm__::T(R).print(0, 1) << "\n\n";
+  if (inp.verbosity & VERBOBIT__)
+    os << lm__::T(R).print(0, 1) << "\n\n";
 
   // call hctor using appropriate format writer
   switch (fnvHash(inp.hr_format.c_str())) {
-    case "wannier90"_h: {
-      ll_writerW90 writer(inp.hr_out, R, Nw, inp.pprec);
+  case "wannier90"_h: {
+    ll_writerW90 writer(inp.hr_out, R, Nw, inp.pprec);
+    hctor(W, B, LM, T, writer, IR, !inp.strict_matching, inp.Nthreads,
+          inp.verbosity, os);
+    if (inp.verbosity & MD5BIT__)
+      os << "md5 sum:"
+         << " \'" << writer.fileName() << "\', " << aux::md5(writer.fileName())
+         << "\n\n";
+  } break;
+  case "hr32r"_h: {
+    if (Nw <= std::numeric_limits<uint16_t>::max()) {
+      ll_writerBIN<uint16_t, float> writer(inp.hr_out, R, Nw);
       hctor(W, B, LM, T, writer, IR, !inp.strict_matching, inp.Nthreads,
             inp.verbosity, os);
       if (inp.verbosity & MD5BIT__)
         os << "md5 sum:"
            << " \'" << writer.fileName() << "\', "
            << aux::md5(writer.fileName()) << "\n\n";
-    } break;
-    case "hr32r"_h: {
-      if (Nw <= std::numeric_limits<uint16_t>::max()) {
-        ll_writerBIN<uint16_t, float> writer(inp.hr_out, R, Nw);
-        hctor(W, B, LM, T, writer, IR, !inp.strict_matching, inp.Nthreads,
-              inp.verbosity, os);
-        if (inp.verbosity & MD5BIT__)
-          os << "md5 sum:"
-             << " \'" << writer.fileName() << "\', "
-             << aux::md5(writer.fileName()) << "\n\n";
-      } else {
-        ll_writerBIN<uint32_t, float> writer(inp.hr_out, R, Nw);
-        hctor(W, B, LM, T, writer, IR, !inp.strict_matching, inp.Nthreads,
-              inp.verbosity, os);
-        if (inp.verbosity & MD5BIT__)
-          os << "md5 sum:"
-             << " \'" << writer.fileName() << "\', "
-             << aux::md5(writer.fileName()) << "\n\n";
-      }
-    } break;
-    case "hr32c"_h: {
-      if (Nw <= std::numeric_limits<uint16_t>::max()) {
-        ll_writerBIN<uint16_t, std::complex<float>> writer(inp.hr_out, R, Nw);
-        hctor(W, B, LM, T, writer, IR, !inp.strict_matching, inp.Nthreads,
-              inp.verbosity, os);
-        if (inp.verbosity & MD5BIT__)
-          os << "md5 sum:"
-             << " \'" << writer.fileName() << "\', "
-             << aux::md5(writer.fileName()) << "\n\n";
-      } else {
-        ll_writerBIN<uint32_t, std::complex<float>> writer(inp.hr_out, R, Nw);
-        hctor(W, B, LM, T, writer, IR, !inp.strict_matching, inp.Nthreads,
-              inp.verbosity, os);
-        if (inp.verbosity & MD5BIT__)
-          os << "md5 sum:"
-             << " \'" << writer.fileName() << "\', "
-             << aux::md5(writer.fileName()) << "\n\n";
-      }
-    } break;
-    case "hr64r"_h: {
-      if (Nw <= std::numeric_limits<uint16_t>::max()) {
-        ll_writerBIN<uint16_t, double> writer(inp.hr_out, R, Nw);
-        hctor(W, B, LM, T, writer, IR, !inp.strict_matching, inp.Nthreads,
-              inp.verbosity, os);
-        if (inp.verbosity & MD5BIT__)
-          os << "md5 sum:"
-             << " \'" << writer.fileName() << "\', "
-             << aux::md5(writer.fileName()) << "\n\n";
-      } else {
-        ll_writerBIN<uint32_t, double> writer(inp.hr_out, R, Nw);
-        hctor(W, B, LM, T, writer, IR, !inp.strict_matching, inp.Nthreads,
-              inp.verbosity, os);
-        if (inp.verbosity & MD5BIT__)
-          os << "md5 sum:"
-             << " \'" << writer.fileName() << "\', "
-             << aux::md5(writer.fileName()) << "\n\n";
-      }
-    } break;
-    case "hr64c"_h: {
-      if (Nw <= std::numeric_limits<uint16_t>::max()) {
-        ll_writerBIN<uint16_t, std::complex<double>> writer(inp.hr_out, R, Nw);
-        hctor(W, B, LM, T, writer, IR, !inp.strict_matching, inp.Nthreads,
-              inp.verbosity, os);
-        if (inp.verbosity & MD5BIT__)
-          os << "md5 sum:"
-             << " \'" << writer.fileName() << "\', "
-             << aux::md5(writer.fileName()) << "\n\n";
-      } else {
-        ll_writerBIN<uint32_t, std::complex<double>> writer(inp.hr_out, R, Nw);
-        hctor(W, B, LM, T, writer, IR, !inp.strict_matching, inp.Nthreads,
-              inp.verbosity, os);
-        if (inp.verbosity & MD5BIT__)
-          os << "md5 sum:"
-             << " \'" << writer.fileName() << "\', "
-             << aux::md5(writer.fileName()) << "\n\n";
-      }
-    } break;
-    default:
-      throw(std::invalid_argument("hamiltonian format '" + inp.hr_format +
-                                  "' not recognized"));
-      break;
+    } else {
+      ll_writerBIN<uint32_t, float> writer(inp.hr_out, R, Nw);
+      hctor(W, B, LM, T, writer, IR, !inp.strict_matching, inp.Nthreads,
+            inp.verbosity, os);
+      if (inp.verbosity & MD5BIT__)
+        os << "md5 sum:"
+           << " \'" << writer.fileName() << "\', "
+           << aux::md5(writer.fileName()) << "\n\n";
+    }
+  } break;
+  case "hr32c"_h: {
+    if (Nw <= std::numeric_limits<uint16_t>::max()) {
+      ll_writerBIN<uint16_t, std::complex<float>> writer(inp.hr_out, R, Nw);
+      hctor(W, B, LM, T, writer, IR, !inp.strict_matching, inp.Nthreads,
+            inp.verbosity, os);
+      if (inp.verbosity & MD5BIT__)
+        os << "md5 sum:"
+           << " \'" << writer.fileName() << "\', "
+           << aux::md5(writer.fileName()) << "\n\n";
+    } else {
+      ll_writerBIN<uint32_t, std::complex<float>> writer(inp.hr_out, R, Nw);
+      hctor(W, B, LM, T, writer, IR, !inp.strict_matching, inp.Nthreads,
+            inp.verbosity, os);
+      if (inp.verbosity & MD5BIT__)
+        os << "md5 sum:"
+           << " \'" << writer.fileName() << "\', "
+           << aux::md5(writer.fileName()) << "\n\n";
+    }
+  } break;
+  case "hr64r"_h: {
+    if (Nw <= std::numeric_limits<uint16_t>::max()) {
+      ll_writerBIN<uint16_t, double> writer(inp.hr_out, R, Nw);
+      hctor(W, B, LM, T, writer, IR, !inp.strict_matching, inp.Nthreads,
+            inp.verbosity, os);
+      if (inp.verbosity & MD5BIT__)
+        os << "md5 sum:"
+           << " \'" << writer.fileName() << "\', "
+           << aux::md5(writer.fileName()) << "\n\n";
+    } else {
+      ll_writerBIN<uint32_t, double> writer(inp.hr_out, R, Nw);
+      hctor(W, B, LM, T, writer, IR, !inp.strict_matching, inp.Nthreads,
+            inp.verbosity, os);
+      if (inp.verbosity & MD5BIT__)
+        os << "md5 sum:"
+           << " \'" << writer.fileName() << "\', "
+           << aux::md5(writer.fileName()) << "\n\n";
+    }
+  } break;
+  case "hr64c"_h: {
+    if (Nw <= std::numeric_limits<uint16_t>::max()) {
+      ll_writerBIN<uint16_t, std::complex<double>> writer(inp.hr_out, R, Nw);
+      hctor(W, B, LM, T, writer, IR, !inp.strict_matching, inp.Nthreads,
+            inp.verbosity, os);
+      if (inp.verbosity & MD5BIT__)
+        os << "md5 sum:"
+           << " \'" << writer.fileName() << "\', "
+           << aux::md5(writer.fileName()) << "\n\n";
+    } else {
+      ll_writerBIN<uint32_t, std::complex<double>> writer(inp.hr_out, R, Nw);
+      hctor(W, B, LM, T, writer, IR, !inp.strict_matching, inp.Nthreads,
+            inp.verbosity, os);
+      if (inp.verbosity & MD5BIT__)
+        os << "md5 sum:"
+           << " \'" << writer.fileName() << "\', "
+           << aux::md5(writer.fileName()) << "\n\n";
+    }
+  } break;
+  default:
+    throw(std::invalid_argument("hamiltonian format '" + inp.hr_format +
+                                "' not recognized"));
+    break;
   }
 
-  if (!inp.force_check) return;
+  if (!inp.force_check)
+    return;
 
   os << "check forced!\n";
   auto hr = readHrSparse(inp.hr_out);

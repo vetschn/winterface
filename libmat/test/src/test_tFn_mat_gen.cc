@@ -22,13 +22,15 @@ void test_tFn_mat_gen<TT, FT, CT>::test_ones() {
   }
   {
     const auto tMat1 = ones<tMat>(M);
-    for (auto& i : tMat1) CPPUNIT_ASSERT(i == TT(1.0));
+    for (auto &i : tMat1)
+      CPPUNIT_ASSERT(i == TT(1.0));
     CPPUNIT_ASSERT_EQUAL(M, tMat1.M());
     CPPUNIT_ASSERT_EQUAL(M, tMat1.N());
   }
   {
     const auto tMat1 = ones<tMat>(M, N);
-    for (auto& i : tMat1) CPPUNIT_ASSERT(i == TT(1.0));
+    for (auto &i : tMat1)
+      CPPUNIT_ASSERT(i == TT(1.0));
     CPPUNIT_ASSERT_EQUAL(M, tMat1.M());
     CPPUNIT_ASSERT_EQUAL(N, tMat1.N());
   }
@@ -45,13 +47,15 @@ void test_tFn_mat_gen<TT, FT, CT>::test_zeros() {
   }
   {
     const auto tMat1 = zeros<tMat>(M);
-    for (auto& i : tMat1) CPPUNIT_ASSERT(i == TT(0.0));
+    for (auto &i : tMat1)
+      CPPUNIT_ASSERT(i == TT(0.0));
     CPPUNIT_ASSERT_EQUAL(M, tMat1.M());
     CPPUNIT_ASSERT_EQUAL(M, tMat1.N());
   }
   {
     const auto tMat1 = zeros<tMat>(M, N);
-    for (auto& i : tMat1) CPPUNIT_ASSERT(i == TT(0.0));
+    for (auto &i : tMat1)
+      CPPUNIT_ASSERT(i == TT(0.0));
     CPPUNIT_ASSERT_EQUAL(M, tMat1.M());
     CPPUNIT_ASSERT_EQUAL(N, tMat1.N());
   }
@@ -132,7 +136,8 @@ void test_tFn_mat_gen<TT, FT, CT>::test_rand() {
 
     CPPUNIT_ASSERT_EQUAL(M, tMat1.M());
     CPPUNIT_ASSERT_EQUAL(N, tMat1.N());
-    for (const auto i : tMat1) CPPUNIT_ASSERT(i >= l && i <= u);
+    for (const auto i : tMat1)
+      CPPUNIT_ASSERT(i >= l && i <= u);
   }
   {
     const RE__ ll_ = -1.0;
@@ -166,7 +171,8 @@ void test_tFn_mat_gen<TT, FT, CT>::test_randi() {
 
     CPPUNIT_ASSERT_EQUAL(M, tMat1.M());
     CPPUNIT_ASSERT_EQUAL(M, tMat1.N());
-    for (const auto i : tMat1) CPPUNIT_ASSERT_EQUAL(std::round(i), i);
+    for (const auto i : tMat1)
+      CPPUNIT_ASSERT_EQUAL(std::round(i), i);
   }
   {
     const long l = 0;
@@ -330,8 +336,8 @@ void test_tFn_mat_gen<TT, FT, CT>::test_ncat() {
 }
 
 template <class TT, class FT, class CT>
-CppUnit::Test* test_tFn_mat_gen<TT, FT, CT>::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_tFn_mat_gen<TT, FT, CT>::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_tFn_mat_gen>(
       "test_ones", &test_tFn_mat_gen<TT, FT, CT>::test_ones));

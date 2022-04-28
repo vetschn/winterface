@@ -58,7 +58,8 @@ void test_hbondss_all::test_all() {
   {
     std::vector<double> R;
     R.reserve(3);
-    for (const auto& w : W) R.push_back(w.radius());
+    for (const auto &w : W)
+      R.push_back(w.radius());
     CPPUNIT_ASSERT_DELTA(W.radius(), *std::max_element(R.cbegin(), R.cend()),
                          1e-3);
   }
@@ -74,7 +75,8 @@ void test_hbondss_all::test_all() {
     const rv r2 = W[2].r();
 
     rv ref(DIM__, true);
-    for (size_t d = 0; d != DIM__; ++d) ref[d] = r0[d] && r1[d] && r2[d];
+    for (size_t d = 0; d != DIM__; ++d)
+      ref[d] = r0[d] && r1[d] && r2[d];
 
     CPPUNIT_ASSERT(ref == W.r());
   }
@@ -84,7 +86,8 @@ void test_hbondss_all::test_all() {
                          W[0].cell().N() + W[1].cell().N() + W[2].cell().N());
     for (size_t j = 0; j != W.size(); ++j) {
       auto cI = W[j].inds();
-      for (auto& i : cI) i = ll_hbondss::compInd_(j, i);
+      for (auto &i : cI)
+        i = ll_hbondss::compInd_(j, i);
 
       CPPUNIT_ASSERT(
           std::all_of(cI.cbegin(), cI.cend(), [&I](const size_t i) -> bool {
@@ -93,7 +96,8 @@ void test_hbondss_all::test_all() {
     }
   }
   {
-    for (const auto& i : W.inds()) CPPUNIT_ASSERT(W.Norb(i) != 0);
+    for (const auto &i : W.inds())
+      CPPUNIT_ASSERT(W.Norb(i) != 0);
 
     const auto Norb = W.Norb(W.inds());
     CPPUNIT_ASSERT(std::all_of(Norb.cbegin(), Norb.cend(),
@@ -103,7 +107,7 @@ void test_hbondss_all::test_all() {
     for (size_t i = 0; i != W.size(); ++i) {
       std::vector<size_t> J(W[i].cell().N());
       std::transform(W[i].cell().id().cbegin(), W[i].cell().id().cend(),
-                     J.begin(), [&W, i](const auto& s) -> size_t {
+                     J.begin(), [&W, i](const auto &s) -> size_t {
                        return W.ind(std::to_string(i) + ':' + s);
                      });
 
@@ -153,8 +157,9 @@ void test_hbondss_all::test_all() {
     {
       auto BT = T;
       const size_t j = genRndST(1, W.size() - 1);
-      for (auto& t : BT)
-        if (ll_hbondss::j_(t) == j) t = 0;
+      for (auto &t : BT)
+        if (ll_hbondss::j_(t) == j)
+          t = 0;
       CPPUNIT_ASSERT_THROW(W.getPerimeterConnections(LM.Ap, BT, inp, std::cout),
                            std::invalid_argument);
     }
@@ -208,10 +213,11 @@ void test_hbondss_all::test_all() {
       const double tol = .1;
       auto cW = W;
       cW.setQueryTolDirect(tol);
-      for (const auto& w : cW) CPPUNIT_ASSERT_DELTA(tol, w.queryTol(), 1e-10);
+      for (const auto &w : cW)
+        CPPUNIT_ASSERT_DELTA(tol, w.queryTol(), 1e-10);
 
       cW.setQueryTolCartesian(tol);
-      for (const auto& w : cW)
+      for (const auto &w : cW)
         CPPUNIT_ASSERT_DELTA(w.cell().directTol(tol), w.queryTol(), 1e-10);
     }
 
@@ -236,10 +242,10 @@ void test_hbondss_all::test_all() {
   reset_mtol();
 }
 
-const char* test_hbondss_all::test_id() noexcept { return "test_hbondss_all"; }
+const char *test_hbondss_all::test_id() noexcept { return "test_hbondss_all"; }
 
-CppUnit::Test* test_hbondss_all::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_hbondss_all::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_hbondss_all>(
       "test_ctor_exceptions", &test_hbondss_all::test_ctor_exceptions));

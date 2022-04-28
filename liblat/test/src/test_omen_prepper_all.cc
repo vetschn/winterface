@@ -110,12 +110,12 @@ void test_omen_prepper_all::test_ctor_properties() {
   CPPUNIT_ASSERT(P.NNE == diag(diag(P.NNE)));
 }
 
-const char* test_omen_prepper_all::test_id() noexcept {
+const char *test_omen_prepper_all::test_id() noexcept {
   return "test_omen_prepper_all";
 }
 
-CppUnit::Test* test_omen_prepper_all::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_omen_prepper_all::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_omen_prepper_all>(
       "test_ctor_exceptions", &test_omen_prepper_all::test_ctor_exceptions));

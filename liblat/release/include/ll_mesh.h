@@ -27,19 +27,20 @@ namespace ll__ {
  */
 template <typename... Args>
 std::vector<size_t> cat(std::vector<size_t>, Args...) noexcept;
-template <typename... Args>
-std::vector<size_t> cat(size_t, Args...) noexcept;
+template <typename... Args> std::vector<size_t> cat(size_t, Args...) noexcept;
 std::vector<size_t> cat(std::vector<size_t>) noexcept;
 std::vector<size_t> cat(size_t) noexcept;
 template <typename... Args>
 inline std::vector<size_t> cat(std::vector<size_t> inp, Args... args) noexcept {
-  for (const auto i : cat(args...)) inp.push_back(i);
+  for (const auto i : cat(args...))
+    inp.push_back(i);
   return inp;
 }
 template <typename... Args>
 inline std::vector<size_t> cat(size_t inp, Args... args) noexcept {
   std::vector<size_t> res = {inp};
-  for (const auto i : cat(args...)) res.push_back(i);
+  for (const auto i : cat(args...))
+    res.push_back(i);
   return res;
 }
 inline std::vector<size_t> cat(size_t inp) noexcept { return {inp}; }
@@ -98,16 +99,16 @@ class itr_b
                            typename std::iterator_traits<IT>::difference_type,
                            typename std::iterator_traits<IT>::pointer,
                            typename std::iterator_traits<IT>::reference> {
- public:
+public:
   /** @name types
    */
-  typedef typename std::iterator_traits<IT>::value_type val;  //!< value type
+  typedef typename std::iterator_traits<IT>::value_type val; //!< value type
   typedef typename std::iterator_traits<IT>::difference_type
-      diff;                                                //!< difference type
-  typedef typename std::iterator_traits<IT>::pointer ptr;  //!< pointer type
-  typedef typename std::iterator_traits<IT>::reference ref;  //!< reference type
+      diff;                                                 //!< difference type
+  typedef typename std::iterator_traits<IT>::pointer ptr;   //!< pointer type
+  typedef typename std::iterator_traits<IT>::reference ref; //!< reference type
 
- public:
+public:
   /** @name constructors
    */
   //! constructor from iterator and step
@@ -279,24 +280,24 @@ class itr_b
                << ")");
   }
 
- protected:
+protected:
   /** @name member variables
    */
-  IT itr_;  //!< underlying vector iterator
-  diff s_;  //!< step
+  IT itr_; //!< underlying vector iterator
+  diff s_; //!< step
 };
 
-}  // namespace mesh
-}  // namespace ll__
+} // namespace mesh
+} // namespace ll__
 
 namespace ll__ {
 //! mesh nfo struct
 struct mesh_nfo {
-  size_t M;                 //!< number of elements in each columns
-  std::vector<size_t> maj;  //!< data majority vector
-  std::vector<size_t> D;    //!< number of grid points along each dimension
+  size_t M;                //!< number of elements in each columns
+  std::vector<size_t> maj; //!< data majority vector
+  std::vector<size_t> D;   //!< number of grid points along each dimension
 };
-}  // namespace ll__
+} // namespace ll__
 
 /** mesh class, implements a mesh akin of the MATLAB commmand 'meshgrid'.
  * A mesh is implemented by a matrix underneath. Each point in the mesh
@@ -312,9 +313,8 @@ struct mesh_nfo {
  *   matrix has Nb elements, one for each band, whereas the mesh itself
  *   is underwise identical to the kpoints mesh.
  */
-template <class MT = lm__::fMat>
-class ll_mesh {
- public:
+template <class MT = lm__::fMat> class ll_mesh {
+public:
   /** @name constructors
    */
   //! default constructor
@@ -325,9 +325,7 @@ class ll_mesh {
    * @param D number of points in each dimension
    */
   ll_mesh(MT base, std::vector<size_t> maj, std::vector<size_t> D) noexcept
-      : base_(std::move(base)),
-        s_(steps_(D, maj)),
-        maj_(std::move(maj)),
+      : base_(std::move(base)), s_(steps_(D, maj)), maj_(std::move(maj)),
         D_(std::move(D)) {
     assert(std::all_of(D_.cbegin(), D_.cend(),
                        [](const size_t i) -> bool { return i; }));
@@ -345,9 +343,7 @@ class ll_mesh {
                             ? 0
                             : std::accumulate(D.cbegin(), D.cend(), size_t(1),
                                               std::multiplies<size_t>())),
-        s_(steps_(D, maj)),
-        maj_(std::move(maj)),
-        D_(std::move(D)) {
+        s_(steps_(D, maj)), maj_(std::move(maj)), D_(std::move(D)) {
     assert(std::all_of(D_.cbegin(), D_.cend(),
                        [](const size_t i) -> bool { return i; }));
   }
@@ -396,7 +392,8 @@ class ll_mesh {
   inline size_t posToi(const std::vector<size_t> &pos) const noexcept {
     assert(pos.size() == meshDim());
 #ifndef NDEBUG
-    for (size_t d = 0; d != pos.size(); ++d) assert(pos[d] < D(d));
+    for (size_t d = 0; d != pos.size(); ++d)
+      assert(pos[d] < D(d));
 #endif
 
     size_t res = 0;
@@ -442,7 +439,7 @@ class ll_mesh {
 
   /** @name public data member and cast to matrix base
    */
-  MT base_;  //!< underlying matrix
+  MT base_; //!< underlying matrix
   //! cast to underlying matrix
   inline operator MT() const && { return MT(std::move(base_)); }
 
@@ -495,12 +492,13 @@ class ll_mesh {
   //! past the end row const_iterator
   auto crEnd() const noexcept { return base_.crEnd(); }
 
- private:
+private:
   /** @name helpers
    */
   //! construct steps from maj
-  inline static std::vector<size_t> steps_(
-      const std::vector<size_t> &D, const std::vector<size_t> &maj) noexcept {
+  inline static std::vector<size_t>
+  steps_(const std::vector<size_t> &D,
+         const std::vector<size_t> &maj) noexcept {
     using namespace aux;
     assert(D.size() == maj.size());
     assert(std::all_of(D.cbegin(), D.cend(),
@@ -513,17 +511,18 @@ class ll_mesh {
 
     size_t f = 1;
     std::vector<size_t> res(maj.size());
-    for (const auto i : maj) res[i] = f, f *= D[i];
+    for (const auto i : maj)
+      res[i] = f, f *= D[i];
     return res;
   }
 
   /** @name member variables
    */
-  std::vector<size_t> s_;    //!< step vector
-  std::vector<size_t> maj_;  //!< majority order vector
-  std::vector<size_t> D_;    //!< number of points vector
+  std::vector<size_t> s_;   //!< step vector
+  std::vector<size_t> maj_; //!< majority order vector
+  std::vector<size_t> D_;   //!< number of points vector
 
- public:
+public:
   class itr;
   class c_itr;
   class r_itr;
@@ -533,7 +532,7 @@ class ll_mesh {
    */
   //! mesh iterator
   class itr : public ll__::mesh::itr_b<decltype(base_.cBegin()), itr, c_itr> {
-   public:
+  public:
     /** @name constructors
      */
     using ll__::mesh::itr_b<decltype(base_.cBegin()), itr, c_itr>::itr_b;
@@ -563,7 +562,7 @@ class ll_mesh {
   //! mesh const_iterator
   class c_itr
       : public ll__::mesh::itr_b<decltype(base_.ccBegin()), c_itr, itr> {
-   public:
+  public:
     /** @name constructors
      */
     using ll__::mesh::itr_b<decltype(base_.ccBegin()), c_itr, itr>::itr_b;
@@ -610,7 +609,7 @@ class ll_mesh {
   //! mesh reverse iterator
   class r_itr
       : public ll__::mesh::itr_b<decltype(base_.rcBegin()), r_itr, cr_itr> {
-   public:
+  public:
     /** @name constructors
      */
     using ll__::mesh::itr_b<decltype(base_.rcBegin()), r_itr, cr_itr>::itr_b;
@@ -645,7 +644,7 @@ class ll_mesh {
   //! mesh reverse const_iterator
   class cr_itr
       : public ll__::mesh::itr_b<decltype(base_.crcBegin()), cr_itr, r_itr> {
-   public:
+  public:
     /** @name constructors
      */
     using ll__::mesh::itr_b<decltype(base_.crcBegin()), cr_itr, r_itr>::itr_b;
@@ -695,7 +694,7 @@ class ll_mesh {
     inline c_itr base() const noexcept { return c_itr(*this); }
   };
 
- public:
+public:
   /** @name mesh iterators
    */
   /** mesh iterator to a column at the beginning of a 'line'
@@ -809,8 +808,7 @@ inline std::ostream &operator<<(std::ostream &os,
 namespace ll__ {
 
 //! get nfo from mesh
-template <class MT>
-ll__::mesh_nfo size(const ll_mesh<MT> &inp) noexcept {
+template <class MT> ll__::mesh_nfo size(const ll_mesh<MT> &inp) noexcept {
   return {inp.M(), inp.maj(), inp.D()};
 }
 
@@ -846,7 +844,8 @@ inline std::vector<size_t> maj_default(const size_t d) noexcept {
 inline std::vector<size_t> maj_MATLAB(const rv &r) noexcept {
   auto res = maj_default(r.size());
   const auto I = ninds(r);
-  if (I.size() > 1) std::swap(res[I[0]], res[I[1]]);
+  if (I.size() > 1)
+    std::swap(res[I[0]], res[I[1]]);
   return res;
 }
 
@@ -896,9 +895,9 @@ inline ll_mesh<> genMesh_int_bw(const fMat &bounds) noexcept {
   std::iota(maj.rbegin(), maj.rend(), 0);
   return genMesh_int(bounds, std::move(maj));
 }
-}  // namespace ll__
+} // namespace ll__
 
-#endif  // _LL_MESH_
+#endif // _LL_MESH_
 
 /** @}
  */

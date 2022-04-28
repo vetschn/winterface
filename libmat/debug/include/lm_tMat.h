@@ -44,40 +44,40 @@
  */
 template <class TT, class FT, class CT>
 class lm_tMat final : public lm_ref_tArray<TT, FT, CT, lm_tMat<TT, FT, CT>> {
- public:
+public:
   /** @name types
    */
-  typedef lm_tArray<TT, FT, CT> tArray;  //!< an array, either real or complex
-  typedef lm_tArray<FT, FT, CT> fArray;  //!< a real array
-  typedef lm_tArray<CT, FT, CT> cArray;  //!< a complex array
-  typedef lm_tRow<TT, FT, CT> tRow;      //!< a row, either real or complex
-  typedef lm_tRow<FT, FT, CT> fRow;      //!< a real row
-  typedef lm_tRow<CT, FT, CT> cRow;      //!< a complex row
-  typedef lm_tCol<TT, FT, CT> tCol;      //!< a column, either real or complex
-  typedef lm_tCol<FT, FT, CT> fCol;      //!< a real column
-  typedef lm_tCol<CT, FT, CT> cCol;      //!< a complex column
-  typedef lm_tMat<TT, FT, CT> tMat;      //!< a matrix, either real or complex
-  typedef lm_tMat<FT, FT, CT> fMat;      //!< a real matrix
-  typedef lm_tMat<CT, FT, CT> cMat;      //!< a complex matrix
-  typedef lm_tItr<TT> tItr;              //!< iterator using custom increment
-  typedef lm_c_tItr<TT> c_tItr;  //!< const_iterator using custom increment
+  typedef lm_tArray<TT, FT, CT> tArray; //!< an array, either real or complex
+  typedef lm_tArray<FT, FT, CT> fArray; //!< a real array
+  typedef lm_tArray<CT, FT, CT> cArray; //!< a complex array
+  typedef lm_tRow<TT, FT, CT> tRow;     //!< a row, either real or complex
+  typedef lm_tRow<FT, FT, CT> fRow;     //!< a real row
+  typedef lm_tRow<CT, FT, CT> cRow;     //!< a complex row
+  typedef lm_tCol<TT, FT, CT> tCol;     //!< a column, either real or complex
+  typedef lm_tCol<FT, FT, CT> fCol;     //!< a real column
+  typedef lm_tCol<CT, FT, CT> cCol;     //!< a complex column
+  typedef lm_tMat<TT, FT, CT> tMat;     //!< a matrix, either real or complex
+  typedef lm_tMat<FT, FT, CT> fMat;     //!< a real matrix
+  typedef lm_tMat<CT, FT, CT> cMat;     //!< a complex matrix
+  typedef lm_tItr<TT> tItr;             //!< iterator using custom increment
+  typedef lm_c_tItr<TT> c_tItr; //!< const_iterator using custom increment
   typedef lm_tVecItr<tMat, tRow>
-      tRowItr;  //!< a row iterator, either real or complex
+      tRowItr; //!< a row iterator, either real or complex
   typedef lm_c_tVecItr<tMat, tRow>
-      c_tRowItr;  //!< a row const_iterator, either real or complex
+      c_tRowItr; //!< a row const_iterator, either real or complex
   typedef lm_tVecItr<tMat, tCol>
-      tColItr;  //!< a column iterator, either real or complex
+      tColItr; //!< a column iterator, either real or complex
   typedef lm_c_tVecItr<tMat, tCol>
-      c_tColItr;  //!< a column const_iterator, either real or complex
+      c_tColItr; //!< a column const_iterator, either real or complex
   typedef lm_r_tVecItr<tMat, tRow>
-      r_tRowItr;  //!< a row reverse iterator, either real or complex
+      r_tRowItr; //!< a row reverse iterator, either real or complex
   typedef lm_cr_tVecItr<tMat, tRow>
-      cr_tRowItr;  //!< a row reverse const_iterator, either real or complex
+      cr_tRowItr; //!< a row reverse const_iterator, either real or complex
   typedef lm_r_tVecItr<tMat, tCol>
-      r_tColItr;  //!< a column reverse iterator, either real or complex
+      r_tColItr; //!< a column reverse iterator, either real or complex
   typedef lm_cr_tVecItr<tMat, tCol>
-      cr_tColItr;  //!< a column reverse const_iterator, either real or complex
-  typedef lm__::lm_size lm_size;  //!< a size struct holding M and N
+      cr_tColItr; //!< a column reverse const_iterator, either real or complex
+  typedef lm__::lm_size lm_size; //!< a size struct holding M and N
 
   /** @name constructors
    */
@@ -91,7 +91,7 @@ class lm_tMat final : public lm_ref_tArray<TT, FT, CT, lm_tMat<TT, FT, CT>> {
   inline explicit lm_tMat(const size_t M, const size_t N) noexcept
       : M_(M), N_(N), C_(M * N), data_(C_ ? new TT[C_] : nullptr) {}
   //! overload for use with the size struct
-  inline explicit lm_tMat(const lm_size& S) noexcept : lm_tMat(S.M, S.N) {}
+  inline explicit lm_tMat(const lm_size &S) noexcept : lm_tMat(S.M, S.N) {}
   /** overload for square matrices
    * @param M the number of rows/columns
    */
@@ -102,68 +102,72 @@ class lm_tMat final : public lm_ref_tArray<TT, FT, CT, lm_tMat<TT, FT, CT>> {
    * @param M the number of rows
    * @param N the number of columns
    */
-  inline explicit lm_tMat(TT* const data, const size_t M,
+  inline explicit lm_tMat(TT *const data, const size_t M,
                           const size_t N) noexcept
       : M_(M), N_(N), C_(M * N), data_(data) {}
   //! constructor from a set of row const_iterators
-  inline explicit lm_tMat(c_tRowItr i, const c_tRowItr& e) noexcept
+  inline explicit lm_tMat(c_tRowItr i, const c_tRowItr &e) noexcept
       : tMat(distance(i, e), i->L()) {
     assert(i <= e);
-    for (auto j = rBegin(); i != e; ++i, ++j) *j = *i;
+    for (auto j = rBegin(); i != e; ++i, ++j)
+      *j = *i;
   }
   //! constructor from a set of row iterators
-  inline explicit lm_tMat(const tRowItr& i, const tRowItr& e) noexcept
+  inline explicit lm_tMat(const tRowItr &i, const tRowItr &e) noexcept
       : tMat(c_tRowItr(i), c_tRowItr(e)) {}
   //! constructor from a set of column const_iterators
-  explicit lm_tMat(const c_tColItr& i, const c_tColItr& e) noexcept
+  explicit lm_tMat(const c_tColItr &i, const c_tColItr &e) noexcept
       : tMat(i->L(), distance(i, e)) {
     assert(i <= e);
     memcpy(data_, i->data(), this->L() * sizeof(TT));
   }
   //! constructor from a set of column iterators
-  inline explicit lm_tMat(const tColItr& i, const tColItr& e) noexcept
+  inline explicit lm_tMat(const tColItr &i, const tColItr &e) noexcept
       : tMat(c_tColItr(i), c_tColItr(e)) {}
   //! constructor from a list of rows
-  inline lm_tMat(const std::initializer_list<const tRow>& init) noexcept
+  inline lm_tMat(const std::initializer_list<const tRow> &init) noexcept
       : tMat(init.size(), init.size() ? init.begin()->N() : 0) {
     std::copy(init.begin(), init.end(), rBegin());
   }
   //! constructor from a list of columns
-  inline lm_tMat(const std::initializer_list<const tCol>& init) noexcept
+  inline lm_tMat(const std::initializer_list<const tCol> &init) noexcept
       : tMat(init.size() ? init.begin()->M() : 0, init.size()) {
     std::copy(init.begin(), init.end(), cBegin());
   }
   //! constructor from a list of numbers, result is a column shaped matrix
-  inline lm_tMat(const std::initializer_list<TT>& init) noexcept
+  inline lm_tMat(const std::initializer_list<TT> &init) noexcept
       : tMat(init.size(), 1) {
-    if (!this->empty()) memcpy(data_, init.begin(), this->L() * sizeof(TT));
+    if (!this->empty())
+      memcpy(data_, init.begin(), this->L() * sizeof(TT));
   }
   /** constructor from a list of numbers
    * @param init the list of numbers
    * @param M the number of rows
    */
-  inline lm_tMat(const std::initializer_list<TT>& init, const size_t M) noexcept
+  inline lm_tMat(const std::initializer_list<TT> &init, const size_t M) noexcept
       : tMat(M, init.size() / M) {
     assert(init.size() == this->L());
-    if (!this->empty()) memcpy(data_, init.begin(), this->L() * sizeof(TT));
+    if (!this->empty())
+      memcpy(data_, init.begin(), this->L() * sizeof(TT));
   }
   /** constructor from a list of numbers
    * @param init the list of numbers
    * @param M the number of rows
    * @param N the number of columns
    */
-  inline lm_tMat(const std::initializer_list<TT>& init, const size_t M,
+  inline lm_tMat(const std::initializer_list<TT> &init, const size_t M,
                  const size_t N) noexcept
       : tMat(M, N) {
     assert(init.size() == this->L());
-    if (!this->empty()) memcpy(data_, init.begin(), this->L() * sizeof(TT));
+    if (!this->empty())
+      memcpy(data_, init.begin(), this->L() * sizeof(TT));
   }
   /** constructor from a file stream
    * @param file the input stream
    * @param M the number of rows
    * @param N the number of columns
    */
-  inline explicit lm_tMat(std::ifstream& file, const size_t M, const size_t N)
+  inline explicit lm_tMat(std::ifstream &file, const size_t M, const size_t N)
       : tMat(M, N) {
     parse_(file);
   }
@@ -172,7 +176,7 @@ class lm_tMat final : public lm_ref_tArray<TT, FT, CT, lm_tMat<TT, FT, CT>> {
    * @param col switch whether to generate a row shaped matrix (false) or a
    * column shaped one (true)
    */
-  inline explicit lm_tMat(const std::vector<TT>& inp,
+  inline explicit lm_tMat(const std::vector<TT> &inp,
                           const bool col = true) noexcept
       : tMat(col ? lm_size{inp.size(), 1} : lm_size{1, inp.size()}) {
     memcpy(data_, inp.data(), this->L() * sizeof(TT));
@@ -182,36 +186,36 @@ class lm_tMat final : public lm_ref_tArray<TT, FT, CT, lm_tMat<TT, FT, CT>> {
    * @param col switch to generate a column(true) or row(false) shaped matrix
    */
   template <class VT>
-  inline explicit lm_tMat(const std::vector<VT>& inp,
+  inline explicit lm_tMat(const std::vector<VT> &inp,
                           const bool col = true) noexcept
       : tMat(col ? lm_size{inp.size(), 1} : lm_size{1, inp.size()}) {
     std::transform(inp.begin(), inp.end(), this->begin(),
-                   [](const size_t& i) { return TT(i); });
+                   [](const size_t &i) { return TT(i); });
   }
   //! constructor from real and imaginary arrays
-  explicit lm_tMat(const fArray& re, const fArray& im) noexcept;
+  explicit lm_tMat(const fArray &re, const fArray &im) noexcept;
   //! constructor from a real array
-  lm_tMat(const fArray& inp) noexcept;
+  lm_tMat(const fArray &inp) noexcept;
   //! conmstructor from a complex array
-  lm_tMat(const cArray& inp) noexcept;
+  lm_tMat(const cArray &inp) noexcept;
   //! copy constructor
-  inline lm_tMat(const tMat& inp) noexcept : tMat(msize(inp)) {
+  inline lm_tMat(const tMat &inp) noexcept : tMat(msize(inp)) {
     memcpy(data(), inp.data(), this->L() * sizeof(TT));
   }
   //! move constructor
-  inline lm_tMat(tMat&& inp) noexcept : tMat() {
+  inline lm_tMat(tMat &&inp) noexcept : tMat() {
     using std::swap;
     swap(*this, inp);
   }
   //! destructor
   ~lm_tMat() noexcept { delete[] data_; }
   //! constructor from a filename
-  explicit lm_tMat(const std::string& fileName);
+  explicit lm_tMat(const std::string &fileName);
 
   /** @name assignment
    */
   //! swap function
-  friend void swap(tMat& lhs, tMat& rhs) noexcept {
+  friend void swap(tMat &lhs, tMat &rhs) noexcept {
     using std::swap;
     swap(lhs.M_, rhs.M_);
     swap(lhs.N_, rhs.N_);
@@ -219,23 +223,23 @@ class lm_tMat final : public lm_ref_tArray<TT, FT, CT, lm_tMat<TT, FT, CT>> {
     swap(lhs.data_, rhs.data_);
   }
   //! assignment operator from a real array
-  inline tMat& operator=(const fArray& rhs) noexcept {
+  inline tMat &operator=(const fArray &rhs) noexcept {
     resize(rhs.M(), rhs.N());
     auto j = rhs.begin();
     std::for_each(this->begin(), this->end(),
-                  [&j](TT& i) { lm__::ops::assign(i, *j++); });
+                  [&j](TT &i) { lm__::ops::assign(i, *j++); });
     return *this;
   }
   //! assignment operator from a complex array
-  inline tMat& operator=(const cArray& rhs) noexcept {
+  inline tMat &operator=(const cArray &rhs) noexcept {
     resize(rhs.M(), rhs.N());
     auto j = rhs.begin();
     std::for_each(this->begin(), this->end(),
-                  [&j](TT& i) { lm__::ops::assign(i, *j++); });
+                  [&j](TT &i) { lm__::ops::assign(i, *j++); });
     return *this;
   }
   //! assignment operator from a matrix of equal type
-  tMat& operator=(const tMat& rhs) noexcept {
+  tMat &operator=(const tMat &rhs) noexcept {
     if (this != &rhs) {
       resize(rhs.M(), rhs.N(), false);
       memcpy(this->data(), rhs.data(), rhs.L() * sizeof(TT));
@@ -243,7 +247,7 @@ class lm_tMat final : public lm_ref_tArray<TT, FT, CT, lm_tMat<TT, FT, CT>> {
     return *this;
   }
   //! move assignment operator
-  tMat& operator=(tMat&& rhs) noexcept {
+  tMat &operator=(tMat &&rhs) noexcept {
     swap(*this, rhs);
     return *this;
   }
@@ -252,18 +256,18 @@ class lm_tMat final : public lm_ref_tArray<TT, FT, CT, lm_tMat<TT, FT, CT>> {
    */
   using tArray::operator[];
   //! linear indexed data access
-  inline const TT& operator[](const size_t i) const noexcept {
+  inline const TT &operator[](const size_t i) const noexcept {
     assert(i < this->L());
     return data()[i];
   }
   //! pointer to underlying data
-  inline TT* data() noexcept { return data_; }
+  inline TT *data() noexcept { return data_; }
   //! const pointer to underlying data
-  inline const TT* data() const noexcept { return data_; }
+  inline const TT *data() const noexcept { return data_; }
   //! const pointer to the 'host' matrix
-  inline const tMat* ptr() const noexcept { return this; }
+  inline const tMat *ptr() const noexcept { return this; }
   //! pointer to the 'host' matrix
-  inline tMat* ptr() noexcept { return this; }
+  inline tMat *ptr() noexcept { return this; }
 
   /** @name row, column access
    */
@@ -371,13 +375,13 @@ class lm_tMat final : public lm_ref_tArray<TT, FT, CT, lm_tMat<TT, FT, CT>> {
   /** reserve space, may lead to allocating an copying
    * @param nC the new number of columns
    */
-  tMat& reserve(const size_t nC) noexcept;
+  tMat &reserve(const size_t nC) noexcept;
   //! shrink allocated memory to the actual number of columns
-  tMat& shrink_to_fit() noexcept;
+  tMat &shrink_to_fit() noexcept;
   //! see reserve
-  inline tMat& operator<<(size_t nC) noexcept { return reserve(nC); }
+  inline tMat &operator<<(size_t nC) noexcept { return reserve(nC); }
   //! move internals by returning the underlying data
-  TT* move() noexcept;
+  TT *move() noexcept;
 
   /** @name basic properties
    */
@@ -412,28 +416,28 @@ class lm_tMat final : public lm_ref_tArray<TT, FT, CT, lm_tMat<TT, FT, CT>> {
   /** @name basic modification
    */
   //! 'rowizes' the matrix
-  inline tMat& R() noexcept {
+  inline tMat &R() noexcept {
     N_ *= M_;
     M_ = 1;
     return *this;
   }
   //! 'columnizes' the matrix
-  inline tMat& C() noexcept {
+  inline tMat &C() noexcept {
     M_ *= N_;
     N_ = 1;
     return *this;
   }
   //! transposes the matrix
-  tMat& T() noexcept;
+  tMat &T() noexcept;
   //! clears the matrix by setting the number of columns to 0
-  inline tMat& clear() noexcept {
+  inline tMat &clear() noexcept {
     N_ = 0;
     return *this;
   }
   /** resizes the matrix
    * @param nN the new number of columns
    */
-  inline tMat& resize(const size_t nN) noexcept {
+  inline tMat &resize(const size_t nN) noexcept {
     reserve(nN);
     N_ = nN;
     return *this;
@@ -443,11 +447,12 @@ class lm_tMat final : public lm_ref_tArray<TT, FT, CT, lm_tMat<TT, FT, CT>> {
    * @param nN the new number of columns
    * @param cpy switch whether to copy the old data in case of reallocation
    */
-  inline tMat& resize(const size_t nM, const size_t nN,
+  inline tMat &resize(const size_t nM, const size_t nN,
                       const bool cpy = true) noexcept {
     if (nM * nN > C_) {
-      TT* ndata = new TT[nM * nN];
-      if (cpy) memcpy(ndata, data_, M_ * N_ * sizeof(TT));
+      TT *ndata = new TT[nM * nN];
+      if (cpy)
+        memcpy(ndata, data_, M_ * N_ * sizeof(TT));
       delete[] data_;
       data_ = ndata;
       C_ = nM * nN;
@@ -456,11 +461,11 @@ class lm_tMat final : public lm_ref_tArray<TT, FT, CT, lm_tMat<TT, FT, CT>> {
     return *this;
   }
   //! resized the matrix, size struct overload
-  inline tMat& resize(const lm_size& S) noexcept { return resize(S.M, S.N); }
+  inline tMat &resize(const lm_size &S) noexcept { return resize(S.M, S.N); }
   /** push_back operator analogous to std::vector, overload for rows
    * @param inp row to be inserted as a column in the back
    */
-  inline tMat& push_back(const tRow& inp) noexcept {
+  inline tMat &push_back(const tRow &inp) noexcept {
     assert(inp.L() == M());
     resize(N() + 1);
     cBack() = inp;
@@ -469,7 +474,7 @@ class lm_tMat final : public lm_ref_tArray<TT, FT, CT, lm_tMat<TT, FT, CT>> {
   /** push_back operator analogous to std::vector, overload for arrays
    * @param inp array to be inserted as a column in the back
    */
-  inline tMat& push_back(const tArray& inp) noexcept {
+  inline tMat &push_back(const tArray &inp) noexcept {
     assert(inp.M() == M());
     reserve(N() + inp.N());
     memcpy(data() + this->L(), inp.data(), inp.L() * sizeof(TT));
@@ -477,11 +482,11 @@ class lm_tMat final : public lm_ref_tArray<TT, FT, CT, lm_tMat<TT, FT, CT>> {
     return *this;
   }
   //! same as the push_back operator
-  inline tMat& operator<<(const tArray& inp) noexcept { return push_back(inp); }
+  inline tMat &operator<<(const tArray &inp) noexcept { return push_back(inp); }
   /** pop_back operator analogous to std::vector
    * @param n the number of columns to be popped
    */
-  inline tMat& pop_back(const size_t n = 1) noexcept {
+  inline tMat &pop_back(const size_t n = 1) noexcept {
     N_ -= (n < N() ? n : N());
     return *this;
   }
@@ -492,73 +497,73 @@ class lm_tMat final : public lm_ref_tArray<TT, FT, CT, lm_tMat<TT, FT, CT>> {
    * @param m the row starting index
    * @param s the number of rows to be shifted
    */
-  tMat& rShift(const size_t m, const size_t s) noexcept;
+  tMat &rShift(const size_t m, const size_t s) noexcept;
   /** shifts columns further back in the matrix
    * @param n the column starting index
    * @param s the number of columns to be shifted
    */
-  tMat& cShift(const size_t n, const size_t s) noexcept;
+  tMat &cShift(const size_t n, const size_t s) noexcept;
   /** inserts rows into the matrix
    * @param m the row index where insertion takes place
    * @param inp the array to be inserted
    */
-  tMat& rInsert(const size_t m, const tArray& inp) noexcept;
+  tMat &rInsert(const size_t m, const tArray &inp) noexcept;
   /** inserts rows into the matrix
    * @param m the row index where insertion takes place
    * @param inp the matrix to be inserted
    */
-  tMat& rInsert(const size_t m, const tMat& inp) noexcept;
+  tMat &rInsert(const size_t m, const tMat &inp) noexcept;
   /** inserts rows into the matrix
    * @param itr the row const_iterator pointing to where insertion takes place
    * @param inp the array to be inserted
    */
-  inline tMat& rInsert(const c_tRowItr& itr, const tArray& inp) noexcept {
+  inline tMat &rInsert(const c_tRowItr &itr, const tArray &inp) noexcept {
     return rInsert((size_t)itr, inp);
   }
   /** inserts rows into the matrix
    * @param itr the row iterator pointing to where insertion takes place
    * @param inp the array to be inserted
    */
-  inline tMat& rInsert(const tRowItr& itr, const tArray& inp) noexcept {
+  inline tMat &rInsert(const tRowItr &itr, const tArray &inp) noexcept {
     return rInsert((size_t)itr, inp);
   }
   /** inserts rows into the matrix
    * @param itr the row const_iterator pointing to where insertion takes place
    * @param inp the matrix to be inserted
    */
-  inline tMat& rInsert(const c_tRowItr& itr, const tMat& inp) noexcept {
+  inline tMat &rInsert(const c_tRowItr &itr, const tMat &inp) noexcept {
     return rInsert((size_t)itr, inp);
   }
   /** inserts rows into the matrix
    * @param itr the row iterator pointing to where insertion takes place
    * @param inp the matrix to be inserted
    */
-  inline tMat& rInsert(const tRowItr& itr, const tMat& inp) noexcept {
+  inline tMat &rInsert(const tRowItr &itr, const tMat &inp) noexcept {
     return rInsert((size_t)itr, inp);
   }
   /** inserts columns into the matrix
    * @param n the column index where insertion takes place
    * @param inp the array to be inserted
    */
-  tMat& cInsert(const size_t n, const tArray& inp) noexcept;
+  tMat &cInsert(const size_t n, const tArray &inp) noexcept;
   /** inserts columns into the matrix
    * @param n the column index where insertion takes place
    * @param inp the matrix to be inserted
    */
-  tMat& cInsert(const size_t n, const tMat& inp) noexcept;
+  tMat &cInsert(const size_t n, const tMat &inp) noexcept;
   /** inserts columns into the matrix
    * @param itr the column const_iterator pointing to where insertion takes
    * place
    * @param inp the array to be inserted
    */
-  inline tMat& cInsert(const c_tColItr& itr, const tArray& inp) noexcept {
+  inline tMat &cInsert(const c_tColItr &itr, const tArray &inp) noexcept {
     return cInsert((size_t)itr, inp);
   }
   /** inserts columns into the matrix
    * @param itr the column iterator pointing to where insertion takes place
    * @param inp the array to be inserted
    */
-  inline tMat& cInsert(const tColItr& itr, const tArray& inp) noexcept {
+  inline tMat &cInsert(const tColItr &itr, const tArray &inp) noexcept {
     return cInsert((size_t)itr, inp);
   }
   /** inserts columns into the matrix
@@ -566,14 +571,14 @@ class lm_tMat final : public lm_ref_tArray<TT, FT, CT, lm_tMat<TT, FT, CT>> {
    * place
    * @param inp the matrix to be inserted
    */
-  inline tMat& cInsert(const c_tColItr& itr, const tMat& inp) noexcept {
+  inline tMat &cInsert(const c_tColItr &itr, const tMat &inp) noexcept {
     return cInsert((size_t)itr, inp);
   }
   /** inserts columns into the matrix
    * @param itr the column iterator pointing to where insertion takes place
    * @param inp the matrix to be inserted
    */
-  inline tMat& cInsert(const tColItr& itr, const tMat& inp) noexcept {
+  inline tMat &cInsert(const tColItr &itr, const tMat &inp) noexcept {
     return cInsert((size_t)itr, inp);
   }
   /** generic set method for inserting data into the matrix
@@ -581,53 +586,53 @@ class lm_tMat final : public lm_ref_tArray<TT, FT, CT, lm_tMat<TT, FT, CT>> {
    * @param m a vector holding row indices
    * @param n a vector holding column indices
    */
-  tMat& set(const tMat& inp, const std::vector<size_t>& m,
-            const std::vector<size_t>& n) noexcept;
+  tMat &set(const tMat &inp, const std::vector<size_t> &m,
+            const std::vector<size_t> &n) noexcept;
   /** generic set method for inserting data into the matrix
    * @param inp the matrix holding the data to be inserted
    * @param m the row index
    * @param n the column index
    */
-  tMat& set(const tMat& inp, const size_t m, const size_t n) noexcept;
+  tMat &set(const tMat &inp, const size_t m, const size_t n) noexcept;
   /** generic set method for inserting data into the matrix using logical
    * indexing
    * @param inp the matrix holding the data to be inserted
    * @param m a logical array for the row indices
    * @param n a logical array for the column indices
    */
-  tMat& setl(const tMat& inp, const fArray& m, const fArray& n) noexcept;
+  tMat &setl(const tMat &inp, const fArray &m, const fArray &n) noexcept;
   /** removes a row from the matrix
    * @param m the row index
    */
-  tMat& rRm(const size_t m) noexcept;
+  tMat &rRm(const size_t m) noexcept;
   /** removes a row from the matrix
    * @param itr row const_iterator
    */
-  inline tMat& rRm(const c_tRowItr& itr) noexcept { return rRm((size_t)itr); }
+  inline tMat &rRm(const c_tRowItr &itr) noexcept { return rRm((size_t)itr); }
   /** removes a row from the matrix
    * @param itr row iterator
    */
-  inline tMat& rRm(const tRowItr& itr) noexcept { return rRm((size_t)itr); }
+  inline tMat &rRm(const tRowItr &itr) noexcept { return rRm((size_t)itr); }
   /** removes multiple rows from the matrix
    * @param m a vector of row indices
    */
-  tMat& rRm(const std::vector<size_t>& m) noexcept;
+  tMat &rRm(const std::vector<size_t> &m) noexcept;
   /** removes a column from the matrix
    * @param n the column index
    */
-  tMat& cRm(const size_t n) noexcept;
+  tMat &cRm(const size_t n) noexcept;
   /** removes a column from the matrix
    * @param itr column const_iterator
    */
-  inline tMat& cRm(const c_tColItr& itr) noexcept { return cRm((size_t)itr); }
+  inline tMat &cRm(const c_tColItr &itr) noexcept { return cRm((size_t)itr); }
   /** removes a column from the matrix
    * @param itr column iterator
    */
-  inline tMat& cRm(const tColItr& itr) noexcept { return cRm((size_t)itr); }
+  inline tMat &cRm(const tColItr &itr) noexcept { return cRm((size_t)itr); }
   /** removes multiple columns from the matrix
    * @param n a vector of column indices
    */
-  tMat& cRm(const std::vector<size_t>& n) noexcept;
+  tMat &cRm(const std::vector<size_t> &n) noexcept;
   /** removes the diagonal from the matrix. The resulting matrix can be
    assembled in two ways: \n
    * \verbatim
@@ -640,25 +645,25 @@ class lm_tMat final : public lm_ref_tArray<TT, FT, CT, lm_tMat<TT, FT, CT>> {
    * @param low switch as to how to assemble the matrix left(false) or
    right(true)
    */
-  tMat& dRm(const bool low = true) noexcept;
+  tMat &dRm(const bool low = true) noexcept;
   //! inverts the matrix
-  tMat& inv() noexcept;
+  tMat &inv() noexcept;
 
   /** @name erase overload for compatibility with std::vector
    */
   //! erase a row using a row const_iterator
-  inline void erase(const c_tRowItr& itr) noexcept { rRm(itr); }
+  inline void erase(const c_tRowItr &itr) noexcept { rRm(itr); }
   //! erase a row using a row iterator
-  inline void erase(const tRowItr& itr) noexcept { rRm(itr); }
+  inline void erase(const tRowItr &itr) noexcept { rRm(itr); }
   //! erase a column using a column const_iterator
-  inline void erase(const c_tColItr& itr) noexcept { cRm(itr); }
+  inline void erase(const c_tColItr &itr) noexcept { cRm(itr); }
   //! erase a column using a column itertator
-  inline void erase(const tColItr& itr) noexcept { cRm(itr); }
+  inline void erase(const tColItr &itr) noexcept { cRm(itr); }
   //! erase a column using a column index
   inline void erase(const size_t n) noexcept { cRm(n); }
   //! erase a single element for row or column shaped matrices using a
   //! const_iterator
-  inline void erase(const c_tItr& itr) noexcept {
+  inline void erase(const c_tItr &itr) noexcept {
     assert(M() == 1 || N() == 1);
     if (M() == 1) {
       cRm(distance(this->cbegin(), itr));
@@ -670,7 +675,7 @@ class lm_tMat final : public lm_ref_tArray<TT, FT, CT, lm_tMat<TT, FT, CT>> {
     }
   }
   //! erase a single element for row or column shaped matrices using a iterator
-  inline void erase(const tItr& itr) noexcept {
+  inline void erase(const tItr &itr) noexcept {
     assert(M() == 1 || N() == 1);
     if (M() == 1) {
       cRm(distance(this->cbegin(), itr));
@@ -694,8 +699,8 @@ class lm_tMat final : public lm_ref_tArray<TT, FT, CT, lm_tMat<TT, FT, CT>> {
    * @param m a vector of row indices
    * @param n a vector of column indices
    */
-  tMat get(const std::vector<size_t>& m,
-           const std::vector<size_t>& n) const noexcept;
+  tMat get(const std::vector<size_t> &m,
+           const std::vector<size_t> &n) const noexcept;
   /** generic get method for extracting a submatrix
    * @param m a row index
    * @param n a column index
@@ -708,12 +713,12 @@ class lm_tMat final : public lm_ref_tArray<TT, FT, CT, lm_tMat<TT, FT, CT>> {
    * @param m a logical array for rows
    * @param n a logical array for columns
    */
-  tMat getl(const fArray& m, const fArray& n) const noexcept;
+  tMat getl(const fArray &m, const fArray &n) const noexcept;
   /** generic method for extracting a elements as a linear column shaped matrix
    * using logical indexing
    * @param inp a logical matrix of the same size as this
    */
-  tMat getl(const fMat& inp) const noexcept;
+  tMat getl(const fMat &inp) const noexcept;
   /** get method for extracting a submatrix of full rows
    * @param m a row index
    * @param l the number of rows
@@ -746,78 +751,78 @@ class lm_tMat final : public lm_ref_tArray<TT, FT, CT, lm_tMat<TT, FT, CT>> {
    */
   //! left division equals version, i.e. b = A \ b i.e. b = A^-1 * b for real
   //! rows as b
-  inline fRow& leftDivideEq(fRow& inp) const noexcept {
+  inline fRow &leftDivideEq(fRow &inp) const noexcept {
     assert(this->L() == 1);
     return inp /= *data();
   }
   //! left division equals version, i.e. b = A \ b i.e. b = A^-1 * b for complex
   //! rows as b
-  inline cRow& leftDivideEq(cRow& inp) const noexcept {
+  inline cRow &leftDivideEq(cRow &inp) const noexcept {
     assert(this->L() == 1);
     return inp /= *data();
   }
   //! left division equals version, i.e. b = A \ b i.e. b = A^-1 * b for real
   //! columns as b
-  fCol& leftDivideEq(fCol& inp) const noexcept;
+  fCol &leftDivideEq(fCol &inp) const noexcept;
   //! left division equals version, i.e. b = A \ b i.e. b = A^-1 * b for complex
   //! columns as b
-  cCol& leftDivideEq(cCol& inp) const noexcept;
+  cCol &leftDivideEq(cCol &inp) const noexcept;
   //! left division equals version, i.e. B = A \ B i.e. B = A^-1 * B for real
   //! matrices as B
-  fMat& leftDivideEq(fMat& inp) const noexcept;
+  fMat &leftDivideEq(fMat &inp) const noexcept;
   //! left division equals version, i.e. B = A \ B i.e. B = A^-1 * B for complex
   //! matrices as B
-  cMat& leftDivideEq(cMat& inp) const noexcept;
+  cMat &leftDivideEq(cMat &inp) const noexcept;
   //! left division, i.e. A \ b i.e. A^-1 * b for real arrays as b
-  inline tMat leftDivide(const fArray& inp) const noexcept {
+  inline tMat leftDivide(const fArray &inp) const noexcept {
     assert(square());
     tMat tmp(inp);
     return leftDivideEq(tmp);
   }
   //! left division, i.e. A \ b i.e. A^-1 * b for complex arrays as b
-  inline cMat leftDivide(const cArray& inp) const noexcept {
+  inline cMat leftDivide(const cArray &inp) const noexcept {
     assert(square());
     cMat tmp(inp);
     return leftDivideEq(tmp);
   }
   //! matrix product A * b for real rows as b
-  inline tMat prod(const fRow& inp) const noexcept {
+  inline tMat prod(const fRow &inp) const noexcept {
     assert(N() == 1);
     return cFront().prod(inp);
   }
   //! matrix product A * b for complex rows as b
-  inline cMat prod(const cRow& inp) const noexcept {
+  inline cMat prod(const cRow &inp) const noexcept {
     assert(N() == 1);
     return cFront().prod(inp);
   }
   //! matrix product A * b for real arrays as b
-  tMat prod(const fArray& inp) const noexcept;
+  tMat prod(const fArray &inp) const noexcept;
   //! matrix product A * b for complex arrays as b
-  cMat prod(const cArray& inp) const noexcept;
+  cMat prod(const cArray &inp) const noexcept;
 
   /** @name printing
    */
   //! write this to binary file
-  void writeToFile(const std::string& fileName,
+  void writeToFile(const std::string &fileName,
                    const bool noheader = false) const;
 
- private:
+private:
   // member variables
-  size_t M_;  //!< number of rows
-  size_t N_;  //!< number of columns
-  size_t C_;  //!< linear capacity >= M_*N_
-  TT* data_;  //!< data array, size C_
+  size_t M_; //!< number of rows
+  size_t N_; //!< number of columns
+  size_t C_; //!< linear capacity >= M_*N_
+  TT *data_; //!< data array, size C_
 
- private:
+private:
   // member functions
-  void readText_(const std::string& fileName);
-  void readBinary_(std::ifstream& file, const bool cpx);
-  void parse_(std::ifstream& file);
-  void readData_(std::ifstream& file,
+  void readText_(const std::string &fileName);
+  void readBinary_(std::ifstream &file, const bool cpx);
+  void parse_(std::ifstream &file);
+  void readData_(std::ifstream &file,
                  const std::function<TT(std::string)> pnfw);
 };
 
-#endif  // _LM_TMAT_
+#endif // _LM_TMAT_
 
 /** @}
  */

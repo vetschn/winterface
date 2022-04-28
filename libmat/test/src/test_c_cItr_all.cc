@@ -6,8 +6,7 @@
 #include "test_c_tItr_all.h"
 
 // test id
-template <>
-const char* test_c_tItr_all<CPX__>::test_id() noexcept {
+template <> const char *test_c_tItr_all<CPX__>::test_id() noexcept {
   return "test_c_cItr_all";
 }
 

@@ -6,8 +6,7 @@
 #include "test_tFn_mat_gen.h"
 
 // tests
-template <>
-void test_tFn_mat_gen<CPX__, RE__, CPX__>::test_rand() {
+template <> void test_tFn_mat_gen<CPX__, RE__, CPX__>::test_rand() {
   const size_t M = genRndST();
   const size_t N = genRndST();
 
@@ -50,8 +49,7 @@ void test_tFn_mat_gen<CPX__, RE__, CPX__>::test_rand() {
   }
 }
 
-template <>
-void test_tFn_mat_gen<CPX__, RE__, CPX__>::test_randi() {
+template <> void test_tFn_mat_gen<CPX__, RE__, CPX__>::test_randi() {
   const size_t M = genRndST();
   const size_t N = genRndST();
 
@@ -107,7 +105,7 @@ void test_tFn_mat_gen<CPX__, RE__, CPX__>::test_randi() {
 
 // test id
 template <>
-const char* test_tFn_mat_gen<CPX__, RE__, CPX__>::test_id() noexcept {
+const char *test_tFn_mat_gen<CPX__, RE__, CPX__>::test_id() noexcept {
   return "test_cFn_mat_gen";
 }
 

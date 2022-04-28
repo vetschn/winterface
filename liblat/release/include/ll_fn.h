@@ -259,8 +259,7 @@ R_H<MT> inline genHam(const WT &W, fMat R) noexcept {
 /** generate a Hamiltonian in Wannier representation using the cell in the wbh
  * @param W a wbh (ll_hbonds or ll_hbondss)
  */
-template <class MT, class WT>
-R_H<MT> inline genHam(const WT &W) noexcept {
+template <class MT, class WT> R_H<MT> inline genHam(const WT &W) noexcept {
   return genHam<MT>(W.cell(), W.r(), W, false);
 }
 
@@ -389,11 +388,10 @@ inline ll_mesh<> calcFoldedBS(const R_H<MT> &hr, const ll_mesh<> &k,
 /* bandstructure calculation including gradients and curvature tensors
  */
 //! energies, gradients and curvature tensors struct
-template <class MT>
-struct egc {
-  MT E;         //!< energy
-  ll_mesh<> G;  //!< gradient
-  ll_mesh<> C;  //!< curvature
+template <class MT> struct egc {
+  MT E;        //!< energy
+  ll_mesh<> G; //!< gradient
+  ll_mesh<> C; //!< curvature
   //! Number of bands
   inline size_t Nb() const noexcept { return E.M(); }
   //! number of kpoints
@@ -454,9 +452,9 @@ egc<fMat> calcFoldedBS_gc(const R_H<MT> &hr, const fMat &k, const fMat &B,
  * @return ll__::egc struct holding energy, gradient and curvature
  */
 template <class MT>
-inline egc<ll_mesh<>> calcFoldedBS_gc(
-    const R_H<MT> &hr, const ll_mesh<> &k, const fMat &B, const fMat &Bp,
-    const size_t Nthreads = NTHREADS__) noexcept {
+inline egc<ll_mesh<>>
+calcFoldedBS_gc(const R_H<MT> &hr, const ll_mesh<> &k, const fMat &B,
+                const fMat &Bp, const size_t Nthreads = NTHREADS__) noexcept {
   const auto buff = calcFoldedBS_gc(hr, k.base_, B, Bp, Nthreads);
   return {ll_mesh<>(std::move(buff.E), k.maj(), k.D()),
           ll_mesh<>(std::move(buff.G.base_), cat(0, k.maj() + 1),
@@ -472,11 +470,11 @@ struct struct_report {
   //! union for exact matches
   union iiN {
     struct {
-      size_t i1;     //!< starting index
-      size_t i2;     //!< ending index
-      size_t N = 0;  //!< number of occurrence
+      size_t i1;    //!< starting index
+      size_t i2;    //!< ending index
+      size_t N = 0; //!< number of occurrence
     };
-    std::array<size_t, 3> dat;  //!< array access
+    std::array<size_t, 3> dat; //!< array access
     //! streaming operator
     friend inline std::ostream &operator<<(std::ostream &os,
                                            const iiN &inp) noexcept {
@@ -486,12 +484,12 @@ struct struct_report {
   //! union for approximate matches
   union iijN {
     struct {
-      size_t i1;     //!< starting index
-      size_t i2;     //!< ending index
-      size_t j;      //!< real target
-      size_t N = 0;  //!< number of occurrence
+      size_t i1;    //!< starting index
+      size_t i2;    //!< ending index
+      size_t j;     //!< real target
+      size_t N = 0; //!< number of occurrence
     };
-    std::array<size_t, 4> dat;  //!< array access
+    std::array<size_t, 4> dat; //!< array access
     //! streaming operator
     friend inline std::ostream &operator<<(std::ostream &os,
                                            const iijN &inp) noexcept {
@@ -499,9 +497,9 @@ struct struct_report {
                  << inp.N << ")");
     }
   };
-  std::vector<iiN> exact;         //!< vector for exact matches
-  std::vector<iijN> approx;       //!< vector for approximate matches
-  std::vector<size_t> unmatched;  //!< vector for failed matches
+  std::vector<iiN> exact;        //!< vector for exact matches
+  std::vector<iijN> approx;      //!< vector for approximate matches
+  std::vector<size_t> unmatched; //!< vector for failed matches
 };
 /** function to analyze a structure in tandem with a corresponding wbh. What are
  * the exact matches during queries for bonds? What are the approximate matches?
@@ -516,9 +514,9 @@ struct struct_report {
 template <class WT>
 struct_report analyzeStructure(const fMat &Ap, const idv &id, const WT &W,
                                const double tol, const double f = .5) noexcept;
-}  // namespace ll__
+} // namespace ll__
 
-#endif  // _LL_FN_
+#endif // _LL_FN_
 
 /** @}
  */

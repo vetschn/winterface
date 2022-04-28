@@ -49,7 +49,8 @@ void test_fn_linear_path_generation::test_genPath() {
         const auto v = round(rand<fMat>(1, s - 1, 1.501, 200.499));
         std::vector<size_t> Nps;
         Nps.reserve(s - 1);
-        for (auto j : v) Nps.push_back(size_t(j));
+        for (auto j : v)
+          Nps.push_back(size_t(j));
 
         const auto path = genPath(P, Nps);
         const size_t Np = std::accumulate(Nps.begin(), Nps.end(), 0);
@@ -111,7 +112,8 @@ void test_fn_linear_path_generation::test_genPath() {
         while (j != P.N()) {
           const auto t = rand<fMat>(d, 1, -2.0, 2.0);
           const auto n = norm(t - P.cAt(j - 1));
-          if (n > 1.0) P.cAt(j++) = t;
+          if (n > 1.0)
+            P.cAt(j++) = t;
         }
 
         const size_t Np =
@@ -141,7 +143,8 @@ void test_fn_linear_path_generation::test_genPath() {
 
         // create Nps vector for other version of Nps, then compare paths
         std::vector<size_t> Nps(inds.size() - 1);
-        for (size_t j = 0; j != Nps.size(); ++j) Nps[j] = inds[j + 1] - inds[j];
+        for (size_t j = 0; j != Nps.size(); ++j)
+          Nps[j] = inds[j + 1] - inds[j];
         ++Nps[0];
         CPPUNIT_ASSERT_EQUAL(
             path.N(), size_t(std::accumulate(Nps.begin(), Nps.end(), 0)));
@@ -163,12 +166,12 @@ void test_fn_linear_path_generation::test_genPath() {
   }
 }
 
-const char* test_fn_linear_path_generation::test_id() noexcept {
+const char *test_fn_linear_path_generation::test_id() noexcept {
   return "test_fn_linear_path_generation";
 }
 
-CppUnit::Test* test_fn_linear_path_generation::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_fn_linear_path_generation::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_fn_linear_path_generation>(
       "test_genPath", &test_fn_linear_path_generation::test_genPath));

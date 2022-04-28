@@ -91,7 +91,8 @@ void test_tMat_basic_properties_info<TT, FT, CT>::test_square_hermitian_diag() {
 
     CPPUNIT_ASSERT(!tMat1.hermitian());
 
-    for (size_t m = 0; m != M; ++m) tMat1(m, m) = std::real(tMat1(m, m));
+    for (size_t m = 0; m != M; ++m)
+      tMat1(m, m) = std::real(tMat1(m, m));
     for (size_t n = 1; n != M; ++n)
       for (size_t m = 0; m != n; ++m)
         lm__::ops::assign(tMat1(m, n), std::conj(tMat1(n, m)));
@@ -111,7 +112,8 @@ void test_tMat_basic_properties_info<TT, FT, CT>::test_square_hermitian_diag() {
 
     for (size_t n = 0; n != tMat1.N(); ++n)
       for (size_t m = 0; m != tMat1.M(); ++m)
-        if (m != n) tMat1(m, n) = TT(0.0);
+        if (m != n)
+          tMat1(m, n) = TT(0.0);
     CPPUNIT_ASSERT(tMat1.diag());
   }
 }
@@ -157,7 +159,8 @@ void test_tMat_basic_properties_info<TT, FT, CT>::test_ob_onb() {
 
   const auto rnd = rand<tMat>(1, M, FT(2.0), FT(3.0));
   for (size_t n = 0; n != M; ++n)
-    for (size_t m = 0; m != M; ++m) tMat1(m, n) *= rnd[n];
+    for (size_t m = 0; m != M; ++m)
+      tMat1(m, n) *= rnd[n];
 
   CPPUNIT_ASSERT(tMat1.ob());
   CPPUNIT_ASSERT(!tMat1.onb());
@@ -169,15 +172,16 @@ void test_tMat_basic_properties_info<TT, FT, CT>::test_ob_onb() {
   const auto r = rnd<tMat>(1, M, 1.0, 2.0);
   for (size_t n = 0; n != M; ++n)
     for (size_t m = 0; m != M; ++m)
-      if (m == n) tMat1(m, n) = r[m];
+      if (m == n)
+        tMat1(m, n) = r[m];
   CPPUNIT_ASSERT(tMat1.ob());
   CPPUNIT_ASSERT(!tMat1.onb());
 #endif
 }
 
 template <class TT, class FT, class CT>
-CppUnit::Test* test_tMat_basic_properties_info<TT, FT, CT>::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_tMat_basic_properties_info<TT, FT, CT>::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_tMat_basic_properties_info>(
       "test_row_col_cpx",

@@ -18,11 +18,12 @@
 using namespace ll__;
 
 // generate data for OMEN input
-ll__::omen::prepper::prepper(const ll_wf_input& inp, std::ostream& os) {
+ll__::omen::prepper::prepper(const ll_wf_input &inp, std::ostream &os) {
   // write to disk helper lambda
-  const auto wtd = [&inp, &os](const std::string& fileName, const auto& F,
-                               const std::string& discr = "file") -> void {
-    if (~inp.verbosity & PRINTBIT__) return;
+  const auto wtd = [&inp, &os](const std::string &fileName, const auto &F,
+                               const std::string &discr = "file") -> void {
+    if (~inp.verbosity & PRINTBIT__)
+      return;
     F.printToFile(fileName);
     if (inp.verbosity & PRINTBIT__)
       os << (discr.empty() ? "" : discr + " ") << "'" << fileName << "' written"
@@ -32,9 +33,8 @@ ll__::omen::prepper::prepper(const ll_wf_input& inp, std::ostream& os) {
   // generate wbh
   W = ll_hbonds(inp, os);
   if (W.empty())
-    throw(
-        std::invalid_argument("generated empty wannier bonds hamiltonian"
-                              ", check input parameters"));
+    throw(std::invalid_argument("generated empty wannier bonds hamiltonian"
+                                ", check input parameters"));
 
   // find smallest orthorhombic cell
   {
@@ -64,9 +64,8 @@ ll__::omen::prepper::prepper(const ll_wf_input& inp, std::ostream& os) {
       const fMat ir = T(W.rmat());
       const auto rC = abs(ir.prod(C));
       if (!rC.logical() || sum(round(rC)) != sum(ir))
-        throw(
-            std::invalid_argument("bad expansion to orthorhombic cell, "
-                                  "non vacuum conserving"));
+        throw(std::invalid_argument("bad expansion to orthorhombic cell, "
+                                    "non vacuum conserving"));
       r.resize(ir.size());
       std::transform(rC.cbegin(), rC.cend(), r.begin(),
                      [](const double i) -> bool { return i; });
@@ -129,7 +128,8 @@ ll__::omen::prepper::prepper(const ll_wf_input& inp, std::ostream& os) {
     reset_mtol();
 
     // check resulting basis is orthorhombic
-    if (!ORcell.B().ob()) throw(std::invalid_argument("B*C not orthorhombic"));
+    if (!ORcell.B().ob())
+      throw(std::invalid_argument("B*C not orthorhombic"));
   }
   if (inp.verbosity & PRINTBIT__)
     os << "\nfound minimal orthorhombic cell of " << BLUE__ << ORcell.N()
@@ -161,13 +161,14 @@ ll__::omen::prepper::prepper(const ll_wf_input& inp, std::ostream& os) {
                     [](const bool i) -> bool { return i; })) {
       fcnt = W.filter(
           [fwb = inp.filter_wbh.cbegin(), TRM = inv(ORcell.B().prod(NNE))](
-              const size_t i1, const size_t i2, const fMat& p1,
-              const fMat& p2) -> bool {
+              const size_t i1, const size_t i2, const fMat &p1,
+              const fMat &p2) -> bool {
             assert(i1 || true || i2 || p1.size());
             auto j = fwb;
             const fMat p2_ = TRM.prod(p2);
             for (const double i : p2_.lt(-1.0) | p2_.geq(2.0))
-              if (*j++ && i) return true;
+              if (*j++ && i)
+                return true;
             return false;
           });
     }
@@ -195,7 +196,7 @@ ll__::omen::prepper::prepper(const ll_wf_input& inp, std::ostream& os) {
 }
 
 // write structural input
-void ll__::omen::writeInput(const ll_wf_input& inp, std::ostream& os) {
+void ll__::omen::writeInput(const ll_wf_input &inp, std::ostream &os) {
   // generate the data
   const prepper P(inp, os);
 
@@ -232,15 +233,15 @@ void ll__::omen::writeInput(const ll_wf_input& inp, std::ostream& os) {
     rv r;
     fMat EXP;
     switch (inp.expand_mesh) {
-      case 0:
-        EXP = eye<fMat>(P.W.dim(), P.W.dim()), r = P.W.r();
-        break;
-      case 1:
-        EXP = P.C, r = P.r;
-        break;
-      default:
-        EXP = P.C.prod(P.NNE), r = P.r;
-        break;
+    case 0:
+      EXP = eye<fMat>(P.W.dim(), P.W.dim()), r = P.W.r();
+      break;
+    case 1:
+      EXP = P.C, r = P.r;
+      break;
+    default:
+      EXP = P.C.prod(P.NNE), r = P.r;
+      break;
     }
     meshBStest(P.W, EXP, r, E, inp, os);
   }
@@ -248,15 +249,15 @@ void ll__::omen::writeInput(const ll_wf_input& inp, std::ostream& os) {
     rv r;
     fMat EXP;
     switch (inp.expand_trace) {
-      case 0:
-        EXP = eye<fMat>(P.W.dim(), P.W.dim()), r = P.W.r();
-        break;
-      case 1:
-        EXP = P.C, r = P.r;
-        break;
-      default:
-        EXP = P.C.prod(P.NNE), r = P.r;
-        break;
+    case 0:
+      EXP = eye<fMat>(P.W.dim(), P.W.dim()), r = P.W.r();
+      break;
+    case 1:
+      EXP = P.C, r = P.r;
+      break;
+    default:
+      EXP = P.C.prod(P.NNE), r = P.r;
+      break;
     }
     traceBStest(P.W, EXP, r, inp, os);
   }
@@ -267,7 +268,8 @@ void ll__::omen::writeInput(const ll_wf_input& inp, std::ostream& os) {
   auto id_ = P.ORcell.id(P.ORcell.type());
   {
     // shift restricted directions to origin
-    for (const auto i : inds(P.r)) Ap_.rAt(i) -= min(Ap_.rAt(i));
+    for (const auto i : inds(P.r))
+      Ap_.rAt(i) -= min(Ap_.rAt(i));
 
     // even out small rounding errors in cAp
     for (auto r = Ap_.rBegin(), re = Ap_.rEnd(); r != re; ++r) {
@@ -276,19 +278,22 @@ void ll__::omen::writeInput(const ll_wf_input& inp, std::ostream& os) {
         double s = i;
         size_t cnt = 1;
         for (const auto j : *r)
-          if (std::abs(i - j) <= WTOL__) s += j, ++cnt;
+          if (std::abs(i - j) <= WTOL__)
+            s += j, ++cnt;
 
         // set all equal coordinates to average
         s /= double(cnt);
-        for (auto& j : *r)
-          if (std::abs(i - j) <= WTOL__) j = s;
+        for (auto &j : *r)
+          if (std::abs(i - j) <= WTOL__)
+            j = s;
       }
     }
 
     // fix small deviance from 0.0 to 0.0
     for (auto r = Ap_.rBegin(), re = Ap_.rEnd(); r != re; ++r) {
       const double m = min(*r);
-      if (std::abs(m) < WTOL__) *r -= m;
+      if (std::abs(m) < WTOL__)
+        *r -= m;
     }
   }
 
@@ -323,8 +328,9 @@ void ll__::omen::writeInput(const ll_wf_input& inp, std::ostream& os) {
   // get unique ids in order of occurrence
   idv uid_;
   uid_.reserve(P.ORcell.Nspecies());
-  for (const auto& s : id_) {
-    if (uid_.size() == uid_.capacity()) break;
+  for (const auto &s : id_) {
+    if (uid_.size() == uid_.capacity())
+      break;
     if (std::find(uid_.cbegin(), uid_.cend(), s) == uid_.cend())
       uid_.push_back(s);
   }
@@ -344,30 +350,29 @@ void ll__::omen::writeInput(const ll_wf_input& inp, std::ostream& os) {
   // write input stump
   if (inp.device_length > .0) {
     switch (Nfalse(P.r)) {
-      case 1:
-        writeStump1D(B_, inp.device_length);
-        break;
-      case 2:
-        writeStump2D(B_, inp.device_length);
-        break;
-      case 3:
-        writeStump3D(B_, inp.device_length);
-        break;
-      default:
-        throw(std::runtime_error("bad dimension for OMEN stump"));
-        break;
+    case 1:
+      writeStump1D(B_, inp.device_length);
+      break;
+    case 2:
+      writeStump2D(B_, inp.device_length);
+      break;
+    case 3:
+      writeStump3D(B_, inp.device_length);
+      break;
+    default:
+      throw(std::runtime_error("bad dimension for OMEN stump"));
+      break;
 
-        if (inp.verbosity & PRINTBIT__)
-          os << "file '" << inp.prefix + OIS__ << "' written"
-             << (inp.verbosity & MD5BIT__ ? ", " + aux::md5(OIS__) : "")
-             << "\n";
+      if (inp.verbosity & PRINTBIT__)
+        os << "file '" << inp.prefix + OIS__ << "' written"
+           << (inp.verbosity & MD5BIT__ ? ", " + aux::md5(OIS__) : "") << "\n";
     }
   }
 }
 
 // write hamiltonian matrices
-void ll__::omen::hctor(const ll_wf_input& inp, const lm__::fMat& LM,
-                       const idv& id, const lm__::fMat& L, std::ostream& os) {
+void ll__::omen::hctor(const ll_wf_input &inp, const lm__::fMat &LM,
+                       const idv &id, const lm__::fMat &L, std::ostream &os) {
   assert(LM.M() == L.size());
   assert(LM.N() == id.size());
 
@@ -414,7 +419,8 @@ void ll__::omen::hctor(const ll_wf_input& inp, const lm__::fMat& LM,
   }
 
   // check consistency
-  if (!inp.force_check) return;
+  if (!inp.force_check)
+    return;
 
   os << "\n\ncheck forced!\n";
   for (auto i = writer.R().ccBegin(), e = writer.R().ccBegin() + R.N() / 2 + 1;
@@ -422,12 +428,14 @@ void ll__::omen::hctor(const ll_wf_input& inp, const lm__::fMat& LM,
     const std::string filep = writer.fileName(*i);
     const std::string filem = writer.fileName(-*i);
 
-    if (inp.verbosity & PRINTBIT__) os << " reading file '" << filep << "' ...";
+    if (inp.verbosity & PRINTBIT__)
+      os << " reading file '" << filep << "' ...";
     const ll_sparse Hp(filep);
 
     ll_sparse Hm;
     if (filep != filem) {
-      if (inp.verbosity & PRINTBIT__) os << ", '" << filem << "' ...";
+      if (inp.verbosity & PRINTBIT__)
+        os << ", '" << filem << "' ...";
       Hm = ll_sparse(filem).T();
     } else
       Hm = ll_sparse(Hp).T();
@@ -445,7 +453,7 @@ void ll__::omen::callInputGenerator() {
   fs << "\n\n" << aux::timeStamp() << "\n\n";
   aux_tee os(std::cout, fs);
 #else
-  std::ostream& os = std::cout;
+  std::ostream &os = std::cout;
 #endif
 
   // WINTERFACE
@@ -454,7 +462,7 @@ void ll__::omen::callInputGenerator() {
     hw_winterFace(os);
     try {
       writeInput(aux::parseFile<ll_wf_input>("winput", os), os);
-    } catch (const std::exception& e) {
+    } catch (const std::exception &e) {
       os << "\n"
          << ll_wf_input() << "\n\n\n"
          << RED__ << "ERROR: " << RESET__ << e.what() << "\n";
@@ -474,7 +482,7 @@ void ll__::omen::callInputGenerator() {
        */
 
       gb_phinterFace(os);
-    } catch (const std::exception& e) {
+    } catch (const std::exception &e) {
       os << "\n"
          << ll_ph_input() << "\n\n\n"
          << RED__ << "ERROR: " << RESET__ << e.what() << "\n";
@@ -483,8 +491,8 @@ void ll__::omen::callInputGenerator() {
 }
 
 // call scaler
-void ll__::omen::callHamiltonianConstructor(double* const Layer_Matrix,
-                                            const idv& id, const double Lx,
+void ll__::omen::callHamiltonianConstructor(double *const Layer_Matrix,
+                                            const idv &id, const double Lx,
                                             const double Ly, const double Lz) {
 #ifndef NLOGFILE_
   //	auto fs = aux::openFile<std::ofstream>(aux::timeStamp()+".log");
@@ -492,7 +500,7 @@ void ll__::omen::callHamiltonianConstructor(double* const Layer_Matrix,
   fs << aux::timeStamp() << "\n\n";
   aux_tee os(std::cout, fs);
 #else
-  std::ostream& os = std::cout;
+  std::ostream &os = std::cout;
 #endif
 
   try {
@@ -500,18 +508,21 @@ void ll__::omen::callHamiltonianConstructor(double* const Layer_Matrix,
     {
       std::ifstream file;
       file.open("winput");
-      if (!file.good()) return;
+      if (!file.good())
+        return;
     }
 
     // check timestamps
     {
       // lattice_dat
       struct stat st_olf;
-      if (stat(OLF__, &st_olf)) return;
+      if (stat(OLF__, &st_olf))
+        return;
 
       // mat_par
       struct stat st_omf;
-      if (stat(OMF__, &st_omf)) return;
+      if (stat(OMF__, &st_omf))
+        return;
 
       // H_4.bin
       struct stat st_h4;
@@ -533,7 +544,7 @@ void ll__::omen::callHamiltonianConstructor(double* const Layer_Matrix,
 
       gb_winterFace(os);
     }
-  } catch (const std::exception& e) {
+  } catch (const std::exception &e) {
     os << "\n"
        << ll_wf_input() << "\n\n\n"
        << RED__ << "ERROR: " << RESET__ << e.what() << "\n";
@@ -541,12 +552,12 @@ void ll__::omen::callHamiltonianConstructor(double* const Layer_Matrix,
 }
 
 // stumps
-void ll__::omen::writeStump1D(const lm__::fMat& B, const double L,
+void ll__::omen::writeStump1D(const lm__::fMat &B, const double L,
                               const double ftc) {
   // add code here
   std::cout << "\n\n1D stump not implemented, sorry\n\n";
 }
-void ll__::omen::writeStump2D(const lm__::fMat& B, const double L,
+void ll__::omen::writeStump2D(const lm__::fMat &B, const double L,
                               const double ftc) {
   using namespace lm__;
 
@@ -661,7 +672,7 @@ void ll__::omen::writeStump2D(const lm__::fMat& B, const double L,
 
   file.close();
 }
-void ll__::omen::writeStump3D(const lm__::fMat& B, const double L,
+void ll__::omen::writeStump3D(const lm__::fMat &B, const double L,
                               const double ftc) {
   // add code here
   std::cout << "\n\n3D stump not implemented, sorry\n\n";

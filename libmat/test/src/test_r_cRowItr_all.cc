@@ -29,8 +29,9 @@ void test_r_tVecItr_all<CPX__, RE__, CPX__,
 
 // test id
 template <>
-const char* test_r_tVecItr_all<
-    CPX__, RE__, CPX__, lm_tRow<CPX__, RE__, CPX__>>::test_id() noexcept {
+const char *
+test_r_tVecItr_all<CPX__, RE__, CPX__,
+                   lm_tRow<CPX__, RE__, CPX__>>::test_id() noexcept {
   return "test_r_cRowItr_all";
 }
 

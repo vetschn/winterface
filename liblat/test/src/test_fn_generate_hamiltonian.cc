@@ -28,7 +28,7 @@ void test_fn_generate_hamiltonian::test_genHam_from_trans() {
 
     CPPUNIT_ASSERT(Href.R() == H.R());
     CPPUNIT_ASSERT(Href.size() == H.size());
-    CPPUNIT_ASSERT(std::all_of(H.cbegin(), H.cend(), [&Href](const cMat& i) {
+    CPPUNIT_ASSERT(std::all_of(H.cbegin(), H.cend(), [&Href](const cMat &i) {
       return size(i) == size(Href.front());
     }));
 
@@ -47,7 +47,7 @@ void test_fn_generate_hamiltonian::test_genHam_from_trans() {
 
     CPPUNIT_ASSERT(Href.R() == H.R());
     CPPUNIT_ASSERT(Href.size() == H.size());
-    CPPUNIT_ASSERT(std::all_of(H.cbegin(), H.cend(), [&Href](const cMat& i) {
+    CPPUNIT_ASSERT(std::all_of(H.cbegin(), H.cend(), [&Href](const cMat &i) {
       return size(i) == size(Href.front());
     }));
 
@@ -82,19 +82,20 @@ void test_fn_generate_hamiltonian::test_genHam_from_wbh() {
   CPPUNIT_ASSERT(Ehr == Eghr);
 
   CPPUNIT_ASSERT_EQUAL(hr.Nw(), ghr.Nw());
-  CPPUNIT_ASSERT(std::all_of(
-      ghr.cbegin(), ghr.cend(),
-      [&hr](const auto& i) -> bool { return size(hr.front()) == size(i); }));
+  CPPUNIT_ASSERT(
+      std::all_of(ghr.cbegin(), ghr.cend(), [&hr](const auto &i) -> bool {
+        return size(hr.front()) == size(i);
+      }));
   CPPUNIT_ASSERT(std::all_of(ghr.cbegin(), ghr.cbegin(),
-                             [](const auto& i) -> bool { return i != 0.0; }));
+                             [](const auto &i) -> bool { return i != 0.0; }));
 }
 
-const char* test_fn_generate_hamiltonian::test_id() noexcept {
+const char *test_fn_generate_hamiltonian::test_id() noexcept {
   return "test_fn_generate_hamiltonian";
 }
 
-CppUnit::Test* test_fn_generate_hamiltonian::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_fn_generate_hamiltonian::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_fn_generate_hamiltonian>(
       "test_genHam_from_trans",

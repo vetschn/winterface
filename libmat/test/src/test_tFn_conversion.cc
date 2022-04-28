@@ -126,7 +126,7 @@ void test_tFn_conversion<TT, FT, CT>::test_mmin() {
     for (size_t n = 0; n != N; ++n, ++c) {
       const auto ref = std::min_element(
           c->cbegin(), c->cend(),
-          [](const TT& a, const TT& b) { return ops::lt_s(a, b); });
+          [](const TT &a, const TT &b) { return ops::lt_s(a, b); });
       CPPUNIT_ASSERT_EQUAL(*ref, mm.mat[n]);
       CPPUNIT_ASSERT_EQUAL(size_t(ref - c->cbegin()), mm.pos[n]);
     }
@@ -156,7 +156,7 @@ void test_tFn_conversion<TT, FT, CT>::test_nmin() {
     for (size_t m = 0; m != M; ++m, ++r) {
       const auto ref = std::min_element(
           r->cbegin(), r->cend(),
-          [](const TT& a, const TT& b) { return ops::lt_s(a, b); });
+          [](const TT &a, const TT &b) { return ops::lt_s(a, b); });
       CPPUNIT_ASSERT_EQUAL(*ref, mm.mat[m]);
       CPPUNIT_ASSERT_EQUAL(size_t(ref - r->cbegin()), mm.pos[m]);
     }
@@ -186,7 +186,7 @@ void test_tFn_conversion<TT, FT, CT>::test_mmax() {
     for (size_t n = 0; n != N; ++n, ++c) {
       const auto ref = std::max_element(
           c->cbegin(), c->cend(),
-          [](const TT& a, const TT& b) { return ops::lt_s(a, b); });
+          [](const TT &a, const TT &b) { return ops::lt_s(a, b); });
       CPPUNIT_ASSERT_EQUAL(*ref, mm.mat[n]);
       CPPUNIT_ASSERT_EQUAL(size_t(ref - c->cbegin()), mm.pos[n]);
     }
@@ -216,7 +216,7 @@ void test_tFn_conversion<TT, FT, CT>::test_nmax() {
     for (size_t m = 0; m != M; ++m, ++r) {
       const auto ref = std::max_element(
           r->cbegin(), r->cend(),
-          [](const TT& a, const TT& b) { return ops::lt_s(a, b); });
+          [](const TT &a, const TT &b) { return ops::lt_s(a, b); });
       CPPUNIT_ASSERT_EQUAL(*ref, mm.mat[m]);
       CPPUNIT_ASSERT_EQUAL(size_t(ref - r->cbegin()), mm.pos[m]);
     }
@@ -240,7 +240,8 @@ void test_tFn_conversion<TT, FT, CT>::test_mmean() {
     const auto ref = msum(tMat1) / FT(M);
     CPPUNIT_ASSERT(size(mm) == size(ref));
 
-    for (size_t n = 0; n != N; ++n) CPPUNIT_ASSERT_DELTA(ref[n], mm[n], delta);
+    for (size_t n = 0; n != N; ++n)
+      CPPUNIT_ASSERT_DELTA(ref[n], mm[n], delta);
   }
 }
 
@@ -261,7 +262,8 @@ void test_tFn_conversion<TT, FT, CT>::test_nmean() {
     const auto ref = nsum(tMat1) / FT(N);
     CPPUNIT_ASSERT(size(mm) == size(ref));
 
-    for (size_t m = 0; m != M; ++m) CPPUNIT_ASSERT_DELTA(ref[m], mm[m], delta);
+    for (size_t m = 0; m != M; ++m)
+      CPPUNIT_ASSERT_DELTA(ref[m], mm[m], delta);
   }
 }
 
@@ -526,7 +528,8 @@ void test_tFn_conversion<TT, FT, CT>::test_inv() {
   const size_t M = genRndST(3, 3);
 
   auto tMat1 = rnd<tMat>(M, M);
-  while (std::abs(det(tMat1)) < FT(.5)) tMat1 = rnd<tMat>(M, M);
+  while (std::abs(det(tMat1)) < FT(.5))
+    tMat1 = rnd<tMat>(M, M);
 
   const auto itMat1 = inv(tMat1);
   const auto act = tMat1.prod(itMat1);
@@ -761,7 +764,8 @@ void test_tFn_conversion<TT, FT, CT>::test_diag() {
         auto ie = tMat1.cdend(os, true);
 
         CPPUNIT_ASSERT_EQUAL(size_t(ie - i), tMat2.L());
-        for (auto j : tMat2) CPPUNIT_ASSERT_EQUAL(*i++, j);
+        for (auto j : tMat2)
+          CPPUNIT_ASSERT_EQUAL(*i++, j);
       }
     }
 
@@ -774,7 +778,8 @@ void test_tFn_conversion<TT, FT, CT>::test_diag() {
         auto ie = tMat1.cdend(os, false);
 
         CPPUNIT_ASSERT_EQUAL(size_t(ie - i), tMat2.L());
-        for (auto j : tMat2) CPPUNIT_ASSERT_EQUAL(*i++, j);
+        for (auto j : tMat2)
+          CPPUNIT_ASSERT_EQUAL(*i++, j);
       }
     }
   }
@@ -845,20 +850,24 @@ void test_tFn_conversion<TT, FT, CT>::test_Iz_Inz() {
   tMat1 = (tMat1.gt(mean(tMat1)));
 
   const auto I_z = Iz(tMat1);
-  CPPUNIT_ASSERT(std::all_of(
-      I_z.cbegin(), I_z.cend(),
-      [&tMat1](const Ipair& i) -> bool { return i.m < tMat1.M(); }));
-  CPPUNIT_ASSERT(std::all_of(
-      I_z.cbegin(), I_z.cend(),
-      [&tMat1](const Ipair& i) -> bool { return i.n < tMat1.N(); }));
+  CPPUNIT_ASSERT(
+      std::all_of(I_z.cbegin(), I_z.cend(), [&tMat1](const Ipair &i) -> bool {
+        return i.m < tMat1.M();
+      }));
+  CPPUNIT_ASSERT(
+      std::all_of(I_z.cbegin(), I_z.cend(), [&tMat1](const Ipair &i) -> bool {
+        return i.n < tMat1.N();
+      }));
 
   const auto I_nz = Inz(tMat1);
-  CPPUNIT_ASSERT(std::all_of(
-      I_nz.cbegin(), I_nz.cend(),
-      [&tMat1](const Ipair& i) -> bool { return i.m < tMat1.M(); }));
-  CPPUNIT_ASSERT(std::all_of(
-      I_nz.cbegin(), I_nz.cend(),
-      [&tMat1](const Ipair& i) -> bool { return i.n < tMat1.N(); }));
+  CPPUNIT_ASSERT(
+      std::all_of(I_nz.cbegin(), I_nz.cend(), [&tMat1](const Ipair &i) -> bool {
+        return i.m < tMat1.M();
+      }));
+  CPPUNIT_ASSERT(
+      std::all_of(I_nz.cbegin(), I_nz.cend(), [&tMat1](const Ipair &i) -> bool {
+        return i.n < tMat1.N();
+      }));
 
   for (size_t i = 0; i != I_z.size(); ++i)
     CPPUNIT_ASSERT_EQUAL(TT(0.0), tMat1(I_z[i].m, I_z[i].n));
@@ -867,9 +876,9 @@ void test_tFn_conversion<TT, FT, CT>::test_Iz_Inz() {
 
   // check I_z and I_nz are mutually exclusive
   CPPUNIT_ASSERT(
-      std::all_of(I_z.cbegin(), I_z.cend(), [&I_nz](const Ipair& i) -> bool {
+      std::all_of(I_z.cbegin(), I_z.cend(), [&I_nz](const Ipair &i) -> bool {
         return std::find_if(I_nz.cbegin(), I_nz.cend(),
-                            [&i](const Ipair& j) -> bool {
+                            [&i](const Ipair &j) -> bool {
                               return j.m == i.m && j.n == i.n;
                             }) == I_nz.cend();
       }));
@@ -886,7 +895,7 @@ void test_tFn_conversion<TT, FT, CT>::test_conj() {
 
   auto tMat2 = tMat1;
   std::for_each(tMat2.begin(), tMat2.end(),
-                [](TT& i) { lm__::ops::assign(i, std::conj(i)); });
+                [](TT &i) { lm__::ops::assign(i, std::conj(i)); });
   const auto tMat3 = conj(tMat1);
 
   CPPUNIT_ASSERT(size(tMat2) == size(tMat3));
@@ -921,8 +930,8 @@ void test_tFn_conversion<TT, FT, CT>::test_imag() {
 }
 
 template <class TT, class FT, class CT>
-CppUnit::Test* test_tFn_conversion<TT, FT, CT>::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_tFn_conversion<TT, FT, CT>::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_tFn_conversion>(
       "test_msum", &test_tFn_conversion<TT, FT, CT>::test_msum));

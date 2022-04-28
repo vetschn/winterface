@@ -36,12 +36,12 @@ void test_cell_memory_management::test_moveAp() {
   CPPUNIT_ASSERT(tCell1.Ap().empty());
 }
 
-const char* test_cell_memory_management::test_id() noexcept {
+const char *test_cell_memory_management::test_id() noexcept {
   return "test_cell_memory_management";
 }
 
-CppUnit::Test* test_cell_memory_management::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_cell_memory_management::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_cell_memory_management>(
       "test_moveB", &test_cell_memory_management::test_moveB));

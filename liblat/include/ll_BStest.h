@@ -20,37 +20,37 @@ class ll_hbonds;
  * parseKey_ and printHelp_.
  */
 struct ll_BStest_input : public virtual aux_parser {
- public:
+public:
   /** @name types
    */
-  typedef lm__::fMat fMat;  //!< real matrix
+  typedef lm__::fMat fMat; //!< real matrix
 
- public:
+public:
   /** @name mesh specific
    */
   std::vector<double> bzbounds{.0,
-                               .5};  //!< bounds inside the BZ used in the mesh
-  double rho_k = 1000.0;             //!< kpoint density for check in BZ
-  std::string maj_style = "MATLAB";  //!< majority ordering style
+                               .5}; //!< bounds inside the BZ used in the mesh
+  double rho_k = 1000.0;            //!< kpoint density for check in BZ
+  std::string maj_style = "MATLAB"; //!< majority ordering style
 
   /** @name trace specific
    */
-  size_t Nk = 101;                      //!< number of points along kpts
-  fMat kpts = lm__::ncat(               // kpoints
-      -.5 * lm__::cId<fMat>(DIM__, 0),  // left edge of Brillouin zone, x axis
-      .5 * lm__::cId<fMat>(DIM__, 0)    // right edge of Brillouin zone, x axis
-  );                                    //!< kpoints for the trace
+  size_t Nk = 101;                     //!< number of points along kpts
+  fMat kpts = lm__::ncat(              // kpoints
+      -.5 * lm__::cId<fMat>(DIM__, 0), // left edge of Brillouin zone, x axis
+      .5 * lm__::cId<fMat>(DIM__, 0)   // right edge of Brillouin zone, x axis
+  );                                   //!< kpoints for the trace
 
   /** @name common options
    */
-  std::string hrdat = HR__;  //!< hrdat to use for folding algorithm
-  bool re = true;            //!< take only the real part in scaled blocks
-  double Lvb = 2.0;          //!< region inside valence band to check
-  double Lcb = 2.0;          //!< region inside conduction band to check
-  double toldev = 30.0;      //!< tolerable deviation scaled vs folded in meV
-  size_t Nthreads = 4;       //!< number of threads to use
+  std::string hrdat = HR__; //!< hrdat to use for folding algorithm
+  bool re = true;           //!< take only the real part in scaled blocks
+  double Lvb = 2.0;         //!< region inside valence band to check
+  double Lcb = 2.0;         //!< region inside conduction band to check
+  double toldev = 30.0;     //!< tolerable deviation scaled vs folded in meV
+  size_t Nthreads = 4;      //!< number of threads to use
 
- public:
+public:
   /** parseKey_ redefinition
    */
   struct parseKey_ : public virtual aux_parser::parseKey_ {
@@ -64,49 +64,49 @@ struct ll_BStest_input : public virtual aux_parser {
       using namespace aux;
 
       switch (key) {
-        // mesh specific
-        case "bzbounds"_h:
-          PARSE__(p.bzbounds, 2);
-          return;
-        case "rho_k"_h:
-          PARSE__(p.rho_k);
-          return;
-        case "maj_style"_h:
-          PARSE__(p.maj_style);
-          return;
+      // mesh specific
+      case "bzbounds"_h:
+        PARSE__(p.bzbounds, 2);
+        return;
+      case "rho_k"_h:
+        PARSE__(p.rho_k);
+        return;
+      case "maj_style"_h:
+        PARSE__(p.maj_style);
+        return;
 
-        // trace specific
-        case "Nk"_h:
-          PARSE__(p.Nk);
-          return;
-        case "kpts"_h:
-          PARSE__(p.kpts);
-          return;
+      // trace specific
+      case "Nk"_h:
+        PARSE__(p.Nk);
+        return;
+      case "kpts"_h:
+        PARSE__(p.kpts);
+        return;
 
-        // common options
-        case "hrdat"_h:
-          PARSE__(p.hrdat);
-          return;
-        case "re"_h:
-          PARSE__(p.re);
-          return;
-        case "Lvb"_h:
-          PARSE__(p.Lvb);
-          return;
-        case "Lcb"_h:
-          PARSE__(p.Lcb);
-          return;
-        case "toldev"_h:
-          PARSE__(p.toldev);
-          return;
-        case "Nthreads"_h:
-          PARSE__(p.Nthreads);
-          return;
+      // common options
+      case "hrdat"_h:
+        PARSE__(p.hrdat);
+        return;
+      case "re"_h:
+        PARSE__(p.re);
+        return;
+      case "Lvb"_h:
+        PARSE__(p.Lvb);
+        return;
+      case "Lcb"_h:
+        PARSE__(p.Lcb);
+        return;
+      case "toldev"_h:
+        PARSE__(p.toldev);
+        return;
+      case "Nthreads"_h:
+        PARSE__(p.Nthreads);
+        return;
       }
     }
   };
 
- public:
+public:
   /** printHelp_ redefinition
    */
   struct printHelp_ : public virtual aux_parser::printHelp_ {
@@ -192,9 +192,9 @@ void meshBStest(const ll_hbonds &W, const fMat &EXP, const rv &r,
  */
 void traceBStest(const ll_hbonds &W, const fMat &EXP, const rv &r,
                  const ll_BStest_input &inp, std::ostream &os);
-}  // namespace ll__
+} // namespace ll__
 
-#endif  // _LL_BSTEST_
+#endif // _LL_BSTEST_
 
 /** @}
  */

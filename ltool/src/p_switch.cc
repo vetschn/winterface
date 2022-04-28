@@ -7,8 +7,8 @@
 
 using namespace lm__;
 
-void p_switch(const p_input& inp, std::ostream& os) {
-  ll_cell cell(inp.pscin);  // initial cell
+void p_switch(const p_input &inp, std::ostream &os) {
+  ll_cell cell(inp.pscin); // initial cell
 
   // make cell primitive
   set_mtol(inp.tol);

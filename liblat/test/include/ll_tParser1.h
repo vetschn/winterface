@@ -7,7 +7,7 @@
 #include "aux_parser.h"
 
 struct ll_tParser1 : public virtual aux_parser {
- public:
+public:
   // test input
   std::string tString1;
   std::vector<std::string> tStrings1;
@@ -25,72 +25,72 @@ struct ll_tParser1 : public virtual aux_parser {
   lm__::fMat tMat1;
   lm__::fMat tMatF1;
 
- public:
+public:
   // parse key struct
   struct parseKey_ : public virtual aux_parser::parseKey_ {
     // constructor
-    inline explicit parseKey_(ll_tParser1& p, const uint32_t key,
-                              std::ifstream& file, size_t& lcnt,
-                              std::sregex_token_iterator& i,
-                              std::sregex_token_iterator& e)
+    inline explicit parseKey_(ll_tParser1 &p, const uint32_t key,
+                              std::ifstream &file, size_t &lcnt,
+                              std::sregex_token_iterator &i,
+                              std::sregex_token_iterator &e)
         : aux_parser::parseKey_(p, key, file, lcnt, i, e) {
       using namespace aux;
 
       switch (key) {
-        case "tString1"_h:
-          PARSE__(p.tString1);
-          return;
-        case "tStrings1"_h:
-          PARSE__(p.tStrings1);
-          return;
-        case "tDouble1"_h:
-          PARSE__(p.tDouble1);
-          return;
-        case "tUint1"_h:
-          PARSE__(p.tUint1);
-          return;
-        case "tBool1"_h:
-          PARSE__(p.tBool1);
-          return;
-        case "tDoublesF1"_h:
-          PARSE__(p.tDoublesF1, DIM__);
-          return;
-        case "tDoublesV1"_h:
-          PARSE__(p.tDoublesV1);
-          return;
-        case "tUintsFNT1"_h:
-          PARSE__(p.tUintsFNT1, false, DIM__);
-          return;
-        case "tUintsFT1"_h:
-          PARSE__(p.tUintsFT1, true, DIM__);
-          return;
-        case "tUintsVNT1"_h:
-          PARSE__(p.tUintsVNT1, false, NPOS__);
-          return;
-        case "tUintsVT1"_h:
-          PARSE__(p.tUintsVT1, true, NPOS__);
-          return;
-        case "tBoolsF1"_h:
-          PARSE__(p.tBoolsF1, DIM__);
-          return;
-        case "tBoolsV1"_h:
-          PARSE__(p.tBoolsV1);
-          return;
-        case "tMat1"_h:
-          PARSE__(p.tMat1);
-          return;
-        case "tMatF1"_h:
-          PARSE__(p.tMatF1);
-          return;
+      case "tString1"_h:
+        PARSE__(p.tString1);
+        return;
+      case "tStrings1"_h:
+        PARSE__(p.tStrings1);
+        return;
+      case "tDouble1"_h:
+        PARSE__(p.tDouble1);
+        return;
+      case "tUint1"_h:
+        PARSE__(p.tUint1);
+        return;
+      case "tBool1"_h:
+        PARSE__(p.tBool1);
+        return;
+      case "tDoublesF1"_h:
+        PARSE__(p.tDoublesF1, DIM__);
+        return;
+      case "tDoublesV1"_h:
+        PARSE__(p.tDoublesV1);
+        return;
+      case "tUintsFNT1"_h:
+        PARSE__(p.tUintsFNT1, false, DIM__);
+        return;
+      case "tUintsFT1"_h:
+        PARSE__(p.tUintsFT1, true, DIM__);
+        return;
+      case "tUintsVNT1"_h:
+        PARSE__(p.tUintsVNT1, false, NPOS__);
+        return;
+      case "tUintsVT1"_h:
+        PARSE__(p.tUintsVT1, true, NPOS__);
+        return;
+      case "tBoolsF1"_h:
+        PARSE__(p.tBoolsF1, DIM__);
+        return;
+      case "tBoolsV1"_h:
+        PARSE__(p.tBoolsV1);
+        return;
+      case "tMat1"_h:
+        PARSE__(p.tMat1);
+        return;
+      case "tMatF1"_h:
+        PARSE__(p.tMatF1);
+        return;
       }
     }
   };
 
- public:
+public:
   // print help struct
   struct printHelp_ : public virtual aux_parser::printHelp_ {
     // constructor
-    inline explicit printHelp_(const ll_tParser1& p, std::ostream& os)
+    inline explicit printHelp_(const ll_tParser1 &p, std::ostream &os)
         : aux_parser::printHelp_(p, os) {
       printHelpTuple_(
           os,
@@ -120,4 +120,4 @@ struct ll_tParser1 : public virtual aux_parser {
   };
 };
 
-#endif  // _LL_TPARSER1_
+#endif // _LL_TPARSER1_

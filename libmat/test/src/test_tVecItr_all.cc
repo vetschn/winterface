@@ -92,7 +92,7 @@ void test_tVecItr_all<TT, FT, CT, VT>::test_comparison() {
 
   // to tVecItr
   {
-    tVecItr tItr2(const_cast<tMat*>(&tMat1), i2);
+    tVecItr tItr2(const_cast<tMat *>(&tMat1), i2);
 
     CPPUNIT_ASSERT(tItr1 == tItr1);
     CPPUNIT_ASSERT(tItr1 != tItr2);
@@ -174,8 +174,8 @@ void test_tVecItr_all<TT, FT, CT, VT>::test_arithmetic_difference() {
 }
 
 template <class TT, class FT, class CT, class VT>
-CppUnit::Test* test_tVecItr_all<TT, FT, CT, VT>::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_tVecItr_all<TT, FT, CT, VT>::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_tVecItr_all>(
       "test_ctor_assign", &test_tVecItr_all<TT, FT, CT, VT>::test_ctor_assign));

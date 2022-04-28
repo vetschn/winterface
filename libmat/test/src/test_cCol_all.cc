@@ -5,8 +5,7 @@
 #include "test_tCol_all.cc"
 #include "test_tCol_all.h"
 
-template <>
-void test_tCol_all<CPX__, RE__, CPX__>::test_assign() {
+template <> void test_tCol_all<CPX__, RE__, CPX__>::test_assign() {
   const size_t M = genRndST();
   const size_t N = genRndST();
 
@@ -135,8 +134,7 @@ void test_tCol_all<CPX__, RE__, CPX__>::test_assign() {
   }
 }
 
-template <>
-void test_tCol_all<CPX__, RE__, CPX__>::test_matrix_arithmetic() {
+template <> void test_tCol_all<CPX__, RE__, CPX__>::test_matrix_arithmetic() {
   const size_t M1 = genRndST();
   const size_t N1 = genRndST();
   const size_t M2 = genRndST();
@@ -224,8 +222,7 @@ void test_tCol_all<CPX__, RE__, CPX__>::test_matrix_arithmetic() {
 }
 
 // test id
-template <>
-const char* test_tCol_all<CPX__, RE__, CPX__>::test_id() noexcept {
+template <> const char *test_tCol_all<CPX__, RE__, CPX__>::test_id() noexcept {
   return "test_cCol_all";
 }
 

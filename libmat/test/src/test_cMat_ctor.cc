@@ -9,8 +9,7 @@
 using namespace lm__::test;
 
 // tests
-template <>
-void test_tMat_ctor<CPX__, RE__, CPX__>::test_file() {
+template <> void test_tMat_ctor<CPX__, RE__, CPX__>::test_file() {
   CPPUNIT_ASSERT_THROW(cMat("data/bla.mat"), std::invalid_argument);
   CPPUNIT_ASSERT_THROW(cMat("data/var_wc.mat"), std::invalid_argument);
   CPPUNIT_ASSERT_THROW(cMat("data/alien_sym.mat"), std::invalid_argument);
@@ -68,11 +67,12 @@ void test_tMat_ctor<CPX__, RE__, CPX__>::test_file() {
 
       // write dimensions
       uint64_t dim;
-      do dim = genRndST();
+      do
+        dim = genRndST();
       while (dim == 2);
-      file.write((char*)&dim, sizeof(uint64_t));
-      file.write((char*)&M, sizeof(uint64_t));
-      file.write((char*)&N, sizeof(uint64_t));
+      file.write((char *)&dim, sizeof(uint64_t));
+      file.write((char *)&M, sizeof(uint64_t));
+      file.write((char *)&N, sizeof(uint64_t));
 
       file.close();
 
@@ -94,8 +94,7 @@ void test_tMat_ctor<CPX__, RE__, CPX__>::test_file() {
     }
   }
 }
-template <>
-void test_tMat_ctor<CPX__, RE__, CPX__>::test_fstream() {
+template <> void test_tMat_ctor<CPX__, RE__, CPX__>::test_fstream() {
   {
     std::ifstream file;
     file.open("data/generic.mat");
@@ -116,8 +115,7 @@ void test_tMat_ctor<CPX__, RE__, CPX__>::test_fstream() {
     file.close();
   }
 }
-template <>
-void test_tMat_ctor<CPX__, RE__, CPX__>::test_re_im() {
+template <> void test_tMat_ctor<CPX__, RE__, CPX__>::test_re_im() {
   const size_t M = genRndST();
   const size_t N = genRndST();
 
@@ -149,8 +147,7 @@ void test_tMat_ctor<CPX__, RE__, CPX__>::test_re_im() {
       CPPUNIT_ASSERT_EQUAL(CPX__(re[i], im[i]), tMat[i]);
   }
 }
-template <>
-void test_tMat_ctor<CPX__, RE__, CPX__>::test_copy_fArray() {
+template <> void test_tMat_ctor<CPX__, RE__, CPX__>::test_copy_fArray() {
   const size_t M = genRndST();
   const size_t N = genRndST();
 
@@ -185,8 +182,7 @@ void test_tMat_ctor<CPX__, RE__, CPX__>::test_copy_fArray() {
       CPPUNIT_ASSERT_EQUAL(tMat1[j], std::real(tMat2[j]));
   }
 }
-template <>
-void test_tMat_ctor<CPX__, RE__, CPX__>::test_copy_cArray() {
+template <> void test_tMat_ctor<CPX__, RE__, CPX__>::test_copy_cArray() {
   const size_t M = genRndST();
   const size_t N = genRndST();
 
@@ -214,8 +210,7 @@ void test_tMat_ctor<CPX__, RE__, CPX__>::test_copy_cArray() {
 }
 
 // test id
-template <>
-const char* test_tMat_ctor<CPX__, RE__, CPX__>::test_id() noexcept {
+template <> const char *test_tMat_ctor<CPX__, RE__, CPX__>::test_id() noexcept {
   return "test_cMat_ctor";
 }
 

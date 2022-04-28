@@ -7,7 +7,7 @@
 
 // test id
 template <>
-const char* test_tFn_conversion<RE__, RE__, CPX__>::test_id() noexcept {
+const char *test_tFn_conversion<RE__, RE__, CPX__>::test_id() noexcept {
   return "test_fFn_conversion";
 }
 

@@ -11,7 +11,7 @@
 #include "ll_cell.h"
 
 class test_cell_modification : public CppUnit::TestFixture {
- public:
+public:
   void test_stress();
   void test_swapDim();
   void test_invDim();
@@ -26,12 +26,12 @@ class test_cell_modification : public CppUnit::TestFixture {
   void test_collectivize();
   void test_merge();
 
-  static CppUnit::Test* suite();
-  static const char* test_id() noexcept;
+  static CppUnit::Test *suite();
+  static const char *test_id() noexcept;
 
- protected:
+protected:
   // helper function to check whether Ap is sorted
-  bool Ap_sorted(const ll_cell& tCell) const noexcept {
+  bool Ap_sorted(const ll_cell &tCell) const noexcept {
     for (const auto t : tCell.types())
       if (!std::is_sorted(tCell.ccBegin(t), tCell.ccEnd(t), lm__::vcmp))
         return false;
@@ -39,4 +39,4 @@ class test_cell_modification : public CppUnit::TestFixture {
   }
 };
 
-#endif  // _TEST_CELL_MODIFICATION_
+#endif // _TEST_CELL_MODIFICATION_

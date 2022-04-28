@@ -23,20 +23,20 @@
 struct w_input : public virtual aux_parser,
                  public virtual ll_wmatching_input,
                  public virtual ll_BStest_input {
- public:
+public:
   /** @name filenames
    */
-  std::string wbh = WBH__;             //!< output wbh
-  std::string outcar = "";             //!< OUTCAR file for Fermi energy
-  std::string weig = "wannier90.eig";  //!< wannier90.eig file
+  std::string wbh = WBH__;            //!< output wbh
+  std::string outcar = "";            //!< OUTCAR file for Fermi energy
+  std::string weig = "wannier90.eig"; //!< wannier90.eig file
 
   /** @name parameters
    */
-  double Ef = nan("");  //!< Fermi energy
+  double Ef = nan(""); //!< Fermi energy
   fMat C = lm__::eye<fMat>(DIM__,
-                           DIM__);  //!< expansion matrix for bandstructure test
+                           DIM__); //!< expansion matrix for bandstructure test
 
- public:
+public:
   //! parseKey_ redefinition
   struct parseKey_ : public virtual aux_parser::parseKey_,
                      public virtual ll_wmatching_input::parseKey_,
@@ -53,29 +53,29 @@ struct w_input : public virtual aux_parser,
       using namespace aux;
 
       switch (key) {
-        // filenames
-        case "wbh"_h:
-          PARSE__(p.wbh);
-          return;
-        case "outcar"_h:
-          PARSE__(p.outcar);
-          return;
-        case "weig"_h:
-          PARSE__(p.weig);
-          return;
+      // filenames
+      case "wbh"_h:
+        PARSE__(p.wbh);
+        return;
+      case "outcar"_h:
+        PARSE__(p.outcar);
+        return;
+      case "weig"_h:
+        PARSE__(p.weig);
+        return;
 
-        // parameters
-        case "Ef"_h:
-          PARSE__(p.Ef);
-          return;
-        case "C"_h:
-          PARSE__(p.C);
-          return;
+      // parameters
+      case "Ef"_h:
+        PARSE__(p.Ef);
+        return;
+      case "C"_h:
+        PARSE__(p.C);
+        return;
       }
     }
   };
 
- public:
+public:
   //! printHelp_ redefinition
   struct printHelp_ : public virtual aux_parser::printHelp_,
                       public virtual ll_wmatching_input::printHelp_,
@@ -83,8 +83,7 @@ struct w_input : public virtual aux_parser,
     /** constructor defining help messages
      */
     inline explicit printHelp_(const w_input &p, std::ostream &os)
-        : aux_parser::printHelp_(p, os),
-          ll_wmatching_input::printHelp_(p, os),
+        : aux_parser::printHelp_(p, os), ll_wmatching_input::printHelp_(p, os),
           ll_BStest_input::printHelp_(p, os) {
       printHelpTuple_(
           os, std::make_tuple(
@@ -104,7 +103,7 @@ struct w_input : public virtual aux_parser,
   };
 };
 
-#endif  // _W_SWITCH_
+#endif // _W_SWITCH_
 
 /** @}
  */

@@ -9,12 +9,12 @@
 #include "ll_types.h"
 
 class test_fn_basis_finding : public CppUnit::TestFixture {
- public:
+public:
   void test_findBasis();
   void test_orthogonalize();
 
-  static CppUnit::Test* suite();
-  static const char* test_id() noexcept;
+  static CppUnit::Test *suite();
+  static const char *test_id() noexcept;
 };
 
-#endif  // _TEST_FN_BASIS_FINDING_
+#endif // _TEST_FN_BASIS_FINDING_

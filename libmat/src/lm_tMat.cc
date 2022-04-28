@@ -15,27 +15,27 @@ using namespace lm__;
 
 // constructor
 template <class TT, class FT, class CT>
-lm_tMat<TT, FT, CT>::lm_tMat(const fArray& re, const fArray& im) noexcept
+lm_tMat<TT, FT, CT>::lm_tMat(const fArray &re, const fArray &im) noexcept
     : tMat(re) {
   assert(re.M() == im.M());
   assert(re.N() == im.N());
 }
 template <class TT, class FT, class CT>
-lm_tMat<TT, FT, CT>::lm_tMat(const fArray& inp) noexcept
+lm_tMat<TT, FT, CT>::lm_tMat(const fArray &inp) noexcept
     : tMat(inp.M(), inp.N()) {
   auto j = inp.begin();
   std::for_each(this->begin(), this->end(),
-                [&j](TT& i) { lm__::ops::assign(i, *j++); });
+                [&j](TT &i) { lm__::ops::assign(i, *j++); });
 }
 template <class TT, class FT, class CT>
-lm_tMat<TT, FT, CT>::lm_tMat(const cArray& inp) noexcept
+lm_tMat<TT, FT, CT>::lm_tMat(const cArray &inp) noexcept
     : tMat(inp.M(), inp.N()) {
   auto j = inp.begin();
   std::for_each(this->begin(), this->end(),
-                [&j](TT& i) { lm__::ops::assign(i, *j++); });
+                [&j](TT &i) { lm__::ops::assign(i, *j++); });
 }
 template <class TT, class FT, class CT>
-lm_tMat<TT, FT, CT>::lm_tMat(const std::string& fileName) : tMat(0, 0) {
+lm_tMat<TT, FT, CT>::lm_tMat(const std::string &fileName) : tMat(0, 0) {
   // open file
   std::ifstream file;
   file.open(fileName, std::ios::binary);
@@ -52,7 +52,7 @@ lm_tMat<TT, FT, CT>::lm_tMat(const std::string& fileName) : tMat(0, 0) {
     readText_(fileName);
   } else {
     uint64_t dat;
-    file.read((char*)&dat, sizeof(uint64_t));
+    file.read((char *)&dat, sizeof(uint64_t));
     if (dat != 2)
       throw(std::invalid_argument("data in file '" + fileName +
                                   "' is not 2 dimensional"));
@@ -63,9 +63,9 @@ lm_tMat<TT, FT, CT>::lm_tMat(const std::string& fileName) : tMat(0, 0) {
 
 // memory management
 template <class TT, class FT, class CT>
-lm_tMat<TT, FT, CT>& lm_tMat<TT, FT, CT>::reserve(const size_t nC) noexcept {
+lm_tMat<TT, FT, CT> &lm_tMat<TT, FT, CT>::reserve(const size_t nC) noexcept {
   if (M() && nC > ccap()) {
-    TT* ndata = new TT[M() * nC];
+    TT *ndata = new TT[M() * nC];
     memcpy(ndata, data_, this->L() * sizeof(TT));
     delete[] data_;
     data_ = ndata;
@@ -74,9 +74,9 @@ lm_tMat<TT, FT, CT>& lm_tMat<TT, FT, CT>::reserve(const size_t nC) noexcept {
   return *this;
 }
 template <class TT, class FT, class CT>
-lm_tMat<TT, FT, CT>& lm_tMat<TT, FT, CT>::shrink_to_fit() noexcept {
+lm_tMat<TT, FT, CT> &lm_tMat<TT, FT, CT>::shrink_to_fit() noexcept {
   if (this->L() < lcap()) {
-    TT* ndata = new TT[this->L()];
+    TT *ndata = new TT[this->L()];
     memcpy(ndata, data_, this->L() * sizeof(TT));
     delete[] data_;
 
@@ -86,7 +86,7 @@ lm_tMat<TT, FT, CT>& lm_tMat<TT, FT, CT>::shrink_to_fit() noexcept {
   return *this;
 }
 template <class TT, class FT, class CT>
-TT* lm_tMat<TT, FT, CT>::move() noexcept {
+TT *lm_tMat<TT, FT, CT>::move() noexcept {
   auto tmp = data_;
   data_ = nullptr;
   N_ = C_ = 0;
@@ -96,11 +96,13 @@ TT* lm_tMat<TT, FT, CT>::move() noexcept {
 // basic properties
 template <class TT, class FT, class CT>
 bool lm_tMat<TT, FT, CT>::hermitian() const noexcept {
-  if (!square()) return false;
+  if (!square())
+    return false;
 
   for (size_t n = 0; n != N(); ++n)
     for (size_t m = 0; m != M(); ++m)
-      if (lm__::ops::neq((*this)(m, n), std::conj((*this)(n, m)))) return false;
+      if (lm__::ops::neq((*this)(m, n), std::conj((*this)(n, m))))
+        return false;
   return true;
 }
 template <class TT, class FT, class CT>
@@ -109,47 +111,56 @@ bool lm_tMat<TT, FT, CT>::diag() const noexcept {
        e = M() < N() ? this->begin() + M() * M() : this->end();
 
   while (i < e) {
-    if (lm__::ops::z(*i++)) return false;
+    if (lm__::ops::z(*i++))
+      return false;
 
     auto ib = i + M();
     while (i < ib && i < e)
-      if (lm__::ops::nz(*i++)) return false;
+      if (lm__::ops::nz(*i++))
+        return false;
   }
   while (i < this->end())
-    if (lm__::ops::nz(*i++)) return false;
+    if (lm__::ops::nz(*i++))
+      return false;
 
   return this->L();
 }
 template <class TT, class FT, class CT>
 bool lm_tMat<TT, FT, CT>::ob() const noexcept {
-  if (!square()) return false;
+  if (!square())
+    return false;
 
   const auto n = mnorm(*this);
-  if (!all(n)) return false;
+  if (!all(n))
+    return false;
 
   auto ci = ccBegin();
   for (size_t i = 0; i != M(); ++i, ++ci) {
     auto cj = ci + 1;
     for (size_t j = i + 1; j != M(); ++j, ++cj)
-      if (ops::nz(dot(*ci, *cj) / (n[i] * n[j]))) return false;
+      if (ops::nz(dot(*ci, *cj) / (n[i] * n[j])))
+        return false;
   }
   return true;
 }
 template <class TT, class FT, class CT>
 bool lm_tMat<TT, FT, CT>::onb() const noexcept {
-  if (!square()) return false;
+  if (!square())
+    return false;
   for (auto i = ccBegin(), e = ccEnd(); i != e; ++i) {
     auto j = i;
-    if (ops::neq(dot(*i, *j++), TT(1.0))) return false;
+    if (ops::neq(dot(*i, *j++), TT(1.0)))
+      return false;
     while (j != e)
-      if (ops::nz(dot(*i, *j++))) return false;
+      if (ops::nz(dot(*i, *j++)))
+        return false;
   }
   return true;
 }
 
 // basic modification
 template <class TT, class FT, class CT>
-lm_tMat<TT, FT, CT>& lm_tMat<TT, FT, CT>::T() noexcept {
+lm_tMat<TT, FT, CT> &lm_tMat<TT, FT, CT>::T() noexcept {
   if (this->empty() || M() == 1 || N() == 1) {
     std::swap(M_, N_);
     return *this;
@@ -166,16 +177,18 @@ lm_tMat<TT, FT, CT>& lm_tMat<TT, FT, CT>::T() noexcept {
 
   tMat tmp(N(), 0);
   tmp.reserve(M());
-  for (auto i = crBegin(), e = crEnd(); i != e; ++i) tmp.push_back(*i);
+  for (auto i = crBegin(), e = crEnd(); i != e; ++i)
+    tmp.push_back(*i);
   return *this = std::move(tmp);
 }
 
 // modification
 template <class TT, class FT, class CT>
-lm_tMat<TT, FT, CT>& lm_tMat<TT, FT, CT>::rShift(const size_t m,
+lm_tMat<TT, FT, CT> &lm_tMat<TT, FT, CT>::rShift(const size_t m,
                                                  const size_t s) noexcept {
   assert(m < M());
-  if (!s) return *this;
+  if (!s)
+    return *this;
 
   // insufficient space
   if (lcap() < (M() + s) * N()) {
@@ -213,14 +226,15 @@ lm_tMat<TT, FT, CT>& lm_tMat<TT, FT, CT>::rShift(const size_t m,
   return *this;
 }
 template <class TT, class FT, class CT>
-lm_tMat<TT, FT, CT>& lm_tMat<TT, FT, CT>::cShift(const size_t n,
+lm_tMat<TT, FT, CT> &lm_tMat<TT, FT, CT>::cShift(const size_t n,
                                                  const size_t s) noexcept {
   assert(n <= N());
 
   // insufficent space
   if (ccap() < N() + s) {
     tMat tmp(M(), N() + s);
-    if (n) memcpy(tmp.data(), data(), M() * n * sizeof(TT));
+    if (n)
+      memcpy(tmp.data(), data(), M() * n * sizeof(TT));
     memcpy(tmp.data() + M() * (n + s), data() + M() * n,
            M() * (N() - n) * sizeof(TT));
     return *this = std::move(tmp);
@@ -238,8 +252,8 @@ lm_tMat<TT, FT, CT>& lm_tMat<TT, FT, CT>::cShift(const size_t n,
   return *this;
 }
 template <class TT, class FT, class CT>
-lm_tMat<TT, FT, CT>& lm_tMat<TT, FT, CT>::rInsert(const size_t m,
-                                                  const tArray& inp) noexcept {
+lm_tMat<TT, FT, CT> &lm_tMat<TT, FT, CT>::rInsert(const size_t m,
+                                                  const tArray &inp) noexcept {
   if (inp.ptr() != this) {
     rShift(m, 1);
     rAt(m) = inp;
@@ -248,8 +262,8 @@ lm_tMat<TT, FT, CT>& lm_tMat<TT, FT, CT>::rInsert(const size_t m,
     return rInsert(m, tMat(inp));
 }
 template <class TT, class FT, class CT>
-lm_tMat<TT, FT, CT>& lm_tMat<TT, FT, CT>::rInsert(const size_t m,
-                                                  const tMat& inp) noexcept {
+lm_tMat<TT, FT, CT> &lm_tMat<TT, FT, CT>::rInsert(const size_t m,
+                                                  const tMat &inp) noexcept {
   if (inp.ptr() != this) {
     rShift(m, inp.M());
     return set(inp, m, 0);
@@ -257,8 +271,8 @@ lm_tMat<TT, FT, CT>& lm_tMat<TT, FT, CT>::rInsert(const size_t m,
     return rInsert(m, tMat(inp));
 }
 template <class TT, class FT, class CT>
-lm_tMat<TT, FT, CT>& lm_tMat<TT, FT, CT>::cInsert(const size_t n,
-                                                  const tArray& inp) noexcept {
+lm_tMat<TT, FT, CT> &lm_tMat<TT, FT, CT>::cInsert(const size_t n,
+                                                  const tArray &inp) noexcept {
   if (inp.ptr() != this) {
     cShift(n, 1);
     cAt(n) = inp;
@@ -267,8 +281,8 @@ lm_tMat<TT, FT, CT>& lm_tMat<TT, FT, CT>::cInsert(const size_t n,
     return cInsert(n, tMat(inp));
 }
 template <class TT, class FT, class CT>
-lm_tMat<TT, FT, CT>& lm_tMat<TT, FT, CT>::cInsert(const size_t n,
-                                                  const tMat& inp) noexcept {
+lm_tMat<TT, FT, CT> &lm_tMat<TT, FT, CT>::cInsert(const size_t n,
+                                                  const tMat &inp) noexcept {
   if (inp.ptr() != this) {
     cShift(n, inp.N());
     return set(inp, 0, n);
@@ -276,9 +290,9 @@ lm_tMat<TT, FT, CT>& lm_tMat<TT, FT, CT>::cInsert(const size_t n,
     return cInsert(n, tMat(inp));
 }
 template <class TT, class FT, class CT>
-lm_tMat<TT, FT, CT>& lm_tMat<TT, FT, CT>::set(
-    const tMat& inp, const std::vector<size_t>& m,
-    const std::vector<size_t>& n) noexcept {
+lm_tMat<TT, FT, CT> &
+lm_tMat<TT, FT, CT>::set(const tMat &inp, const std::vector<size_t> &m,
+                         const std::vector<size_t> &n) noexcept {
   if (!m.size() && !n.size()) {
     assert(msize(*this) == msize(inp));
     return *this = inp;
@@ -288,7 +302,8 @@ lm_tMat<TT, FT, CT>& lm_tMat<TT, FT, CT>::set(
     assert(std::all_of(n.begin(), n.end(), [&](size_t i) { return i < N(); }));
 
     auto j = inp.ccBegin();
-    for (size_t i = 0; i != inp.N(); ++i, ++j) cAt(n[i]) = *j;
+    for (size_t i = 0; i != inp.N(); ++i, ++j)
+      cAt(n[i]) = *j;
     return *this;
   }
   if (!n.size()) {
@@ -296,7 +311,8 @@ lm_tMat<TT, FT, CT>& lm_tMat<TT, FT, CT>::set(
     assert(std::all_of(m.begin(), m.end(), [&](size_t i) { return i < M(); }));
 
     auto j = inp.crBegin();
-    for (size_t i = 0; i != inp.M(); ++i, ++j) rAt(m[i]) = *j;
+    for (size_t i = 0; i != inp.M(); ++i, ++j)
+      rAt(m[i]) = *j;
     return *this;
   }
 
@@ -307,11 +323,12 @@ lm_tMat<TT, FT, CT>& lm_tMat<TT, FT, CT>::set(
 
   auto ii = inp.cbegin();
   for (auto j : n)
-    for (auto i : m) (*this)(i, j) = *ii++;
+    for (auto i : m)
+      (*this)(i, j) = *ii++;
   return *this;
 }
 template <class TT, class FT, class CT>
-lm_tMat<TT, FT, CT>& lm_tMat<TT, FT, CT>::set(const tMat& inp, const size_t m,
+lm_tMat<TT, FT, CT> &lm_tMat<TT, FT, CT>::set(const tMat &inp, const size_t m,
                                               const size_t n) noexcept {
   assert(m + inp.M() <= M());
   assert(n + inp.N() <= N());
@@ -323,8 +340,8 @@ lm_tMat<TT, FT, CT>& lm_tMat<TT, FT, CT>::set(const tMat& inp, const size_t m,
   return *this;
 }
 template <class TT, class FT, class CT>
-lm_tMat<TT, FT, CT>& lm_tMat<TT, FT, CT>::setl(const tMat& inp, const fArray& m,
-                                               const fArray& n) noexcept {
+lm_tMat<TT, FT, CT> &lm_tMat<TT, FT, CT>::setl(const tMat &inp, const fArray &m,
+                                               const fArray &n) noexcept {
   assert(m.L() == M());
   assert(n.L() == N());
   assert(inp.M() == size_t(sum(~~m)));
@@ -334,12 +351,13 @@ lm_tMat<TT, FT, CT>& lm_tMat<TT, FT, CT>::setl(const tMat& inp, const fArray& m,
   for (size_t j = 0; j != N(); ++j)
     if (n[j]) {
       for (size_t i = 0; i != M(); ++i)
-        if (m[i]) (*this)(i, j) = *ii++;
+        if (m[i])
+          (*this)(i, j) = *ii++;
     }
   return *this;
 }
 template <class TT, class FT, class CT>
-lm_tMat<TT, FT, CT>& lm_tMat<TT, FT, CT>::rRm(const size_t m) noexcept {
+lm_tMat<TT, FT, CT> &lm_tMat<TT, FT, CT>::rRm(const size_t m) noexcept {
   // remove row by moving the data in place, no dealloc
   assert(!this->empty());
   assert(m < M());
@@ -357,16 +375,18 @@ lm_tMat<TT, FT, CT>& lm_tMat<TT, FT, CT>::rRm(const size_t m) noexcept {
   return *this;
 }
 template <class TT, class FT, class CT>
-lm_tMat<TT, FT, CT>& lm_tMat<TT, FT, CT>::rRm(
-    const std::vector<size_t>& m) noexcept {
+lm_tMat<TT, FT, CT> &
+lm_tMat<TT, FT, CT>::rRm(const std::vector<size_t> &m) noexcept {
   // remove rows by moving the data in place, no dealloc or new alloc
-  if (m.empty()) return *this;
+  if (m.empty())
+    return *this;
   assert(std::is_sorted(m.begin(), m.end()));
   assert(std::all_of(m.begin(), m.end() - 1,
-                     [](const size_t& i) { return i != *(&i + 1); }));
+                     [](const size_t &i) { return i != *(&i + 1); }));
   assert(std::all_of(m.begin(), m.end(),
-                     [&](const size_t& i) { return i < M(); }));
-  if (m.size() == M()) return resize(0, N());
+                     [&](const size_t &i) { return i < M(); }));
+  if (m.size() == M())
+    return resize(0, N());
 
   std::vector<size_t> s;
   s.reserve(m.size());
@@ -401,7 +421,7 @@ lm_tMat<TT, FT, CT>& lm_tMat<TT, FT, CT>::rRm(
   return *this;
 }
 template <class TT, class FT, class CT>
-lm_tMat<TT, FT, CT>& lm_tMat<TT, FT, CT>::cRm(const size_t n) noexcept {
+lm_tMat<TT, FT, CT> &lm_tMat<TT, FT, CT>::cRm(const size_t n) noexcept {
   // remove col by moving the data in place, no dealloc
   assert(!this->empty());
   assert(n < N());
@@ -412,16 +432,18 @@ lm_tMat<TT, FT, CT>& lm_tMat<TT, FT, CT>::cRm(const size_t n) noexcept {
   return *this;
 }
 template <class TT, class FT, class CT>
-lm_tMat<TT, FT, CT>& lm_tMat<TT, FT, CT>::cRm(
-    const std::vector<size_t>& n) noexcept {
+lm_tMat<TT, FT, CT> &
+lm_tMat<TT, FT, CT>::cRm(const std::vector<size_t> &n) noexcept {
   // remove cols by moving the data in place, no dealloc or new alloc
-  if (n.empty()) return *this;
+  if (n.empty())
+    return *this;
   assert(std::is_sorted(n.begin(), n.end()));
   assert(std::all_of(n.begin(), n.end() - 1,
-                     [](const size_t& i) { return i != *(&i + 1); }));
+                     [](const size_t &i) { return i != *(&i + 1); }));
   assert(std::all_of(n.begin(), n.end(),
-                     [&](const size_t& i) { return i < N(); }));
-  if (n.size() == N()) return resize(0);
+                     [&](const size_t &i) { return i < N(); }));
+  if (n.size() == N())
+    return resize(0);
 
   size_t i;
   for (i = 0; i != n.size() - 1; ++i)
@@ -434,7 +456,7 @@ lm_tMat<TT, FT, CT>& lm_tMat<TT, FT, CT>::cRm(
   return *this;
 }
 template <class TT, class FT, class CT>
-lm_tMat<TT, FT, CT>& lm_tMat<TT, FT, CT>::dRm(const bool low) noexcept {
+lm_tMat<TT, FT, CT> &lm_tMat<TT, FT, CT>::dRm(const bool low) noexcept {
   // remove diagonal by moving the data in place, no dealloc or new alloc
   // if this is diagonal, parts may be added from the left or from below
   // if this has more rows than cols, parts must be added from the left
@@ -450,7 +472,8 @@ lm_tMat<TT, FT, CT>& lm_tMat<TT, FT, CT>::dRm(const bool low) noexcept {
   size_t l;
   if (N() > M() || (square() && low)) {
     // add parts from below
-    for (l = 1; l != M(); i += M(), ++l) memcpy(i - M(), i, l * sizeof(TT));
+    for (l = 1; l != M(); i += M(), ++l)
+      memcpy(i - M(), i, l * sizeof(TT));
     memmove(i - M(), i, (data() + this->L() - i) * sizeof(TT));
     --N_;
   } else {
@@ -463,15 +486,15 @@ lm_tMat<TT, FT, CT>& lm_tMat<TT, FT, CT>::dRm(const bool low) noexcept {
   return *this;
 }
 template <class TT, class FT, class CT>
-lm_tMat<TT, FT, CT>& lm_tMat<TT, FT, CT>::inv() noexcept {
+lm_tMat<TT, FT, CT> &lm_tMat<TT, FT, CT>::inv() noexcept {
   assert(square());
 
-  int* ipiv = new int[N()];
+  int *ipiv = new int[N()];
   int info;
   c_xgetrf(M(), M(), data(), M(), ipiv, &info);
   assert(!info);
 
-  TT* work = new TT[M()];
+  TT *work = new TT[M()];
   c_xgetri(M(), data(), M(), ipiv, work, M(), &info);
   assert(!info);
 
@@ -482,9 +505,11 @@ lm_tMat<TT, FT, CT>& lm_tMat<TT, FT, CT>::inv() noexcept {
 
 // conversion
 template <class TT, class FT, class CT>
-lm_tMat<TT, FT, CT> lm_tMat<TT, FT, CT>::get(
-    const std::vector<size_t>& m, const std::vector<size_t>& n) const noexcept {
-  if (!m.size() && !n.size()) return *this;
+lm_tMat<TT, FT, CT>
+lm_tMat<TT, FT, CT>::get(const std::vector<size_t> &m,
+                         const std::vector<size_t> &n) const noexcept {
+  if (!m.size() && !n.size())
+    return *this;
   if (!m.size()) {
     assert(std::all_of(n.begin(), n.end(), [&](size_t i) { return i < N(); }));
 
@@ -498,7 +523,8 @@ lm_tMat<TT, FT, CT> lm_tMat<TT, FT, CT>::get(
 
     tMat res(m.size(), N());
     for (size_t i = 0; i != res.N(); ++i)
-      for (size_t j = 0; j != res.M(); ++j) res(j, i) = (*this)(m[j], i);
+      for (size_t j = 0; j != res.M(); ++j)
+        res(j, i) = (*this)(m[j], i);
     return res;
   }
 
@@ -508,7 +534,8 @@ lm_tMat<TT, FT, CT> lm_tMat<TT, FT, CT>::get(
   tMat res(m.size(), n.size());
   auto r = res.begin();
   for (auto i : n)
-    for (auto j : m) *r++ = (*this)(j, i);
+    for (auto j : m)
+      *r++ = (*this)(j, i);
   return res;
 }
 template <class TT, class FT, class CT>
@@ -530,8 +557,8 @@ lm_tMat<TT, FT, CT> lm_tMat<TT, FT, CT>::get(const size_t m, const size_t n,
   return res;
 }
 template <class TT, class FT, class CT>
-lm_tMat<TT, FT, CT> lm_tMat<TT, FT, CT>::getl(const fArray& m,
-                                              const fArray& n) const noexcept {
+lm_tMat<TT, FT, CT> lm_tMat<TT, FT, CT>::getl(const fArray &m,
+                                              const fArray &n) const noexcept {
   assert(m.col());
   assert(m.M() == M());
   assert(n.row());
@@ -544,7 +571,8 @@ lm_tMat<TT, FT, CT> lm_tMat<TT, FT, CT>::getl(const fArray& m,
   for (size_t j = 0; j != N(); ++j)
     if (bool(n[j])) {
       for (size_t i = 0; i != M(); ++i)
-        if (bool(m[i])) res(ri++, rj) = (*this)(i, j);
+        if (bool(m[i]))
+          res(ri++, rj) = (*this)(i, j);
       ri = 0;
       ++rj;
     }
@@ -552,18 +580,20 @@ lm_tMat<TT, FT, CT> lm_tMat<TT, FT, CT>::getl(const fArray& m,
   return res;
 }
 template <class TT, class FT, class CT>
-lm_tMat<TT, FT, CT> lm_tMat<TT, FT, CT>::getl(const fMat& inp) const noexcept {
+lm_tMat<TT, FT, CT> lm_tMat<TT, FT, CT>::getl(const fMat &inp) const noexcept {
   assert(msize(*this) == msize(inp));
 
   size_t cnt = 0;
   for (auto i : inp)
-    if (i) ++cnt;
+    if (i)
+      ++cnt;
   tMat res(cnt, 1);
 
   auto i = this->cbegin();
   auto r = res.begin();
   for (auto j = inp.cbegin(), e = inp.cend(); j != e; ++j, ++i)
-    if (*j) *r++ = *i;
+    if (*j)
+      *r++ = *i;
 
   return res;
 }
@@ -622,7 +652,8 @@ lm_tMat<TT, FT, CT> lm_tMat<TT, FT, CT>::cWOGet(const size_t n) const noexcept {
 }
 template <class TT, class FT, class CT>
 lm_tMat<TT, FT, CT> lm_tMat<TT, FT, CT>::upper() const noexcept {
-  if (this->empty()) return tMat(0, 1);
+  if (this->empty())
+    return tMat(0, 1);
 
   const size_t n = M() < N() ? M() : N();
   const size_t d = M() < N() ? N() - M() : 0;
@@ -637,13 +668,15 @@ lm_tMat<TT, FT, CT> lm_tMat<TT, FT, CT>::upper() const noexcept {
     sitr += M();
     ++l;
   }
-  if (d) memcpy(ditr, sitr, d * M() * sizeof(TT));
+  if (d)
+    memcpy(ditr, sitr, d * M() * sizeof(TT));
 
   return res;
 }
 template <class TT, class FT, class CT>
 lm_tMat<TT, FT, CT> lm_tMat<TT, FT, CT>::lower() const noexcept {
-  if (this->empty()) return tMat(0, 1);
+  if (this->empty())
+    return tMat(0, 1);
 
   const size_t n = M() < N() ? M() : N();
   const size_t d = M() < N() ? 0 : M() - N();
@@ -665,7 +698,8 @@ lm_tMat<TT, FT, CT> lm_tMat<TT, FT, CT>::lower() const noexcept {
 // logical
 template <class TT, class FT, class CT>
 bool lm_tMat<TT, FT, CT>::permutation() const noexcept {
-  if (!square()) return false;
+  if (!square())
+    return false;
 
   // bools to check each 1 is in unique row
   // one extra space to check if there is a 1
@@ -679,16 +713,18 @@ bool lm_tMat<TT, FT, CT>::permutation() const noexcept {
         nf[m] = nf.back() = false;
         continue;
       }
-      if (lm__::ops::nz_s(*i)) return false;
+      if (lm__::ops::nz_s(*i))
+        return false;
     }
-    if (nf.back()) return false;
+    if (nf.back())
+      return false;
   }
   return std::none_of(nf.begin(), nf.end(), [](const bool i) { return i; });
 }
 
 // printing
 template <class TT, class FT, class CT>
-void lm_tMat<TT, FT, CT>::writeToFile(const std::string& fileName,
+void lm_tMat<TT, FT, CT>::writeToFile(const std::string &fileName,
                                       const bool noheader) const {
   // open file
   std::ofstream file;
@@ -704,14 +740,14 @@ void lm_tMat<TT, FT, CT>::writeToFile(const std::string& fileName,
 
   // write dimensions
   uint64_t dat = 2;
-  file.write((char*)&dat, sizeof(uint64_t));
+  file.write((char *)&dat, sizeof(uint64_t));
   dat = this->M();
-  file.write((char*)&dat, sizeof(uint64_t));
+  file.write((char *)&dat, sizeof(uint64_t));
   dat = this->N();
-  file.write((char*)&dat, sizeof(uint64_t));
+  file.write((char *)&dat, sizeof(uint64_t));
 
   // write matrix data
-  file.write((char*)data(), this->L() * sizeof(TT));
+  file.write((char *)data(), this->L() * sizeof(TT));
 
   file.flush();
   file.close();
@@ -719,7 +755,7 @@ void lm_tMat<TT, FT, CT>::writeToFile(const std::string& fileName,
 
 // member functions
 template <class TT, class FT, class CT>
-void lm_tMat<TT, FT, CT>::readText_(const std::string& fileName) {
+void lm_tMat<TT, FT, CT>::readText_(const std::string &fileName) {
   // open file
   std::ifstream file;
   file.open(fileName);
@@ -737,7 +773,8 @@ void lm_tMat<TT, FT, CT>::readText_(const std::string& fileName) {
   while (std::getline(file, line)) {
     // tokenize
     std::sregex_token_iterator i(line.begin(), line.end(), r, -1), e;
-    if (!i->length()) ++i;  // line starts with delimiter
+    if (!i->length())
+      ++i; // line starts with delimiter
 
     // check word count
     if (!Lc)
@@ -753,21 +790,22 @@ void lm_tMat<TT, FT, CT>::readText_(const std::string& fileName) {
     ++Lc;
   }
   file.close();
-  if (!Lc) return;
+  if (!Lc)
+    return;
 
   // all good, allocate memory and read data
   file.open(fileName);
   try {
     *this = tMat(Lc, Wc);
     parse_(file);
-  } catch (const std::exception& err) {
+  } catch (const std::exception &err) {
     file.close();
     throw(std::invalid_argument("file \'" + fileName + "\', " + err.what()));
   }
   file.close();
 }
 template <class TT, class FT, class CT>
-void lm_tMat<TT, FT, CT>::readData_(std::ifstream& file,
+void lm_tMat<TT, FT, CT>::readData_(std::ifstream &file,
                                     const std::function<TT(std::string)> pnfw) {
   assert(file.good());
   assert(!this->empty());
@@ -780,11 +818,13 @@ void lm_tMat<TT, FT, CT>::readData_(std::ifstream& file,
   for (size_t m = 0; m != M(); ++m) {
     // read line, check for eof
     std::getline(file, line);
-    if (!file) throw(std::invalid_argument("unexpected eof"));
+    if (!file)
+      throw(std::invalid_argument("unexpected eof"));
 
     // tokenize line
     std::sregex_token_iterator i(line.begin(), line.end(), rl, -1), e;
-    if (!i->length()) ++i;  // line starts with delimiter
+    if (!i->length())
+      ++i; // line starts with delimiter
     if (size_t(std::distance(i, e)) < N())
       throw(std::invalid_argument("number of words on line " +
                                   std::to_string(m + 1) + " is " +

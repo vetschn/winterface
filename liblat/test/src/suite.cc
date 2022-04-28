@@ -33,7 +33,7 @@
 #include "test_omen_prepper_all.h"
 #include "test_parser_all.h"
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
   CppUnit::TextUi::TestRunner runner;
 
   // aux
@@ -86,7 +86,8 @@ int main(int argc, char** argv) {
     //		for (size_t i=0; i!=100000; ++i)
     runner.run("", false, true, false);
   else
-    for (int i = 1; i < argc; ++i) runner.run(argv[i], false, true, false);
+    for (int i = 1; i < argc; ++i)
+      runner.run(argv[i], false, true, false);
 
   return 0;
 }

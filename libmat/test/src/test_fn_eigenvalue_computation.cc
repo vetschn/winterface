@@ -41,7 +41,7 @@ void test_fn_eigenvalue_computation::test_eig() {
         2);
     auto tMat2 = eig(tMat1);
     std::sort(tMat2.begin(), tMat2.end(),
-              [](const CPX__& a, const CPX__& b) { return ops::lt(a, b); });
+              [](const CPX__ &a, const CPX__ &b) { return ops::lt(a, b); });
     const cMat sol = {CPX__(0.438447187, 0.438447187),
                       CPX__(4.56155281, 4.56155281)};
 
@@ -300,12 +300,12 @@ void test_fn_eigenvalue_computation::test_eighv() {
 }
 
 // test id
-const char* test_fn_eigenvalue_computation::test_id() noexcept {
+const char *test_fn_eigenvalue_computation::test_id() noexcept {
   return "test_fn_eigenvalue_computation";
 }
 
-CppUnit::Test* test_fn_eigenvalue_computation::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_fn_eigenvalue_computation::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_fn_eigenvalue_computation>(
       "test_eig", &test_fn_eigenvalue_computation::test_eig));

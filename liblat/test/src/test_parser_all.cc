@@ -83,15 +83,17 @@ void test_parser_all::test_tParser() {
     const size_t N = genRndST(l, u);
     const auto rnd = rand<fMat>(1, N, 97.0, 122.99);
     res.reserve(N);
-    for (const auto i : rnd) res.push_back(char(i));
+    for (const auto i : rnd)
+      res.push_back(char(i));
     return res;
   };
-  const auto rndStrings = [&rndString](
-                              const size_t N, const size_t l,
-                              const size_t u) -> std::vector<std::string> {
+  const auto rndStrings =
+      [&rndString](const size_t N, const size_t l,
+                   const size_t u) -> std::vector<std::string> {
     std::vector<std::string> res;
     res.reserve(genRndST(1, N));
-    while (res.size() < res.capacity()) res.push_back(rndString(l, u));
+    while (res.size() < res.capacity())
+      res.push_back(rndString(l, u));
     return res;
   };
   const auto rndDouble = [](const double l, const double u) -> double {
@@ -104,19 +106,22 @@ void test_parser_all::test_tParser() {
   const auto rndDoubles = [](const size_t sl, const size_t su, const double l,
                              const double u) -> std::vector<double> {
     std::vector<double> res(genRndST(sl, su));
-    for (auto& i : res) i = genRndDouble(l, u);
+    for (auto &i : res)
+      i = genRndDouble(l, u);
     return res;
   };
   const auto rndUints = [](const size_t sl, const size_t su, const size_t l,
                            const size_t u) -> std::vector<size_t> {
     std::vector<size_t> res(genRndST(sl, su));
-    for (auto& i : res) i = genRndST(l, u);
+    for (auto &i : res)
+      i = genRndST(l, u);
     return res;
   };
   const auto rndBools = [](const size_t sl,
                            const size_t su) -> std::vector<bool> {
     std::vector<bool> res(genRndST(sl, su));
-    for (size_t i = 0; i != res.size(); ++i) res[i] = genRndST(0, 1);
+    for (size_t i = 0; i != res.size(); ++i)
+      res[i] = genRndST(0, 1);
     return res;
   };
   const auto rndMat = [](const size_t lm, const size_t um, const size_t ln,
@@ -349,12 +354,13 @@ void test_parser_all::test_screenFile() {
   const std::string path = "data/scripts/";
 
   // dump file into stringstream lambda
-  const auto dfsstr = [](const std::string& fileName) -> std::stringstream {
+  const auto dfsstr = [](const std::string &fileName) -> std::stringstream {
     auto file = aux::openFile<std::ifstream>(fileName);
 
     std::string line;
     std::stringstream res;
-    while (std::getline(file, line)) res << line << "\n";
+    while (std::getline(file, line))
+      res << line << "\n";
     file.close();
     return res;
   };
@@ -397,11 +403,11 @@ void test_parser_all::test_screenFile() {
       std::sregex_token_iterator i(filestr.begin(), filestr.end(), rgx, -1), e;
 
       CPPUNIT_ASSERT(std::none_of(keys_rm.cbegin(), keys_rm.cend(),
-                                  [i, e](const std::string& key) -> bool {
+                                  [i, e](const std::string &key) -> bool {
                                     return std::find(i, e, key) != e;
                                   }));
       CPPUNIT_ASSERT(std::all_of(keys_no_rm.cbegin(), keys_no_rm.cend(),
-                                 [i, e](const std::string& key) -> bool {
+                                 [i, e](const std::string &key) -> bool {
                                    return std::find(i, e, key) != e;
                                  }));
     }
@@ -420,10 +426,10 @@ void test_parser_all::test_screenFile() {
   }
 }
 
-const char* test_parser_all::test_id() noexcept { return "test_parser_all"; }
+const char *test_parser_all::test_id() noexcept { return "test_parser_all"; }
 
-CppUnit::Test* test_parser_all::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_parser_all::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_parser_all>(
       "test_tParser", &test_parser_all::test_tParser));

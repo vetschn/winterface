@@ -24,7 +24,8 @@ void test_cell_modification::test_stress() {
   const auto tCell2 = tCell1;
 
   fMat S;
-  do S = rand<fMat>(D, D);
+  do
+    S = rand<fMat>(D, D);
   while (det(S) <= mtol());
 
   tCell1.stress(S);
@@ -151,7 +152,8 @@ void test_cell_modification::test_scale() {
   // single double version
   {
     double f;
-    do f = genRndDouble(-2.0, 2.0);
+    do
+      f = genRndDouble(-2.0, 2.0);
     while (std::abs(f) < 1e-3);
 
     tCell1.scale(f);
@@ -165,7 +167,8 @@ void test_cell_modification::test_scale() {
   // multiple double version
   {
     fMat f;
-    do f = rand<fMat>(D, 1, -2.0, 2.0);
+    do
+      f = rand<fMat>(D, 1, -2.0, 2.0);
     while (any(abs(f).lt(1e-3)));
 
     tCell1.scale(f);
@@ -232,7 +235,8 @@ void test_cell_modification::test_makePrimitive() {
 
     // check restricted dimensions are conserved
     const auto ri = inds(r);
-    for (const auto i : ri) CPPUNIT_ASSERT(tCell2.B().cAt(i) == NB.cAt(i));
+    for (const auto i : ri)
+      CPPUNIT_ASSERT(tCell2.B().cAt(i) == NB.cAt(i));
 
     tCell2.changeBasis(tCell1.B());
     CPPUNIT_ASSERT(tCell1 == tCell2);
@@ -261,7 +265,8 @@ void test_cell_modification::test_makePrimitive() {
 
     // check restricted dimensions are conserved
     const auto ri = inds(r);
-    for (const auto i : ri) CPPUNIT_ASSERT(tCell2.B().cAt(i) == NB.cAt(i));
+    for (const auto i : ri)
+      CPPUNIT_ASSERT(tCell2.B().cAt(i) == NB.cAt(i));
 
     // check new vectors are orthogonal to old ones
     const auto nri = ninds(r);
@@ -320,7 +325,8 @@ void test_cell_modification::test_diversify() {
   // no ts, enlarged cell
   {
     fMat C = randi<fMat>(D, D, -2, 2);
-    do C = randi<fMat>(D, D, -2, 2);
+    do
+      C = randi<fMat>(D, D, -2, 2);
     while (std::abs(det(C)) < mtol());
 
     auto tCell1 = genRandom(D).expand(C);
@@ -407,7 +413,8 @@ void test_cell_modification::test_collectivize() {
   // no ts, enlarged cell
   {
     fMat C = randi<fMat>(D, D, -2, 2);
-    do C = randi<fMat>(D, D, -2, 2);
+    do
+      C = randi<fMat>(D, D, -2, 2);
     while (std::abs(det(C)) < mtol());
 
     auto tCell1 = genRandom(D).expand(C);
@@ -435,7 +442,8 @@ void test_cell_modification::test_collectivize() {
     CPPUNIT_ASSERT_EQUAL(tCell2.N(), tCell1.N());
 
     size_t N = 0;
-    for (const auto t : ts) N += tCell2.Ntype(t);
+    for (const auto t : ts)
+      N += tCell2.Ntype(t);
     fMat rAp(tCell2.dim(), 0);
     rAp.reserve(N);
 
@@ -457,7 +465,8 @@ void test_cell_modification::test_collectivize() {
       auto tc = ts.cbegin();
       for (auto i2 = t2.cbegin(), i1 = t2.cbegin(), e2 = t2.cend(); i2 != e2;
            ++i2) {
-        if (*i2 == ts.front()) ++i1;
+        if (*i2 == ts.front())
+          ++i1;
         if (tc != ts.cend() && *i2 == *tc)
           ++tc;
         else {
@@ -470,7 +479,7 @@ void test_cell_modification::test_collectivize() {
         }
       }
 
-      for (const auto& ET : tCell1.equalTypes()) {
+      for (const auto &ET : tCell1.equalTypes()) {
         if (ET.size() == 1)
           CPPUNIT_ASSERT_EQUAL(tCell1.softstripId(tCell1.id(ET.front())),
                                tCell1.id(ET.front()));
@@ -497,11 +506,11 @@ void test_cell_modification::test_merge() {
     do {
       nAp += rand<fMat>(D, tCell1.N());
       nAp %= 1.0;
-    } while (std::any_of(
-        nAp.ccBegin(), nAp.ccEnd(), [&tCell1](const auto& i) -> bool {
-          return std::find(tCell1.ccBegin(), tCell1.ccEnd(), i) !=
-                 tCell1.ccEnd();
-        }));
+    } while (std::any_of(nAp.ccBegin(), nAp.ccEnd(),
+                         [&tCell1](const auto &i) -> bool {
+                           return std::find(tCell1.ccBegin(), tCell1.ccEnd(),
+                                            i) != tCell1.ccEnd();
+                         }));
     const ll_cell tCell3(tCell1.B(), std::move(nAp), tCell1.Ntype(),
                          tCell1.id());
 
@@ -534,15 +543,16 @@ void test_cell_modification::test_merge() {
 
     auto id_ = tCell1.id();
 
-    for (const auto& i : tCell2.id())
+    for (const auto &i : tCell2.id())
       if (tCell2.softstripId(i) != i)
         CPPUNIT_ASSERT(std::find(id_.cbegin(), id_.cend(), i) != id_.cend());
-    for (const auto& i : tCell3.id())
+    for (const auto &i : tCell3.id())
       if (tCell3.softstripId(i) != i)
         CPPUNIT_ASSERT(std::find(id_.cbegin(), id_.cend(), i) != id_.cend());
 
-    for (const auto& ET : tCell1.equalTypes()) {
-      if (ET.size() < 2) continue;
+    for (const auto &ET : tCell1.equalTypes()) {
+      if (ET.size() < 2)
+        continue;
       CPPUNIT_ASSERT(
           std::all_of(ET.cbegin(), ET.cend(), [&tCell1](const aT t) -> bool {
             return tCell1.softstripId(tCell1.id(t)) != tCell1.id(t);
@@ -551,12 +561,12 @@ void test_cell_modification::test_merge() {
   }
 }
 
-const char* test_cell_modification::test_id() noexcept {
+const char *test_cell_modification::test_id() noexcept {
   return "test_cell_modification";
 }
 
-CppUnit::Test* test_cell_modification::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_cell_modification::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_cell_modification>(
       "test_stress", &test_cell_modification::test_stress));

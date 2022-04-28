@@ -22,7 +22,7 @@ namespace ll__ {
 
 //! bond index pair class
 class i_i {
- public:
+public:
   /** @name constructors
    */
   /** constructor from indices
@@ -64,13 +64,13 @@ class i_i {
     return !(*this == rhs);
   }
 
- private:
+private:
   /** @name member variables
    */
-  size_t i1_;  //!< first index
-  size_t i2_;  //!< second index
+  size_t i1_; //!< first index
+  size_t i2_; //!< second index
 
- public:
+public:
   /** @name friends
    */
   //! streaming operator
@@ -87,7 +87,7 @@ class i_i {
 /** index pair including R vectors class
  */
 class i_i_R final : public i_i, public mat_b<fMat, fArray> {
- public:
+public:
   /** @name constructors
    */
   /** default constructor
@@ -133,7 +133,7 @@ class i_i_R final : public i_i, public mat_b<fMat, fArray> {
  * As such it does not contain an ll_cell.
  */
 class b_I : public mat_vec_b<fMat, fArray, std::vector<i_i>, i_i> {
- public:
+public:
   /** @name contructors
    */
   /** constructor from bonds and index pairs
@@ -143,7 +143,8 @@ class b_I : public mat_vec_b<fMat, fArray, std::vector<i_i>, i_i> {
   inline b_I(fMat bonds, std::vector<i_i> I) noexcept
       : mat_vec_b<fMat, fArray, std::vector<i_i>, i_i>(std::move(bonds),
                                                        std::move(I)) {
-    if (empty()) return;
+    if (empty())
+      return;
 
     // sort bonds
     const auto J = aux::sorted_order(ccBegin(), ccEnd(), lm__::vcmp);
@@ -154,7 +155,8 @@ class b_I : public mat_vec_b<fMat, fArray, std::vector<i_i>, i_i> {
     auto mi = mat_.cBegin(), mj = mat_.cBegin() + 1, me = mat_.cEnd();
     auto vi = vec_.begin(), vj = vec_.begin() + 1;
     for (; mi != me; mi = mj, ++mj, vi = vj, ++vj) {
-      while (mj != me && *mi == *mj) ++mj, ++vj;
+      while (mj != me && *mi == *mj)
+        ++mj, ++vj;
       const auto J = aux::sorted_order(vi, vj);
       aux::reorder(mi, J);
       aux::reorder(vi, J);
@@ -193,7 +195,7 @@ class b_I : public mat_vec_b<fMat, fArray, std::vector<i_i>, i_i> {
     return os;
   }
 };
-}  // namespace ll__
+} // namespace ll__
 
 /** Central bonds class. ll_bonds works in tandem with ll_cell, since the start
  * and ending indices correspond to the contents of a unit cell. A bond is
@@ -211,21 +213,21 @@ class b_I : public mat_vec_b<fMat, fArray, std::vector<i_i>, i_i> {
  */
 template <class ITYPE = ll__::i_i_R>
 class ll_bonds : public ll__::vec_cb<std::vector<ITYPE>, ITYPE> {
- public:
+public:
   /** @name types
    */
-  typedef lm__::fArray fArray;        //!< real array
-  typedef lm__::fCol fCol;            //!< real column
-  typedef lm__::fMat fMat;            //!< real matrix
-  typedef ll__::idv idv;              //!< identity string vector
-  typedef ll__::i_i i_i;              //!< index pair
-  typedef ll__::i_i_R i_i_R;          //!< index pair with R vectors
-  typedef ll__::b_I b_I;              //!< simple bonds
-  typedef ll__::c_fColItr c_fColItr;  //!< column const_iterator
+  typedef lm__::fArray fArray;       //!< real array
+  typedef lm__::fCol fCol;           //!< real column
+  typedef lm__::fMat fMat;           //!< real matrix
+  typedef ll__::idv idv;             //!< identity string vector
+  typedef ll__::i_i i_i;             //!< index pair
+  typedef ll__::i_i_R i_i_R;         //!< index pair with R vectors
+  typedef ll__::b_I b_I;             //!< simple bonds
+  typedef ll__::c_fColItr c_fColItr; //!< column const_iterator
   typedef typename std::vector<ITYPE>::const_iterator
-      vitr;  //!< iterator to bond entry
+      vitr; //!< iterator to bond entry
 
- public:
+public:
   /** @name constructors
    */
   //! default constructor
@@ -274,7 +276,8 @@ class ll_bonds : public ll__::vec_cb<std::vector<ITYPE>, ITYPE> {
 
               // bond length check
               const double bn = lm__::norm(b);
-              if (lm__::ops::z(bn) || lm__::ops::gt(bn, r)) return false;
+              if (lm__::ops::z(bn) || lm__::ops::gt(bn, r))
+                return false;
 
               // type check bond from I1 to I2
               {
@@ -409,7 +412,8 @@ class ll_bonds : public ll__::vec_cb<std::vector<ITYPE>, ITYPE> {
   inline std::vector<size_t> inds() const noexcept {
     std::vector<size_t> res;
     res.reserve(2 * this->size());
-    for (const auto &i : *this) res.push_back(i.i1()), res.push_back(i.i2());
+    for (const auto &i : *this)
+      res.push_back(i.i1()), res.push_back(i.i2());
     std::sort(res.begin(), res.end());
     res.resize(std::distance(res.begin(), std::unique(res.begin(), res.end())));
     return res;
@@ -430,7 +434,8 @@ class ll_bonds : public ll__::vec_cb<std::vector<ITYPE>, ITYPE> {
   inline std::vector<size_t> ind(const idv &id) const noexcept {
     std::vector<size_t> res;
     res.reserve(id.size());
-    for (const auto &s : id) res.push_back(ind(s));
+    for (const auto &s : id)
+      res.push_back(ind(s));
     return res;
   }
   //! returns the id string for an index
@@ -450,8 +455,10 @@ class ll_bonds : public ll__::vec_cb<std::vector<ITYPE>, ITYPE> {
     size_t res = 0;
     std::for_each(this->cbegin(), this->cend(),
                   [&res, ind](const auto &i) -> void {
-                    if (i.i1() == ind) res += i.N();
-                    if (i.i2() == ind) res += i.N();
+                    if (i.i1() == ind)
+                      res += i.N();
+                    if (i.i2() == ind)
+                      res += i.N();
                   });
     return res;
   }
@@ -472,14 +479,16 @@ class ll_bonds : public ll__::vec_cb<std::vector<ITYPE>, ITYPE> {
    */
   inline double radius() const noexcept {
     double res = 0.0;
-    if (this->empty()) return res;
+    if (this->empty())
+      return res;
 
     // strict radius from bond vectors
     for (auto i = this->cbegin(), ie = this->cend(); i != ie; ++i) {
       const auto b = this->bond(*i);
       for (auto r = i->ccBegin(), re = i->ccEnd(); r != re; ++r) {
         const double d = lm__::norm(cell().B().prod(*r + b));
-        if (res < d) res = d;
+        if (res < d)
+          res = d;
       }
     }
 
@@ -500,7 +509,8 @@ class ll_bonds : public ll__::vec_cb<std::vector<ITYPE>, ITYPE> {
         const auto m = lm__::nmax(lm__::abs(cell().B().prod(*b + bnd))).mat;
         auto mi = m.cbegin();
         for (auto ri = res.begin(), re = res.end(); ri != re; ++ri, ++mi)
-          if (*ri < *mi) *ri = *mi;
+          if (*ri < *mi)
+            *ri = *mi;
       }
     }
 
@@ -520,7 +530,8 @@ class ll_bonds : public ll__::vec_cb<std::vector<ITYPE>, ITYPE> {
       for (auto r = i->ccBegin(), re = i->ccEnd(); r != re; ++r) {
         const auto itr =
             std::lower_bound(res.ccBegin(), res.ccEnd(), *r, lm__::vcmp);
-        if (itr == res.ccEnd() || *itr != *r) res.cInsert(itr, *r);
+        if (itr == res.ccEnd() || *itr != *r)
+          res.cInsert(itr, *r);
       }
     res.shrink_to_fit();
     return res;
@@ -532,7 +543,8 @@ class ll_bonds : public ll__::vec_cb<std::vector<ITYPE>, ITYPE> {
   inline fMat range(const fMat &B) const noexcept {
     assert(B.M() == this->dim() && B.N() == this->dim());
     assert(lm__::rank(B) == this->dim());
-    if (this->empty()) return fMat(this->dim(), 0);
+    if (this->empty())
+      return fMat(this->dim(), 0);
 
     const fMat TRM = B.leftDivide(this->cell().B());
     fMat res(this->dim(), 0);
@@ -552,13 +564,15 @@ class ll_bonds : public ll__::vec_cb<std::vector<ITYPE>, ITYPE> {
         {
           const auto itr =
               std::lower_bound(res.ccBegin(), res.ccEnd(), p2_, lm__::vcmp);
-          if (itr == res.ccEnd() || *itr != p2_) res.cInsert(itr, p2_);
+          if (itr == res.ccEnd() || *itr != p2_)
+            res.cInsert(itr, p2_);
         }
         // insert -
         {
           const auto itr =
               std::lower_bound(res.ccBegin(), res.ccEnd(), -p2_, lm__::vcmp);
-          if (itr == res.ccEnd() || *itr != -p2_) res.cInsert(itr, -p2_);
+          if (itr == res.ccEnd() || *itr != -p2_)
+            res.cInsert(itr, -p2_);
         }
       }
     }
@@ -675,7 +689,8 @@ class ll_bonds : public ll__::vec_cb<std::vector<ITYPE>, ITYPE> {
    * @return a unit cell holding the bond centers as 'atoms'
    */
   inline ll_cell getBondCenters() const noexcept {
-    if (this->empty()) return ll_cell(cell().B());
+    if (this->empty())
+      return ll_cell(cell().B());
 
     fMat bc(dim(), 0);
     bc.reserve(this->cardinality() / 2);
@@ -685,7 +700,8 @@ class ll_bonds : public ll__::vec_cb<std::vector<ITYPE>, ITYPE> {
 
     // find centers
     for (auto i = this->cbegin(), ie = this->cend(); i != ie; ++i) {
-      if (i->i1() > i->i2()) continue;  // skip inverted partners
+      if (i->i1() > i->i2())
+        continue; // skip inverted partners
       const auto cpbc = cell().cAt(i->i1()) + this->bond(*i) * .5;
 
       // if i1==i2 inverted partners are among the 2nd half of R vectors
@@ -714,7 +730,8 @@ class ll_bonds : public ll__::vec_cb<std::vector<ITYPE>, ITYPE> {
           buff.resize(
               distance(buff.begin(), std::unique(buff.begin(), buff.end())));
           bid[(size_t)itr] = "";
-          for (const auto &s : buff) bid[(size_t)itr] += (s + "_");
+          for (const auto &s : buff)
+            bid[(size_t)itr] += (s + "_");
           bid[(size_t)itr].pop_back();
 
         } else {
@@ -732,7 +749,8 @@ class ll_bonds : public ll__::vec_cb<std::vector<ITYPE>, ITYPE> {
 
     // add parenthesis around ids with '_' in them
     for (auto &s : bid)
-      if (s.find('_') != std::string::npos) s = '(' + s + ')';
+      if (s.find('_') != std::string::npos)
+        s = '(' + s + ')';
 
     // return
     return ll_cell(cell().B(), std::move(bc), std::move(bid));
@@ -764,7 +782,8 @@ class ll_bonds : public ll__::vec_cb<std::vector<ITYPE>, ITYPE> {
   inline c_fColItr search(const vitr &itr, const fArray &b) const noexcept {
     assert(b.M() == this->dim());
     assert(b.N() == 1);
-    if (itr == this->cend()) return e();
+    if (itr == this->cend())
+      return e();
 
     const auto b_ = this->cell().B().leftDivide(b) - this->bond(*itr);
     lm__::set_mtol(tol_);
@@ -787,13 +806,13 @@ class ll_bonds : public ll__::vec_cb<std::vector<ITYPE>, ITYPE> {
   inline std::ostream &print(std::ostream &os,
                              const size_t mode = 0) const noexcept {
     switch (mode) {
-      case 0: {
-        for (const auto &i : *this)
-          os << i << "\nb:" << lm__::T(this->bond(i)) << "\n";
-      } break;
-      case 1: {
-        os << simple();
-      } break;
+    case 0: {
+      for (const auto &i : *this)
+        os << i << "\nb:" << lm__::T(this->bond(i)) << "\n";
+    } break;
+    case 1: {
+      os << simple();
+    } break;
     }
     return os;
   }
@@ -818,14 +837,14 @@ class ll_bonds : public ll__::vec_cb<std::vector<ITYPE>, ITYPE> {
     return inp.print(os);
   }
 
- protected:
+protected:
   /** @name member variables
    */
-  ll_cell cell_;                 //!< underlying unit cell
-  mutable double tol_ = WTOL__;  //!< querying tolerance
+  ll_cell cell_;                //!< underlying unit cell
+  mutable double tol_ = WTOL__; //!< querying tolerance
 };
 
-#endif  // _LL_BONDS_
+#endif // _LL_BONDS_
 
 /** @}
  */

@@ -10,8 +10,7 @@
 using namespace lm__;
 
 // assignment
-template <>
-cCol& cCol::operator=(const cArray& rhs) noexcept {
+template <> cCol &cCol::operator=(const cArray &rhs) noexcept {
   assert(this->L() == rhs.L());
   memcpy(this->data(), rhs.data(), M() * sizeof(CPX__));
   return *this;

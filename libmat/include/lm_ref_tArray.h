@@ -29,11 +29,11 @@
  */
 template <class TT, class FT, class CT, class RT>
 class lm_ref_tArray : public lm_tArray<TT, FT, CT> {
- public:
+public:
   /** @name types
    */
-  typedef lm_tArray<FT, FT, CT> fArray;  //!< a real array
-  typedef lm_tArray<CT, FT, CT> cArray;  //!< a complex array
+  typedef lm_tArray<FT, FT, CT> fArray; //!< a real array
+  typedef lm_tArray<CT, FT, CT> cArray; //!< a complex array
 
   /** @name constructors
    */
@@ -43,207 +43,207 @@ class lm_ref_tArray : public lm_tArray<TT, FT, CT> {
   /** @name logical
    */
   //! elementwise AND of this with a real number
-  inline RT& operator&=(const FT rhs) noexcept {
+  inline RT &operator&=(const FT rhs) noexcept {
     std::for_each(this->begin(), this->end(),
-                  [rhs](TT& i) { i = lm__::ops::and_s(i, rhs); });
-    return *static_cast<RT*>(this);
+                  [rhs](TT &i) { i = lm__::ops::and_s(i, rhs); });
+    return *static_cast<RT *>(this);
   }
   //! elementwise AND of this with a complex number
-  inline RT& operator&=(const CT& rhs) noexcept {
+  inline RT &operator&=(const CT &rhs) noexcept {
     std::for_each(this->begin(), this->end(),
-                  [&rhs](TT& i) { i = lm__::ops::and_s(i, rhs); });
-    return *static_cast<RT*>(this);
+                  [&rhs](TT &i) { i = lm__::ops::and_s(i, rhs); });
+    return *static_cast<RT *>(this);
   }
   //! elementwise AND of this with a real array
-  inline RT& operator&=(const fArray& rhs) noexcept {
+  inline RT &operator&=(const fArray &rhs) noexcept {
     assert(msize(*this) == msize(rhs));
     auto j = rhs.cbegin();
     std::for_each(this->begin(), this->end(),
-                  [&j](TT& i) { i = lm__::ops::and_s(i, *j++); });
-    return *static_cast<RT*>(this);
+                  [&j](TT &i) { i = lm__::ops::and_s(i, *j++); });
+    return *static_cast<RT *>(this);
   }
   //! elementwise AND of this with a complex array
-  inline RT& operator&=(const cArray& rhs) noexcept {
+  inline RT &operator&=(const cArray &rhs) noexcept {
     assert(msize(*this) == msize(rhs));
     auto j = rhs.cbegin();
     std::for_each(this->begin(), this->end(),
-                  [&j](TT& i) { i = lm__::ops::and_s(i, *j++); });
-    return *static_cast<RT*>(this);
+                  [&j](TT &i) { i = lm__::ops::and_s(i, *j++); });
+    return *static_cast<RT *>(this);
   }
   //! elementwise OR of this with a real number
-  inline RT& operator|=(const FT rhs) noexcept {
+  inline RT &operator|=(const FT rhs) noexcept {
     std::for_each(this->begin(), this->end(),
-                  [rhs](TT& i) { i = lm__::ops::or_s(i, rhs); });
-    return *static_cast<RT*>(this);
+                  [rhs](TT &i) { i = lm__::ops::or_s(i, rhs); });
+    return *static_cast<RT *>(this);
   }
   //! elementwise OR of this with a complex number
-  inline RT& operator|=(const CT& rhs) noexcept {
+  inline RT &operator|=(const CT &rhs) noexcept {
     std::for_each(this->begin(), this->end(),
-                  [&rhs](TT& i) { i = lm__::ops::or_s(i, rhs); });
-    return *static_cast<RT*>(this);
+                  [&rhs](TT &i) { i = lm__::ops::or_s(i, rhs); });
+    return *static_cast<RT *>(this);
   }
   //! elementwise OR of this with a real array
-  inline RT& operator|=(const fArray& rhs) noexcept {
+  inline RT &operator|=(const fArray &rhs) noexcept {
     assert(msize(*this) == msize(rhs));
     auto j = rhs.cbegin();
     std::for_each(this->begin(), this->end(),
-                  [&j](TT& i) { i = lm__::ops::or_s(i, *j++); });
-    return *static_cast<RT*>(this);
+                  [&j](TT &i) { i = lm__::ops::or_s(i, *j++); });
+    return *static_cast<RT *>(this);
   }
   //! elementwise OR of this with a complex array
-  inline RT& operator|=(const cArray& rhs) noexcept {
+  inline RT &operator|=(const cArray &rhs) noexcept {
     assert(msize(*this) == msize(rhs));
     auto j = rhs.cbegin();
     std::for_each(this->begin(), this->end(),
-                  [&j](TT& i) { i = lm__::ops::or_s(i, *j++); });
-    return *static_cast<RT*>(this);
+                  [&j](TT &i) { i = lm__::ops::or_s(i, *j++); });
+    return *static_cast<RT *>(this);
   }
 
   /** @name elementwise arithmetic
    */
   //! this + a real number
-  inline RT& operator+=(const FT rhs) noexcept {
+  inline RT &operator+=(const FT rhs) noexcept {
     std::for_each(this->begin(), this->end(),
-                  [rhs](TT& i) { lm__::ops::plusEq(i, rhs); });
-    return *static_cast<RT*>(this);
+                  [rhs](TT &i) { lm__::ops::plusEq(i, rhs); });
+    return *static_cast<RT *>(this);
   }
   //! this + a complex number
-  inline RT& operator+=(const CT& rhs) noexcept {
+  inline RT &operator+=(const CT &rhs) noexcept {
     std::for_each(this->begin(), this->end(),
-                  [rhs](TT& i) { lm__::ops::plusEq(i, rhs); });
-    return *static_cast<RT*>(this);
+                  [rhs](TT &i) { lm__::ops::plusEq(i, rhs); });
+    return *static_cast<RT *>(this);
   }
   //! elementwise this + a real array
-  inline RT& operator+=(const fArray& rhs) noexcept {
+  inline RT &operator+=(const fArray &rhs) noexcept {
     assert(msize(*this) == msize(rhs));
     auto j = rhs.begin();
     std::for_each(this->begin(), this->end(),
-                  [&j](TT& i) { lm__::ops::plusEq(i, *j++); });
-    return *static_cast<RT*>(this);
+                  [&j](TT &i) { lm__::ops::plusEq(i, *j++); });
+    return *static_cast<RT *>(this);
   }
   //! elementwise this + a complex array
-  inline RT& operator+=(const cArray& rhs) noexcept {
+  inline RT &operator+=(const cArray &rhs) noexcept {
     assert(msize(*this) == msize(rhs));
     auto j = rhs.begin();
     std::for_each(this->begin(), this->end(),
-                  [&j](TT& i) { lm__::ops::plusEq(i, *j++); });
-    return *static_cast<RT*>(this);
+                  [&j](TT &i) { lm__::ops::plusEq(i, *j++); });
+    return *static_cast<RT *>(this);
   }
   //! this - a real number
-  inline RT& operator-=(const FT rhs) noexcept {
+  inline RT &operator-=(const FT rhs) noexcept {
     std::for_each(this->begin(), this->end(),
-                  [rhs](TT& i) { lm__::ops::minusEq(i, rhs); });
-    return *static_cast<RT*>(this);
+                  [rhs](TT &i) { lm__::ops::minusEq(i, rhs); });
+    return *static_cast<RT *>(this);
   }
   //! this - a complex number
-  inline RT& operator-=(const CT& rhs) noexcept {
+  inline RT &operator-=(const CT &rhs) noexcept {
     std::for_each(this->begin(), this->end(),
-                  [rhs](TT& i) { lm__::ops::minusEq(i, rhs); });
-    return *static_cast<RT*>(this);
+                  [rhs](TT &i) { lm__::ops::minusEq(i, rhs); });
+    return *static_cast<RT *>(this);
   }
   //! elementwise this - a real array
-  inline RT& operator-=(const fArray& rhs) noexcept {
+  inline RT &operator-=(const fArray &rhs) noexcept {
     assert(msize(*this) == msize(rhs));
     auto j = rhs.begin();
     std::for_each(this->begin(), this->end(),
-                  [&j](TT& i) { lm__::ops::minusEq(i, *j++); });
-    return *static_cast<RT*>(this);
+                  [&j](TT &i) { lm__::ops::minusEq(i, *j++); });
+    return *static_cast<RT *>(this);
   }
   //! elementwise this - a complex array
-  inline RT& operator-=(const cArray& rhs) noexcept {
+  inline RT &operator-=(const cArray &rhs) noexcept {
     assert(msize(*this) == msize(rhs));
     auto j = rhs.begin();
     std::for_each(this->begin(), this->end(),
-                  [&j](TT& i) { lm__::ops::minusEq(i, *j++); });
-    return *static_cast<RT*>(this);
+                  [&j](TT &i) { lm__::ops::minusEq(i, *j++); });
+    return *static_cast<RT *>(this);
   }
   //! this * a real number
-  inline RT& operator*=(const FT rhs) noexcept {
+  inline RT &operator*=(const FT rhs) noexcept {
     std::for_each(this->begin(), this->end(),
-                  [rhs](TT& i) { lm__::ops::prodEq(i, rhs); });
-    return *static_cast<RT*>(this);
+                  [rhs](TT &i) { lm__::ops::prodEq(i, rhs); });
+    return *static_cast<RT *>(this);
   }
   //! this * a complex number
-  inline RT& operator*=(const CT& rhs) noexcept {
+  inline RT &operator*=(const CT &rhs) noexcept {
     std::for_each(this->begin(), this->end(),
-                  [rhs](TT& i) { lm__::ops::prodEq(i, rhs); });
-    return *static_cast<RT*>(this);
+                  [rhs](TT &i) { lm__::ops::prodEq(i, rhs); });
+    return *static_cast<RT *>(this);
   }
   //! elementwise this * a real array
-  inline RT& operator*=(const fArray& rhs) noexcept {
+  inline RT &operator*=(const fArray &rhs) noexcept {
     assert(msize(*this) == msize(rhs));
     auto j = rhs.begin();
     std::for_each(this->begin(), this->end(),
-                  [&j](TT& i) { lm__::ops::prodEq(i, *j++); });
-    return *static_cast<RT*>(this);
+                  [&j](TT &i) { lm__::ops::prodEq(i, *j++); });
+    return *static_cast<RT *>(this);
   }
   //! elementwise this * a complex array
-  inline RT& operator*=(const cArray& rhs) noexcept {
+  inline RT &operator*=(const cArray &rhs) noexcept {
     assert(msize(*this) == msize(rhs));
     auto j = rhs.begin();
     std::for_each(this->begin(), this->end(),
-                  [&j](TT& i) { lm__::ops::prodEq(i, *j++); });
-    return *static_cast<RT*>(this);
+                  [&j](TT &i) { lm__::ops::prodEq(i, *j++); });
+    return *static_cast<RT *>(this);
   }
   //! this / a real number
-  inline RT& operator/=(const FT rhs) noexcept {
+  inline RT &operator/=(const FT rhs) noexcept {
     std::for_each(this->begin(), this->end(),
-                  [rhs](TT& i) { lm__::ops::divEq(i, rhs); });
-    return *static_cast<RT*>(this);
+                  [rhs](TT &i) { lm__::ops::divEq(i, rhs); });
+    return *static_cast<RT *>(this);
   }
   //! this / a complex number
-  inline RT& operator/=(const CT& rhs) noexcept {
+  inline RT &operator/=(const CT &rhs) noexcept {
     std::for_each(this->begin(), this->end(),
-                  [rhs](TT& i) { lm__::ops::divEq(i, rhs); });
-    return *static_cast<RT*>(this);
+                  [rhs](TT &i) { lm__::ops::divEq(i, rhs); });
+    return *static_cast<RT *>(this);
   }
   //! elementwise this / a real array
-  inline RT& operator/=(const fArray& rhs) noexcept {
+  inline RT &operator/=(const fArray &rhs) noexcept {
     assert(msize(*this) == msize(rhs));
     auto j = rhs.begin();
     std::for_each(this->begin(), this->end(),
-                  [&j](TT& i) { lm__::ops::divEq(i, *j++); });
-    return *static_cast<RT*>(this);
+                  [&j](TT &i) { lm__::ops::divEq(i, *j++); });
+    return *static_cast<RT *>(this);
   }
   //! elementwise this / a complex array
-  inline RT& operator/=(const cArray& rhs) noexcept {
+  inline RT &operator/=(const cArray &rhs) noexcept {
     assert(msize(*this) == msize(rhs));
     auto j = rhs.begin();
     std::for_each(this->begin(), this->end(),
-                  [&j](TT& i) { lm__::ops::divEq(i, *j++); });
-    return *static_cast<RT*>(this);
+                  [&j](TT &i) { lm__::ops::divEq(i, *j++); });
+    return *static_cast<RT *>(this);
   }
   //! this % a real number
-  inline RT& operator%=(const FT rhs) noexcept {
+  inline RT &operator%=(const FT rhs) noexcept {
     std::for_each(this->begin(), this->end(),
-                  [rhs](TT& i) { lm__::ops::modEq(i, rhs); });
-    return *static_cast<RT*>(this);
+                  [rhs](TT &i) { lm__::ops::modEq(i, rhs); });
+    return *static_cast<RT *>(this);
   }
   //! this % a complex number
-  inline RT& operator%=(const CT& rhs) noexcept {
+  inline RT &operator%=(const CT &rhs) noexcept {
     std::for_each(this->begin(), this->end(),
-                  [rhs](TT& i) { lm__::ops::modEq(i, rhs); });
-    return *static_cast<RT*>(this);
+                  [rhs](TT &i) { lm__::ops::modEq(i, rhs); });
+    return *static_cast<RT *>(this);
   }
   //! elementwise this % a real array
-  inline RT& operator%=(const fArray& rhs) noexcept {
+  inline RT &operator%=(const fArray &rhs) noexcept {
     assert(msize(*this) == msize(rhs));
     auto j = rhs.begin();
     std::for_each(this->begin(), this->end(),
-                  [&j](TT& i) { lm__::ops::modEq(i, *j++); });
-    return *static_cast<RT*>(this);
+                  [&j](TT &i) { lm__::ops::modEq(i, *j++); });
+    return *static_cast<RT *>(this);
   }
   //! elementwise this % a complex array
-  inline RT& operator%=(const cArray& rhs) noexcept {
+  inline RT &operator%=(const cArray &rhs) noexcept {
     assert(msize(*this) == msize(rhs));
     auto j = rhs.begin();
     std::for_each(this->begin(), this->end(),
-                  [&j](TT& i) { lm__::ops::modEq(i, *j++); });
-    return *static_cast<RT*>(this);
+                  [&j](TT &i) { lm__::ops::modEq(i, *j++); });
+    return *static_cast<RT *>(this);
   }
 };
 
-#endif  // _LM_REF_ARRAY_
+#endif // _LM_REF_ARRAY_
 
 /** @}
  */

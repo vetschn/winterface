@@ -135,8 +135,8 @@ void test_tCol_all<TT, FT, CT>::test_copy_algo_() {
 }
 
 template <class TT, class FT, class CT>
-CppUnit::Test* test_tCol_all<TT, FT, CT>::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_tCol_all<TT, FT, CT>::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_tCol_all>(
       "test_assign", &test_tCol_all<TT, FT, CT>::test_assign));

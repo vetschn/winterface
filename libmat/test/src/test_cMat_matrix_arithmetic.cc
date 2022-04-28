@@ -7,7 +7,7 @@
 
 // test id
 template <>
-const char*
+const char *
 test_tMat_matrix_arithmetic<CPX__, RE__, CPX__>::test_id() noexcept {
   return "test_cMat_matrix_arithmetic";
 }

@@ -10,7 +10,7 @@
 
 template <class TT, class FT, class CT>
 class test_tMat_data_access_itrs : public CppUnit::TestFixture {
- public:
+public:
   // types
   typedef lm_tMat<FT, FT, CT> fMat;
   typedef lm_tMat<CT, FT, CT> cMat;
@@ -24,11 +24,11 @@ class test_tMat_data_access_itrs : public CppUnit::TestFixture {
   void test_row_itr();
   void test_col_itr();
 
- protected:
-  static const char* test_id() noexcept;
+protected:
+  static const char *test_id() noexcept;
 
- public:
-  static CppUnit::Test* suite();
+public:
+  static CppUnit::Test *suite();
 };
 
-#endif  // _TEST_TMAT_DATA_ACCESS_
+#endif // _TEST_TMAT_DATA_ACCESS_

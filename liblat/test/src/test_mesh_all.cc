@@ -260,7 +260,8 @@ void test_mesh_all::test_mesh() {
 
   std::vector<size_t> D;
   D.reserve(ND);
-  while (D.capacity() != D.size()) D.push_back(genRndST(1, 5));
+  while (D.capacity() != D.size())
+    D.push_back(genRndST(1, 5));
 
   std::vector<size_t> maj(ND);
   {
@@ -404,7 +405,8 @@ void test_mesh_all::test_generators() {
 
     std::vector<size_t> N;
     N.reserve(N_);
-    while (N.size() != N.capacity()) N.push_back(genRndST(1, 5));
+    while (N.size() != N.capacity())
+      N.push_back(genRndST(1, 5));
 
     std::vector<size_t> maj(N_);
     std::iota(maj.begin(), maj.end(), 0);
@@ -484,10 +486,10 @@ void test_mesh_all::test_generators() {
   }
 }
 
-const char* test_mesh_all::test_id() noexcept { return "test_mesh_all"; }
+const char *test_mesh_all::test_id() noexcept { return "test_mesh_all"; }
 
-CppUnit::Test* test_mesh_all::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_mesh_all::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_mesh_all>(
       "test_itr", &test_mesh_all::test_itr));

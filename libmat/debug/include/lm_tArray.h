@@ -18,8 +18,7 @@
 #include "lm_ops.h"
 #include "lm_tItr.h"
 
-template <class TT, class FT, class CT>
-class lm_tMat;
+template <class TT, class FT, class CT> class lm_tMat;
 
 /**
  * The parent class for matrices, rows and columns.
@@ -40,24 +39,23 @@ class lm_tMat;
  * - FT: the real type \n
  * - CT: the complex type \n
  */
-template <class TT, class FT, class CT>
-class lm_tArray {
- public:
+template <class TT, class FT, class CT> class lm_tArray {
+public:
   /** @name types
    */
-  typedef lm_tItr<TT> tItr;      //!< iterator using custom increment
-  typedef lm_c_tItr<TT> c_tItr;  //!< const_iterator using custom increment
+  typedef lm_tItr<TT> tItr;     //!< iterator using custom increment
+  typedef lm_c_tItr<TT> c_tItr; //!< const_iterator using custom increment
   typedef std::reverse_iterator<tItr>
-      r_tItr;  //!< reverse iterator using custom increment
+      r_tItr; //!< reverse iterator using custom increment
   typedef std::reverse_iterator<c_tItr>
-      cr_tItr;  //!< reverse const_iterator using custom increment
-  typedef lm_tArray<TT, FT, CT> tArray;  //!< an array, either real or complex
-  typedef lm_tArray<FT, FT, CT> fArray;  //!< a real array
-  typedef lm_tArray<CT, FT, CT> cArray;  //!< a complex array
-  typedef lm_tMat<TT, FT, CT> tMat;      //!< a matrix, either real or complex
-  typedef lm_tMat<FT, FT, CT> fMat;      //!< a real matrix
-  typedef lm_tMat<CT, FT, CT> cMat;      //!< a complex matrix
-  typedef lm__::lm_size lm_size;         //!< a size struct holding M and N
+      cr_tItr; //!< reverse const_iterator using custom increment
+  typedef lm_tArray<TT, FT, CT> tArray; //!< an array, either real or complex
+  typedef lm_tArray<FT, FT, CT> fArray; //!< a real array
+  typedef lm_tArray<CT, FT, CT> cArray; //!< a complex array
+  typedef lm_tMat<TT, FT, CT> tMat;     //!< a matrix, either real or complex
+  typedef lm_tMat<FT, FT, CT> fMat;     //!< a real matrix
+  typedef lm_tMat<CT, FT, CT> cMat;     //!< a complex matrix
+  typedef lm__::lm_size lm_size;        //!< a size struct holding M and N
 
   /** @name initialization
    */
@@ -69,21 +67,21 @@ class lm_tArray {
   /** linear indexed data access
    * @param i linear index
    */
-  const TT& operator[](const size_t i) const noexcept {
+  const TT &operator[](const size_t i) const noexcept {
     assert(i < L());
     return data()[i * incr()];
   }
   /** linear indexed data access
    * @param i linear index
    */
-  inline TT& operator[](const size_t i) noexcept {
-    return const_cast<TT&>(static_cast<const tArray*>(this)->operator[](i));
+  inline TT &operator[](const size_t i) noexcept {
+    return const_cast<TT &>(static_cast<const tArray *>(this)->operator[](i));
   }
   /** indexed data access
    * @param m row index
    * @param n column index
    */
-  inline const TT& operator()(const size_t m, const size_t n) const noexcept {
+  inline const TT &operator()(const size_t m, const size_t n) const noexcept {
     assert(m < M());
     assert(n < N());
     return (*this)[n * M() + m];
@@ -92,27 +90,28 @@ class lm_tArray {
    * @param m row index
    * @param n column index
    */
-  inline TT& operator()(const size_t m, const size_t n) noexcept {
-    return const_cast<TT&>(static_cast<const tArray*>(this)->operator()(m, n));
+  inline TT &operator()(const size_t m, const size_t n) noexcept {
+    return const_cast<TT &>(
+        static_cast<const tArray *>(this)->operator()(m, n));
   }
 
   //! pointer to underlying data
-  virtual TT* data() noexcept = 0;
+  virtual TT *data() noexcept = 0;
   //! const pointer to underlying data
-  virtual const TT* data() const noexcept = 0;
+  virtual const TT *data() const noexcept = 0;
   //! pointer to the 'host' matrix
-  virtual tMat* ptr() noexcept = 0;
+  virtual tMat *ptr() noexcept = 0;
   //! const pointer to the 'host' matrix
-  virtual const tMat* ptr() const noexcept = 0;
+  virtual const tMat *ptr() const noexcept = 0;
 
   //! direct access to the first element
-  inline TT& front() noexcept { return (*this)[0]; }
+  inline TT &front() noexcept { return (*this)[0]; }
   //! const direct access to the first element
-  inline const TT& front() const noexcept { return (*this)[0]; }
+  inline const TT &front() const noexcept { return (*this)[0]; }
   //! direct access to the last element
-  inline TT& back() noexcept { return (*this)[this->L() - 1]; }
+  inline TT &back() noexcept { return (*this)[this->L() - 1]; }
   //! const direct access to the last element
-  inline const TT& back() const noexcept { return (*this)[this->L() - 1]; }
+  inline const TT &back() const noexcept { return (*this)[this->L() - 1]; }
 
   /** @name iterators
    */
@@ -275,7 +274,7 @@ class lm_tArray {
    */
   //! checks whether this is composed of only 0 and 1
   inline bool logical() const noexcept {
-    return !std::all_of(cbegin(), cend(), [](const TT& i) {
+    return !std::all_of(cbegin(), cend(), [](const TT &i) {
       return lm__::ops::nz_s(i) && lm__::ops::neq_s(i, FT(1.0));
     });
   }
@@ -284,25 +283,25 @@ class lm_tArray {
   //! returns the elementwise AND of this and a real number
   inline fMat operator&(const FT rhs) const noexcept { return copy() &= rhs; }
   //! returns the elementwise AND of this and a complex number
-  inline fMat operator&(const CT& rhs) const noexcept { return copy() &= rhs; }
+  inline fMat operator&(const CT &rhs) const noexcept { return copy() &= rhs; }
   //! returns the elementwise AND of this and a real array
-  inline fMat operator&(const fArray& rhs) const noexcept {
+  inline fMat operator&(const fArray &rhs) const noexcept {
     return copy() &= rhs;
   }
   //! returns the elementwise AND of this and a complex array
-  inline fMat operator&(const cArray& rhs) const noexcept {
+  inline fMat operator&(const cArray &rhs) const noexcept {
     return copy() &= rhs;
   }
   //! returns the elementwise OR of this and a real number
   inline fMat operator|(const FT rhs) const noexcept { return copy() |= rhs; }
   //! returns the elementwise OR of this and a complex number
-  inline fMat operator|(const CT& rhs) const noexcept { return copy() |= rhs; }
+  inline fMat operator|(const CT &rhs) const noexcept { return copy() |= rhs; }
   //! returns the elementwise OR of this and a real array
-  inline fMat operator|(const fArray& rhs) const noexcept {
+  inline fMat operator|(const fArray &rhs) const noexcept {
     return copy() |= rhs;
   }
   //! returns the elementwise OR of this and a complex array
-  inline fMat operator|(const cArray& rhs) const noexcept {
+  inline fMat operator|(const cArray &rhs) const noexcept {
     return copy() |= rhs;
   }
 
@@ -311,22 +310,23 @@ class lm_tArray {
   //! comparison of this to a real number
   inline bool operator==(const FT rhs) const noexcept {
     return std::all_of(cbegin(), cend(),
-                       [rhs](const TT& i) { return lm__::ops::eq(i, rhs); });
+                       [rhs](const TT &i) { return lm__::ops::eq(i, rhs); });
   }
   //! comparison of this to a complex number
-  inline bool operator==(const CT& rhs) const noexcept {
+  inline bool operator==(const CT &rhs) const noexcept {
     return std::all_of(cbegin(), cend(),
-                       [rhs](const TT& i) { return lm__::ops::eq(i, rhs); });
+                       [rhs](const TT &i) { return lm__::ops::eq(i, rhs); });
   }
   //! comparison of this to a real array
-  inline bool operator==(const fArray& rhs) const noexcept {
+  inline bool operator==(const fArray &rhs) const noexcept {
     return std::equal(
         cbegin(), cend(), rhs.cbegin(), rhs.cend(),
         [](const TT i, const FT j) { return lm__::ops::eq(i, j); });
   }
   //! comparison of this to a complex array
-  inline bool operator==(const cArray& rhs) const noexcept {
-    if (M() != rhs.M() || N() != rhs.N()) return false;
+  inline bool operator==(const cArray &rhs) const noexcept {
+    if (M() != rhs.M() || N() != rhs.N())
+      return false;
     return std::equal(
         cbegin(), cend(), rhs.cbegin(), rhs.cend(),
         [](const TT i, const CT j) { return lm__::ops::eq(i, j); });
@@ -336,50 +336,58 @@ class lm_tArray {
     return !(*this == rhs);
   }
   //! comparison of this to a complex number
-  inline bool operator!=(const CT& rhs) const noexcept {
+  inline bool operator!=(const CT &rhs) const noexcept {
     return !(*this == rhs);
   }
   //! comparison of this to a real array
-  inline bool operator!=(const fArray& rhs) const noexcept {
+  inline bool operator!=(const fArray &rhs) const noexcept {
     return !(*this == rhs);
   }
   //! comparison of this to a complex array
-  inline bool operator!=(const cArray& rhs) const noexcept {
+  inline bool operator!=(const cArray &rhs) const noexcept {
     return !(*this == rhs);
   }
   //! lexicographical compare to a real number
   inline bool operator<(const FT rhs) const noexcept {
     for (auto i = cbegin(), e = cend(); i != e; ++i) {
-      if (lm__::ops::lt(*i, rhs)) return true;
-      if (lm__::ops::gt(*i, rhs)) return false;
+      if (lm__::ops::lt(*i, rhs))
+        return true;
+      if (lm__::ops::gt(*i, rhs))
+        return false;
     }
     return false;
   }
   //! lexicographical comparison of this to a complex number
-  inline bool operator<(const CT& rhs) const noexcept {
+  inline bool operator<(const CT &rhs) const noexcept {
     for (auto i = cbegin(), e = cend(); i != e; ++i) {
-      if (lm__::ops::lt(*i, rhs)) return true;
-      if (lm__::ops::gt(*i, rhs)) return false;
+      if (lm__::ops::lt(*i, rhs))
+        return true;
+      if (lm__::ops::gt(*i, rhs))
+        return false;
     }
     return false;
   }
   //! lexicographical comparison of this to a real array
-  inline bool operator<(const fArray& rhs) const noexcept {
+  inline bool operator<(const fArray &rhs) const noexcept {
     assert(L() == rhs.L());
     auto j = rhs.cbegin();
     for (auto i = cbegin(), e = cend(); i != e; ++i, ++j) {
-      if (lm__::ops::lt(*i, *j)) return true;
-      if (lm__::ops::gt(*i, *j)) return false;
+      if (lm__::ops::lt(*i, *j))
+        return true;
+      if (lm__::ops::gt(*i, *j))
+        return false;
     }
     return false;
   }
   //! lexicographical comparison of this to a complex array
-  inline bool operator<(const cArray& rhs) const noexcept {
+  inline bool operator<(const cArray &rhs) const noexcept {
     assert(L() == rhs.L());
     auto j = rhs.cbegin();
     for (auto i = cbegin(), e = cend(); i != e; ++i, ++j) {
-      if (lm__::ops::lt(*i, *j)) return true;
-      if (lm__::ops::gt(*i, *j)) return false;
+      if (lm__::ops::lt(*i, *j))
+        return true;
+      if (lm__::ops::gt(*i, *j))
+        return false;
     }
     return false;
   }
@@ -388,15 +396,15 @@ class lm_tArray {
     return operator<(rhs) || operator==(rhs);
   }
   //! lexicographical comparison of this to a complex number
-  inline bool operator<=(const CT& rhs) const noexcept {
+  inline bool operator<=(const CT &rhs) const noexcept {
     return operator<(rhs) || operator==(rhs);
   }
   //! lexicographical comparison of this to a real array
-  inline bool operator<=(const fArray& rhs) const noexcept {
+  inline bool operator<=(const fArray &rhs) const noexcept {
     return operator<(rhs) || operator==(rhs);
   }
   //! lexicographical comparison of this to a complex array
-  inline bool operator<=(const cArray& rhs) const noexcept {
+  inline bool operator<=(const cArray &rhs) const noexcept {
     return operator<(rhs) || operator==(rhs);
   }
   //! lexicographical comparison of this to a real number
@@ -404,15 +412,15 @@ class lm_tArray {
     return !operator<=(rhs);
   }
   //! lexicographical comparison of this to a complex number
-  inline bool operator>(const CT& rhs) const noexcept {
+  inline bool operator>(const CT &rhs) const noexcept {
     return !operator<=(rhs);
   }
   //! lexicographical comparison of this to a real array
-  inline bool operator>(const fArray& rhs) const noexcept {
+  inline bool operator>(const fArray &rhs) const noexcept {
     return !operator<=(rhs);
   }
   //! lexicographical comparison of this to a complex array
-  inline bool operator>(const cArray& rhs) const noexcept {
+  inline bool operator>(const cArray &rhs) const noexcept {
     return !operator<=(rhs);
   }
   //! lexicographical comparison of this to a real number
@@ -420,15 +428,15 @@ class lm_tArray {
     return !operator<(rhs);
   }
   //! lexicographical comparison of this to a complex number
-  inline bool operator>=(const CT& rhs) const noexcept {
+  inline bool operator>=(const CT &rhs) const noexcept {
     return !operator<(rhs);
   }
   //! lexicographical comparison of this to a real array
-  inline bool operator>=(const fArray& rhs) const noexcept {
+  inline bool operator>=(const fArray &rhs) const noexcept {
     return !operator<(rhs);
   }
   //! lexicographical comparison of this to a complex array
-  inline bool operator>=(const cArray& rhs) const noexcept {
+  inline bool operator>=(const cArray &rhs) const noexcept {
     return !operator<(rhs);
   }
 
@@ -437,51 +445,51 @@ class lm_tArray {
   //! comparison of this to a real number
   fMat eq(const FT rhs) const noexcept;
   //! comparison of this to a complex number
-  fMat eq(const CT& rhs) const noexcept;
+  fMat eq(const CT &rhs) const noexcept;
   //! comparison of this to a real array
-  fMat eq(const fArray& rhs) const noexcept;
+  fMat eq(const fArray &rhs) const noexcept;
   //! comparison of this to a complex array
-  fMat eq(const cArray& rhs) const noexcept;
+  fMat eq(const cArray &rhs) const noexcept;
   //! comparison of this to a real number
   fMat neq(const FT rhs) const noexcept;
   //! comparison of this to a complex number
-  fMat neq(const CT& rhs) const noexcept;
+  fMat neq(const CT &rhs) const noexcept;
   //! comparison of this to a real array
-  fMat neq(const fArray& rhs) const noexcept;
+  fMat neq(const fArray &rhs) const noexcept;
   //! comparison of this to a complex array
-  fMat neq(const cArray& rhs) const noexcept;
+  fMat neq(const cArray &rhs) const noexcept;
   //! comparison of this to a real number
   fMat lt(const FT rhs) const noexcept;
   //! comparison of this to a complex number
-  fMat lt(const CT& rhs) const noexcept;
+  fMat lt(const CT &rhs) const noexcept;
   //! comparison of this to a real array
-  fMat lt(const fArray& rhs) const noexcept;
+  fMat lt(const fArray &rhs) const noexcept;
   //! comparison of this to a complex array
-  fMat lt(const cArray& rhs) const noexcept;
+  fMat lt(const cArray &rhs) const noexcept;
   //! comparison of this to a real number
   fMat leq(const FT rhs) const noexcept;
   //! comparison of this to a complex number
-  fMat leq(const CT& rhs) const noexcept;
+  fMat leq(const CT &rhs) const noexcept;
   //! comparison of this to a real array
-  fMat leq(const fArray& rhs) const noexcept;
+  fMat leq(const fArray &rhs) const noexcept;
   //! comparison of this to a complex array
-  fMat leq(const cArray& rhs) const noexcept;
+  fMat leq(const cArray &rhs) const noexcept;
   //! comparison of this to a real number
   fMat gt(const FT rhs) const noexcept;
   //! comparison of this to a complex number
-  fMat gt(const CT& rhs) const noexcept;
+  fMat gt(const CT &rhs) const noexcept;
   //! comparison of this to a real array
-  fMat gt(const fArray& rhs) const noexcept;
+  fMat gt(const fArray &rhs) const noexcept;
   //! comparison of this to a complex array
-  fMat gt(const cArray& rhs) const noexcept;
+  fMat gt(const cArray &rhs) const noexcept;
   //! comparison of this to a real number
   fMat geq(const FT rhs) const noexcept;
   //! comparison of this to a complex number
-  fMat geq(const CT& rhs) const noexcept;
+  fMat geq(const CT &rhs) const noexcept;
   //! comparison of this to a real array
-  fMat geq(const fArray& rhs) const noexcept;
+  fMat geq(const fArray &rhs) const noexcept;
   //! comparison of this to a complex array
-  fMat geq(const cArray& rhs) const noexcept;
+  fMat geq(const cArray &rhs) const noexcept;
 
   /** @name elementwise arithmetic
    */
@@ -490,61 +498,61 @@ class lm_tArray {
   //! returns this + a real number
   inline tMat operator+(const FT rhs) const noexcept { return copy() += rhs; }
   //! returns complex this + a complex number
-  inline cMat operator+(const CT& rhs) const noexcept { return ccopy() += rhs; }
+  inline cMat operator+(const CT &rhs) const noexcept { return ccopy() += rhs; }
   //! returns elementwise this + a real array
-  inline tMat operator+(const fArray& rhs) const noexcept {
+  inline tMat operator+(const fArray &rhs) const noexcept {
     return copy() += rhs;
   }
   //! returns complex elementwise this + a complex array
-  inline cMat operator+(const cArray& rhs) const noexcept {
+  inline cMat operator+(const cArray &rhs) const noexcept {
     return ccopy() += rhs;
   }
   //! returns this - a real number
   inline tMat operator-(const FT rhs) const noexcept { return copy() -= rhs; }
   //! returns complex this - a complex number
-  inline cMat operator-(const CT& rhs) const noexcept { return ccopy() -= rhs; }
+  inline cMat operator-(const CT &rhs) const noexcept { return ccopy() -= rhs; }
   //! returns elementwise this - a real array
-  inline tMat operator-(const fArray& rhs) const noexcept {
+  inline tMat operator-(const fArray &rhs) const noexcept {
     return copy() -= rhs;
   }
   //! returns complex elementwise this - a complex array
-  inline cMat operator-(const cArray& rhs) const noexcept {
+  inline cMat operator-(const cArray &rhs) const noexcept {
     return ccopy() -= rhs;
   }
   //! returns this * a real number
   inline tMat operator*(const FT rhs) const noexcept { return copy() *= rhs; }
   //! returns complex this * a complex number
-  inline cMat operator*(const CT& rhs) const noexcept { return ccopy() *= rhs; }
+  inline cMat operator*(const CT &rhs) const noexcept { return ccopy() *= rhs; }
   //! returns elementwise this * a real array
-  inline tMat operator*(const fArray& rhs) const noexcept {
+  inline tMat operator*(const fArray &rhs) const noexcept {
     return copy() *= rhs;
   }
   //! returns complex elementwise this * a complex array
-  inline cMat operator*(const cArray& rhs) const noexcept {
+  inline cMat operator*(const cArray &rhs) const noexcept {
     return ccopy() *= rhs;
   }
   //! returns this / a real number
   inline tMat operator/(const FT rhs) const noexcept { return copy() /= rhs; }
   //! returns complex this / a complex number
-  inline cMat operator/(const CT& rhs) const noexcept { return ccopy() /= rhs; }
+  inline cMat operator/(const CT &rhs) const noexcept { return ccopy() /= rhs; }
   //! returns elementwise this / a real array
-  inline tMat operator/(const fArray& rhs) const noexcept {
+  inline tMat operator/(const fArray &rhs) const noexcept {
     return copy() /= rhs;
   }
   //! returns complex elementwise this / a complex array
-  inline cMat operator/(const cArray& rhs) const noexcept {
+  inline cMat operator/(const cArray &rhs) const noexcept {
     return ccopy() /= rhs;
   }
   //! returns this % a real number
   inline tMat operator%(const FT rhs) const noexcept { return copy() %= rhs; }
   //! returns complex this % a complex number
-  inline cMat operator%(const CT& rhs) const noexcept { return ccopy() %= rhs; }
+  inline cMat operator%(const CT &rhs) const noexcept { return ccopy() %= rhs; }
   //! returns elementwise this % a real array
-  inline tMat operator%(const fArray& rhs) const noexcept {
+  inline tMat operator%(const fArray &rhs) const noexcept {
     return copy() %= rhs;
   }
   //! returns complex elementwise this % a complex array
-  inline cMat operator%(const cArray& rhs) const noexcept {
+  inline cMat operator%(const cArray &rhs) const noexcept {
     return ccopy() %= rhs;
   }
 
@@ -554,68 +562,68 @@ class lm_tArray {
   std::string print(const size_t precision = PPREC__,
                     const size_t blanks = 0) const noexcept;
   //! print this to a textfile
-  void printToFile(const std::string& fileName,
+  void printToFile(const std::string &fileName,
                    const size_t precision = PPREC__) const;
   //! write this to a binary file
-  virtual void writeToFile(const std::string& fileName,
+  virtual void writeToFile(const std::string &fileName,
                            const bool noheader) const = 0;
 };
 
 //! matrix size function
 template <class TT, class FT, class CT>
-inline lm__::lm_size msize(const lm_tArray<TT, FT, CT>& inp) noexcept {
+inline lm__::lm_size msize(const lm_tArray<TT, FT, CT> &inp) noexcept {
   return inp.S();
 }
 
 //! streaming operator for arrays
 template <class TT, class FT, class CT>
-inline std::ostream& operator<<(std::ostream& os,
-                                const lm_tArray<TT, FT, CT>& inp) noexcept {
+inline std::ostream &operator<<(std::ostream &os,
+                                const lm_tArray<TT, FT, CT> &inp) noexcept {
   return (os << inp.print());
 }
 
 //! returns a real number + an array
 template <class TT, class FT, class CT>
-inline lm_tMat<TT, FT, CT> operator+(
-    const FT lhs, const lm_tArray<TT, FT, CT>& rhs) noexcept {
+inline lm_tMat<TT, FT, CT>
+operator+(const FT lhs, const lm_tArray<TT, FT, CT> &rhs) noexcept {
   return rhs + lhs;
 }
 //! returns complex this + a complex number
 template <class TT, class FT, class CT>
-inline lm_tMat<CT, FT, CT> operator+(
-    const CT& lhs, const lm_tArray<TT, FT, CT>& rhs) noexcept {
+inline lm_tMat<CT, FT, CT>
+operator+(const CT &lhs, const lm_tArray<TT, FT, CT> &rhs) noexcept {
   return rhs + lhs;
 }
 //! returns a real number - an array
 template <class TT, class FT, class CT>
 lm_tMat<TT, FT, CT> operator-(const FT lhs,
-                              const lm_tArray<TT, FT, CT>& rhs) noexcept;
+                              const lm_tArray<TT, FT, CT> &rhs) noexcept;
 //! returns complex this - a complex number
 template <class TT, class FT, class CT>
-lm_tMat<CT, FT, CT> operator-(const CT& lhs,
-                              const lm_tArray<TT, FT, CT>& rhs) noexcept;
+lm_tMat<CT, FT, CT> operator-(const CT &lhs,
+                              const lm_tArray<TT, FT, CT> &rhs) noexcept;
 //! returns a real number * an array
 template <class TT, class FT, class CT>
-inline lm_tMat<TT, FT, CT> operator*(
-    const FT lhs, const lm_tArray<TT, FT, CT>& rhs) noexcept {
+inline lm_tMat<TT, FT, CT>
+operator*(const FT lhs, const lm_tArray<TT, FT, CT> &rhs) noexcept {
   return rhs * lhs;
 }
 //! returns complex this * a complex number
 template <class TT, class FT, class CT>
-inline lm_tMat<CT, FT, CT> operator*(
-    const CT& lhs, const lm_tArray<TT, FT, CT>& rhs) noexcept {
+inline lm_tMat<CT, FT, CT>
+operator*(const CT &lhs, const lm_tArray<TT, FT, CT> &rhs) noexcept {
   return rhs * lhs;
 }
 //! returns a real number / an array
 template <class TT, class FT, class CT>
 lm_tMat<TT, FT, CT> operator/(const FT lhs,
-                              const lm_tArray<TT, FT, CT>& rhs) noexcept;
+                              const lm_tArray<TT, FT, CT> &rhs) noexcept;
 //! returns complex this / a complex number
 template <class TT, class FT, class CT>
-lm_tMat<CT, FT, CT> operator/(const CT& lhs,
-                              const lm_tArray<TT, FT, CT>& rhs) noexcept;
+lm_tMat<CT, FT, CT> operator/(const CT &lhs,
+                              const lm_tArray<TT, FT, CT> &rhs) noexcept;
 
-#endif  // _LM_TARRAY_
+#endif // _LM_TARRAY_
 
 /** @}
  */

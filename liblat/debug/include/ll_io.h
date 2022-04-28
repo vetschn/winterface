@@ -289,9 +289,9 @@ std::ostream &printStructureReport(const struct_report &rep, const size_t mask,
 
 //! extract unit cell from a wbh
 ll_cell extractCell(const std::string &fileName);
-}  // namespace ll__
+} // namespace ll__
 
-#endif  // _LL_IO_
+#endif // _LL_IO_
 
 /** @}
  */

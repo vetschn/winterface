@@ -376,10 +376,11 @@ void test_fn_metrics_and_clustering::test_dbscan() {
       CPPUNIT_ASSERT(std::unique(C.begin(), C.end()) - C.begin() == 3);
       CPPUNIT_ASSERT(C[0].size() + C[1].size() + C[2].size() == 21);
 
-      for (const auto& i : C) {
+      for (const auto &i : C) {
         auto c = ck.begin();
         while (c < ck.end()) {
-          if (i == *c) break;
+          if (i == *c)
+            break;
           ++c;
         }
         CPPUNIT_ASSERT(c != ck.end());
@@ -388,12 +389,12 @@ void test_fn_metrics_and_clustering::test_dbscan() {
   }
 }
 
-const char* test_fn_metrics_and_clustering::test_id() noexcept {
+const char *test_fn_metrics_and_clustering::test_id() noexcept {
   return "test_fn_metrics_and_clustering";
 }
 
-CppUnit::Test* test_fn_metrics_and_clustering::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_fn_metrics_and_clustering::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_fn_metrics_and_clustering>(
       "test_genNNmat", &test_fn_metrics_and_clustering::test_genNNmat));

@@ -205,12 +205,12 @@ void test_fn_vector_sums::test_sum_c() {
 }
 
 // test id
-const char* test_fn_vector_sums::test_id() noexcept {
+const char *test_fn_vector_sums::test_id() noexcept {
   return "test_fn_vector_sums";
 }
 
-CppUnit::Test* test_fn_vector_sums::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_fn_vector_sums::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_fn_vector_sums>(
       "test_sum_r", &test_fn_vector_sums::test_sum_r));

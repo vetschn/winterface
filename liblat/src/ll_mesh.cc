@@ -10,7 +10,7 @@ using namespace ll__;
 
 // printing
 template <class MT>
-void ll_mesh<MT>::writeToFile(const std::string& fileName,
+void ll_mesh<MT>::writeToFile(const std::string &fileName,
                               const bool noheader) const {
   // open file
   std::ofstream file;
@@ -28,24 +28,26 @@ void ll_mesh<MT>::writeToFile(const std::string& fileName,
   uint64_t dat;
 
   // write dimensions
-  file.write((char*)&(dat = meshDim() + 1), sizeof(uint64_t));
-  file.write((char*)&(dat = M()), sizeof(uint64_t));
+  file.write((char *)&(dat = meshDim() + 1), sizeof(uint64_t));
+  file.write((char *)&(dat = M()), sizeof(uint64_t));
 
-  for (const auto m : maj()) file.write((char*)&(dat = D(m)), sizeof(uint64_t));
+  for (const auto m : maj())
+    file.write((char *)&(dat = D(m)), sizeof(uint64_t));
 
   // write matrix data
-  file.write((char*)base_.data(), base_.L() * sizeof(double));
+  file.write((char *)base_.data(), base_.L() * sizeof(double));
   file.close();
 }
-template void ll_mesh<fMat>::writeToFile(const std::string& fileName,
+template void ll_mesh<fMat>::writeToFile(const std::string &fileName,
                                          const bool noheader) const;
-template void ll_mesh<cMat>::writeToFile(const std::string& fileName,
+template void ll_mesh<cMat>::writeToFile(const std::string &fileName,
                                          const bool noheader) const;
 
 // generic mesh generators
-ll_mesh<> ll__::genMesh(const fMat& bounds, std::vector<size_t> maj,
+ll_mesh<> ll__::genMesh(const fMat &bounds, std::vector<size_t> maj,
                         std::vector<size_t> D) noexcept {
-  if (!D.size()) return ll_mesh<>();
+  if (!D.size())
+    return ll_mesh<>();
   assert(msize(bounds) == lm_size({D.size(), 2}));
   assert(maj.size() == D.size());
   assert(std::all_of(D.cbegin(), D.cend(),
@@ -62,11 +64,11 @@ ll_mesh<> ll__::genMesh(const fMat& bounds, std::vector<size_t> maj,
 
   auto n = zeros<fMat>(D.size(), 1);
   std::function<void(const std::vector<size_t>::const_iterator i,
-                     const std::vector<size_t>::const_iterator& j)>
+                     const std::vector<size_t>::const_iterator &j)>
       genBase;
-  genBase = [&genBase, &base, &bounds, &steps, &D, &n](
-                const std::vector<size_t>::const_iterator i,
-                const std::vector<size_t>::const_iterator& j) -> void {
+  genBase = [&genBase, &base, &bounds, &steps, &D,
+             &n](const std::vector<size_t>::const_iterator i,
+                 const std::vector<size_t>::const_iterator &j) -> void {
     assert(j <= i);
     for (n[*i] = .0; n[*i] != D[*i]; ++n[*i])
       if (i == j)
@@ -80,8 +82,9 @@ ll_mesh<> ll__::genMesh(const fMat& bounds, std::vector<size_t> maj,
   return ll_mesh<>(std::move(base), std::move(maj), std::move(D));
 }
 ll_mesh<> ll__::genMesh(const double lb, const double ub, const size_t D,
-                        std::vector<size_t> maj, const rv& r) noexcept {
-  if (!D || maj.empty()) return ll_mesh<>();
+                        std::vector<size_t> maj, const rv &r) noexcept {
+  if (!D || maj.empty())
+    return ll_mesh<>();
   assert(maj.size() == r.size());
 
   fMat bounds(maj.size(), 2);
@@ -96,9 +99,9 @@ ll_mesh<> ll__::genMesh(const double lb, const double ub, const size_t D,
 }
 
 // mesh in a cell with given density generator
-ll_mesh<> ll__::genMesh_cell(const double rho, const fMat& B, const double lb,
+ll_mesh<> ll__::genMesh_cell(const double rho, const fMat &B, const double lb,
                              const double ub, std::vector<size_t> maj,
-                             const rv& r) {
+                             const rv &r) {
   assert(r.size() == maj.size());
   assert(B.square() && B.M() == r.size());
   assert(rank(B) == B.M());
@@ -112,7 +115,7 @@ ll_mesh<> ll__::genMesh_cell(const double rho, const fMat& B, const double lb,
   fMat n =
       mnorm(RB) *
       std::pow(N / std::accumulate(RB.ccBegin(), RB.ccEnd(), double(1.0),
-                                   [](const double s, const auto& i) -> double {
+                                   [](const double s, const auto &i) -> double {
                                      return s * norm(i);
                                    }),
                1 / double(I.size()));
@@ -136,14 +139,15 @@ ll_mesh<> ll__::genMesh_cell(const double rho, const fMat& B, const double lb,
   fMat bounds(r.size(), 2);
   bounds.cFront() = lb;
   bounds.cBack() = ub;
-  for (const auto i : inds(r)) bounds(i, 0) = 0.0, bounds(i, 1) = 0.0;
+  for (const auto i : inds(r))
+    bounds(i, 0) = 0.0, bounds(i, 1) = 0.0;
 
   // generate standard mesh
   return genMesh(bounds, std::move(maj), std::move(D));
 }
 
 // mesh on an integer grid
-ll_mesh<> ll__::genMesh_int(const fMat& bounds,
+ll_mesh<> ll__::genMesh_int(const fMat &bounds,
                             std::vector<size_t> maj) noexcept {
   assert(bounds == lm__::round(bounds));
   assert(bounds.M() == maj.size());

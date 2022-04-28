@@ -27,7 +27,8 @@ inline double genRndDouble(const double l = 2.0,
 }
 inline std::vector<size_t> genRndaCv(const size_t N) noexcept {
   std::vector<size_t> buff(N);
-  for (auto& i : buff) i = lm__::test::genRndST(0, N - 1);
+  for (auto &i : buff)
+    i = lm__::test::genRndST(0, N - 1);
   std::sort(buff.begin(), buff.end());
 
   auto unq = buff;
@@ -41,13 +42,16 @@ inline std::vector<size_t> genRndaCv(const size_t N) noexcept {
   return res;
 }
 inline rv genRndrv(const size_t D = 3, const size_t Nt = NPOS__) noexcept {
-  if (Nt == D) return rv(D, true);
-  if (Nt == 0) return rv(D, false);
+  if (Nt == D)
+    return rv(D, true);
+  if (Nt == 0)
+    return rv(D, false);
 
   std::vector<bool> res;
   res.reserve(D);
   if (Nt == NPOS__)
-    for (size_t i = 0; i != D; ++i) res.push_back(genRndDouble(0.0, 1.0) < .5);
+    for (size_t i = 0; i != D; ++i)
+      res.push_back(genRndDouble(0.0, 1.0) < .5);
   else
     do {
       res.clear();
@@ -62,7 +66,8 @@ inline fMat rnd_i(const size_t D = 3, const int l = -3.0,
 
   const double d = std::pow((u - l) / 2.0, D);
   fMat res;
-  do res = randi<fMat>(D, D, l, u);
+  do
+    res = randi<fMat>(D, D, l, u);
   while (std::abs(lm__::det(res)) < d);
   return res;
 }
@@ -81,7 +86,7 @@ inline std::vector<size_t> genRndIvec(const size_t N, const size_t mi,
 
   return res;
 }
-inline aTv genRndaTv(const ll_cell& inp) noexcept {
+inline aTv genRndaTv(const ll_cell &inp) noexcept {
   aTv res(inp.Nspecies());
   std::iota(res.begin(), res.end(), aT(0));
 
@@ -96,9 +101,9 @@ inline wi genRndWi(const size_t N, const size_t n) noexcept {
   ll__::wi res(n);
   for (size_t i = 0; i != N; ++i)
     res[lm__::test::genRndST(0, n - 1)].push_back(i);
-  for (auto& i : res)
+  for (auto &i : res)
     if (i.empty()) {
-      for (auto& j : res)
+      for (auto &j : res)
         if (j.size() >= 2) {
           i.push_back(j.back());
           j.pop_back();
@@ -108,9 +113,11 @@ inline wi genRndWi(const size_t N, const size_t n) noexcept {
   return res;
 }
 inline fMat genRndR(const size_t D) noexcept {
-  if (D == 1) return fMat({1.0});
+  if (D == 1)
+    return fMat({1.0});
   auto res = gsorth(rand<fMat>(D, D));
-  if (det(res) < 0.0) std::iter_swap(res.cBegin(), res.cBegin() + 1);
+  if (det(res) < 0.0)
+    std::iter_swap(res.cBegin(), res.cBegin() + 1);
   return res;
 }
 inline char genRndLetter() noexcept {
@@ -120,16 +127,19 @@ inline char genRndCapLetter() noexcept {
   return char(lm__::test::genRndST(65, 90));
 }
 inline std::string genRndAtomicString(const size_t wl = 2) noexcept {
-  if (!wl) return "";
+  if (!wl)
+    return "";
   std::string res;
   res.reserve(wl);
   res.push_back(genRndCapLetter());
-  while (res.size() != wl) res.push_back(genRndLetter());
+  while (res.size() != wl)
+    res.push_back(genRndLetter());
   return res;
 }
 inline idv genRndIdv(const size_t n, const size_t wl = 2) noexcept {
   idv res(n);
-  for (auto& i : res) i = genRndAtomicString(wl);
+  for (auto &i : res)
+    i = genRndAtomicString(wl);
   std::sort(res.begin(), res.end());
   return res;
 }
@@ -161,7 +171,8 @@ inline ll_cell genFCC(const size_t D = 3,
                       const double a = genRndDouble()) noexcept {
   assert(D > 0);
   using namespace lm__;
-  if (D == 1) return genCubic(D, a);
+  if (D == 1)
+    return genCubic(D, a);
 
   auto B = a / double(D - 1) * (ones<fMat>(D) - eye<fMat>(D));
   auto Ap = zeros<fMat>(D, 1);
@@ -173,7 +184,8 @@ inline ll_cell genBCC(const size_t D = 3,
                       const double a = genRndDouble()) noexcept {
   assert(D > 0);
   using namespace lm__;
-  if (D < 3) return genCubic(D, a);
+  if (D < 3)
+    return genCubic(D, a);
 
   auto B = a / double(D - 2) * (ones<fMat>(D) - 2.0 * eye<fMat>(D));
   auto Ap = zeros<fMat>(D, 1);
@@ -232,7 +244,8 @@ inline ll_cell genRndCell(const size_t D = 3, const size_t Nl = 1,
 
   const auto N = lm__::test::genRndST(Nl, Nu);
   fMat B;
-  do B = rand<fMat>(D, D);
+  do
+    B = rand<fMat>(D, D);
   while (std::abs(det(B)) < .5);
 
   // extend Ap with minimal spacing lambda
@@ -241,12 +254,14 @@ inline ll_cell genRndCell(const size_t D = 3, const size_t Nl = 1,
   const auto msl = [&Ap, D](const double sp) -> void {
     const auto cont = rand<fMat>(D, 1, 0.0, 1.0 - 2.0 * mtol());
     for (auto ii = Ap.cBegin(), ie = Ap.cEnd(); ii != ie; ++ii) {
-      if (norm(cont - *ii) < sp) return;
+      if (norm(cont - *ii) < sp)
+        return;
     }
     Ap << cont;
   };
   const double sp = 1.0 / (N * 5.0);
-  do msl(sp);
+  do
+    msl(sp);
   while (Ap.N() != Ap.ccap());
 
   auto NN = genRndaCv(N);
@@ -257,48 +272,48 @@ inline ll_cell genRndCell(const size_t D = 3, const size_t Nl = 1,
 // random
 inline ll_cell genRandom() noexcept {
   switch (lm__::test::genRndST(0, 7)) {
-    case 0:
-      return genCubic();
-    case 1:
-      return genOrthorhombic();
-    case 2:
-      return genFCC();
-    case 3:
-      return genBCC();
-    case 4:
-      return genHexagonal();
-    case 5:
-      return genZincblende();
-    case 6:
-      return genDiChalcogenide();
-    case 7:
-      return genRndCell();
-    default:
-      return genZincblende();
+  case 0:
+    return genCubic();
+  case 1:
+    return genOrthorhombic();
+  case 2:
+    return genFCC();
+  case 3:
+    return genBCC();
+  case 4:
+    return genHexagonal();
+  case 5:
+    return genZincblende();
+  case 6:
+    return genDiChalcogenide();
+  case 7:
+    return genRndCell();
+  default:
+    return genZincblende();
   }
   return genZincblende();
 }
 inline ll_cell genRandom(const size_t D) noexcept {
   if (D != 3) {
     switch (lm__::test::genRndST(0, 4)) {
-      case 0:
-        return genCubic(D);
-      case 1:
-        return genFCC(D);
-      case 2:
-        return genBCC(D);
-      case 3:
-        return genZincblende(D);
-      case 4:
-        return genRndCell(D);
-      default:
-        return genZincblende(D);
+    case 0:
+      return genCubic(D);
+    case 1:
+      return genFCC(D);
+    case 2:
+      return genBCC(D);
+    case 3:
+      return genZincblende(D);
+    case 4:
+      return genRndCell(D);
+    default:
+      return genZincblende(D);
     }
   } else {
     return genRandom();
   }
 }
-}  // namespace test
-}  // namespace ll__
+} // namespace test
+} // namespace ll__
 
-#endif  // _LL_TESTTOOLS_
+#endif // _LL_TESTTOOLS_

@@ -20,7 +20,8 @@ void test_cell_data_access::test_B_Ap() {
 
   auto B = rnd_sqb<fMat>(M, -.5, .5);
   fMat Ap;
-  do Ap = rand<fMat>(M, N, 0.0, .99);
+  do
+    Ap = rand<fMat>(M, N, 0.0, .99);
   while (!cunique(Ap));
 
   std::sort(Ap.cBegin(), Ap.cEnd(), vcmp);
@@ -38,7 +39,8 @@ void test_cell_data_access::test_cAt_cFront_cBack() {
 
   auto B = rnd_sqb<fMat>(M, -.5, .5);
   fMat Ap;
-  do Ap = rand<fMat>(M, N, 0.0, .99);
+  do
+    Ap = rand<fMat>(M, N, 0.0, .99);
   while (!cunique(Ap));
 
   std::sort(Ap.cBegin(), Ap.cEnd(), vcmp);
@@ -52,12 +54,12 @@ void test_cell_data_access::test_cAt_cFront_cBack() {
   CPPUNIT_ASSERT(tCell1.Ap().cBack() == tCell1.cBack());
 }
 
-const char* test_cell_data_access::test_id() noexcept {
+const char *test_cell_data_access::test_id() noexcept {
   return "test_cell_data_access";
 }
 
-CppUnit::Test* test_cell_data_access::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_cell_data_access::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_cell_data_access>(
       "test_B_Ap", &test_cell_data_access::test_B_Ap));

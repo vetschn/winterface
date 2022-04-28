@@ -52,12 +52,12 @@ void test_fn_wannier_tools::test_checkHr() {
   }
 }
 
-const char* test_fn_wannier_tools::test_id() noexcept {
+const char *test_fn_wannier_tools::test_id() noexcept {
   return "test_fn_wannier_tools";
 }
 
-CppUnit::Test* test_fn_wannier_tools::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_fn_wannier_tools::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_fn_wannier_tools>(
       "test_wiToT_TToWi", &test_fn_wannier_tools::test_wiToT_TToWi));

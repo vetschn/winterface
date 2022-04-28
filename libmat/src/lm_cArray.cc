@@ -5,15 +5,13 @@
 #include "lm_tArray.h"
 
 // basic properties
-template <>
-bool lm_tArray<CPX__, RE__, CPX__>::cpx() noexcept {
-  return true;
-}
+template <> bool lm_tArray<CPX__, RE__, CPX__>::cpx() noexcept { return true; }
 
 // printing
 template <>
-std::string lm_tArray<CPX__, RE__, CPX__>::print(
-    const size_t precision, const size_t blanks) const noexcept {
+std::string
+lm_tArray<CPX__, RE__, CPX__>::print(const size_t precision,
+                                     const size_t blanks) const noexcept {
   std::vector<size_t> wmax(N(), 0);
   for (size_t n = 0; n < N(); ++n)
     for (size_t m = 0; m < M(); ++m) {
@@ -26,7 +24,8 @@ std::string lm_tArray<CPX__, RE__, CPX__>::print(
       tmp << std::real(cur) << (std::imag(cur) < RE__(0.0) ? "-" : "+")
           << std::abs(std::imag(cur)) << "i";
 
-      if (tmp.str().size() > wmax[n]) wmax[n] = tmp.str().size();
+      if (tmp.str().size() > wmax[n])
+        wmax[n] = tmp.str().size();
     }
 
   std::stringstream outp;
@@ -58,25 +57,25 @@ std::string lm_tArray<CPX__, RE__, CPX__>::print(
 template class lm_tArray<CPX__, RE__, CPX__>;
 template lm_tMat<CPX__, RE__, CPX__> operator+
     <CPX__, RE__, CPX__>(const RE__ lhs,
-                         const lm_tArray<CPX__, RE__, CPX__>& rhs) noexcept;
+                         const lm_tArray<CPX__, RE__, CPX__> &rhs) noexcept;
 template lm_tMat<CPX__, RE__, CPX__> operator+
-    <CPX__, RE__, CPX__>(const CPX__& lhs,
-                         const lm_tArray<CPX__, RE__, CPX__>& rhs) noexcept;
+    <CPX__, RE__, CPX__>(const CPX__ &lhs,
+                         const lm_tArray<CPX__, RE__, CPX__> &rhs) noexcept;
 template lm_tMat<CPX__, RE__, CPX__> operator-
     <CPX__, RE__, CPX__>(const RE__ lhs,
-                         const lm_tArray<CPX__, RE__, CPX__>& rhs) noexcept;
+                         const lm_tArray<CPX__, RE__, CPX__> &rhs) noexcept;
 template lm_tMat<CPX__, RE__, CPX__> operator-
-    <CPX__, RE__, CPX__>(const CPX__& lhs,
-                         const lm_tArray<CPX__, RE__, CPX__>& rhs) noexcept;
+    <CPX__, RE__, CPX__>(const CPX__ &lhs,
+                         const lm_tArray<CPX__, RE__, CPX__> &rhs) noexcept;
 template lm_tMat<CPX__, RE__, CPX__> operator*
     <CPX__, RE__, CPX__>(const RE__ lhs,
-                         const lm_tArray<CPX__, RE__, CPX__>& rhs) noexcept;
+                         const lm_tArray<CPX__, RE__, CPX__> &rhs) noexcept;
 template lm_tMat<CPX__, RE__, CPX__> operator*
-    <CPX__, RE__, CPX__>(const CPX__& lhs,
-                         const lm_tArray<CPX__, RE__, CPX__>& rhs) noexcept;
+    <CPX__, RE__, CPX__>(const CPX__ &lhs,
+                         const lm_tArray<CPX__, RE__, CPX__> &rhs) noexcept;
 template lm_tMat<CPX__, RE__, CPX__> operator/
     <CPX__, RE__, CPX__>(const RE__ lhs,
-                         const lm_tArray<CPX__, RE__, CPX__>& rhs) noexcept;
+                         const lm_tArray<CPX__, RE__, CPX__> &rhs) noexcept;
 template lm_tMat<CPX__, RE__, CPX__> operator/
-    <CPX__, RE__, CPX__>(const CPX__& lhs,
-                         const lm_tArray<CPX__, RE__, CPX__>& rhs) noexcept;
+    <CPX__, RE__, CPX__>(const CPX__ &lhs,
+                         const lm_tArray<CPX__, RE__, CPX__> &rhs) noexcept;

@@ -9,7 +9,7 @@
 #include "lm_defs.h"
 
 class test_fn_eigenvalue_computation : public CppUnit::TestFixture {
- public:
+public:
   // tests
   void test_eig();
   void test_eigr();
@@ -26,11 +26,11 @@ class test_fn_eigenvalue_computation : public CppUnit::TestFixture {
   static constexpr RE__ delta = 1e-3f;
 #endif
 
- protected:
-  static const char* test_id() noexcept;
+protected:
+  static const char *test_id() noexcept;
 
- public:
-  static CppUnit::Test* suite();
+public:
+  static CppUnit::Test *suite();
 };
 
-#endif  // _TEST_FN_EIGENVALUE_COMPUTATION_
+#endif // _TEST_FN_EIGENVALUE_COMPUTATION_

@@ -10,8 +10,8 @@ using namespace lm__;
 
 // probe R grid
 template <class WT>
-fMat ll__::getConnectedGrid(const WT& W, const fMat& B, const fMat& Ap,
-                            const aTv& T, const rv& r, const double IR,
+fMat ll__::getConnectedGrid(const WT &W, const fMat &B, const fMat &Ap,
+                            const aTv &T, const rv &r, const double IR,
                             const bool approx) noexcept {
   assert(W.dim() == B.M());
   assert(B.M() == B.N());
@@ -20,7 +20,7 @@ fMat ll__::getConnectedGrid(const WT& W, const fMat& B, const fMat& Ap,
   assert(r.size() == W.dim());
 
   // probe interactions lambda
-  const auto probe = [&W, IR, &Ap, &T, approx](const lm__::fMat& sh) -> bool {
+  const auto probe = [&W, IR, &Ap, &T, approx](const lm__::fMat &sh) -> bool {
     for (auto i1 = Ap.ccBegin(), e = Ap.ccEnd(); i1 != e; ++i1) {
       const aT t1 = T[(size_t)i1];
 
@@ -29,10 +29,12 @@ fMat ll__::getConnectedGrid(const WT& W, const fMat& B, const fMat& Ap,
 
         // check bond length
         const fMat b = *i2 + sh - *i1;
-        if (norm(b) > IR) continue;
+        if (norm(b) > IR)
+          continue;
 
         // try direct
-        if (!W.getInteraction({t1, t2}, b).empty()) return true;
+        if (!W.getInteraction({t1, t2}, b).empty())
+          return true;
 
         // try approximate
         if (approx && !W.getApproximateInteraction({t1, t2}, b).H.empty())
@@ -47,10 +49,11 @@ fMat ll__::getConnectedGrid(const WT& W, const fMat& B, const fMat& Ap,
   res.reserve(100);
 
   // recursive scan space lambda
-  std::function<void(const fMat&)> scanner;
-  scanner = [&scanner, &probe, &res, &NN, &B](const fMat& cR) -> void {
+  std::function<void(const fMat &)> scanner;
+  scanner = [&scanner, &probe, &res, &NN, &B](const fMat &cR) -> void {
     // probe this block
-    if (!probe(B.prod(cR))) return;
+    if (!probe(B.prod(cR)))
+      return;
 
     // insert this block
     res.cInsert(std::lower_bound(res.ccBegin(), res.ccEnd(), cR), cR);
@@ -59,7 +62,8 @@ fMat ll__::getConnectedGrid(const WT& W, const fMat& B, const fMat& Ap,
     for (auto i = NN.ccBegin(), e = NN.ccEnd(); i != e; ++i) {
       const fMat nR = cR + *i;
       const auto itr = std::lower_bound(res.ccBegin(), res.ccEnd(), nR);
-      if (itr == res.ccEnd() || *itr != nR) scanner(nR);
+      if (itr == res.ccEnd() || *itr != nR)
+        scanner(nR);
     }
   };
 
@@ -70,28 +74,28 @@ fMat ll__::getConnectedGrid(const WT& W, const fMat& B, const fMat& Ap,
   res.shrink_to_fit();
   return res;
 }
-template fMat ll__::getConnectedGrid(const ll_hbonds& W, const fMat& B,
-                                     const fMat& Ap, const aTv& T, const rv& r,
+template fMat ll__::getConnectedGrid(const ll_hbonds &W, const fMat &B,
+                                     const fMat &Ap, const aTv &T, const rv &r,
                                      const double IR,
                                      const bool approx) noexcept;
-template fMat ll__::getConnectedGrid(const ll_hbondss& W, const fMat& B,
-                                     const fMat& Ap, const aTv& T, const rv& r,
+template fMat ll__::getConnectedGrid(const ll_hbondss &W, const fMat &B,
+                                     const fMat &Ap, const aTv &T, const rv &r,
                                      const double IR,
                                      const bool approx) noexcept;
 
 // hamiltonian constructor
 template <class WT>
-void ll__::hctor(const WT& W, const fMat& B, const fMat& Ap, const aTv& T,
-                 ll_writer& writer, const double IR, const bool approx,
+void ll__::hctor(const WT &W, const fMat &B, const fMat &Ap, const aTv &T,
+                 ll_writer &writer, const double IR, const bool approx,
                  const size_t Nthreads, const size_t verbosity,
-                 std::ostream& os) {
+                 std::ostream &os) {
   assert(W.dim() == Ap.M());
   assert(Ap.N() == T.size());
 
   // lambda to get all interactions for one atom with all the others
-  auto getInteractions = [&Ap, IR, approx, &T, &W](
-                             const fMat& p1, const aT t1,
-                             const size_t m) -> std::vector<sphel> {
+  auto getInteractions = [&Ap, IR, approx, &T,
+                          &W](const fMat &p1, const aT t1,
+                              const size_t m) -> std::vector<sphel> {
     size_t n = 0;
     std::vector<sphel> buff;
     buff.reserve(Ap.N());
@@ -102,13 +106,15 @@ void ll__::hctor(const WT& W, const fMat& B, const fMat& Ap, const aTv& T,
       if (norm(b) <= IR) {
         // find H, first try direct, then approximate
         auto H = W.getInteraction({t1, t2}, b);
-        if (H.empty() && approx) H = W.getApproximateInteraction({t1, t2}, b).H;
+        if (H.empty() && approx)
+          H = W.getApproximateInteraction({t1, t2}, b).H;
 
         // enter data into buffer
         if (!H.empty()) {
           for (size_t hn = 0; hn != H.N(); ++hn)
             for (size_t hm = 0; hm != H.M(); ++hm)
-              if (H(hm, hn) != 0.0) buff.push_back({m + hm, n + hn, H(hm, hn)});
+              if (H(hm, hn) != 0.0)
+                buff.push_back({m + hm, n + hn, H(hm, hn)});
         }
       }
       n += W.Norb(t2);
@@ -162,17 +168,17 @@ void ll__::hctor(const WT& W, const fMat& B, const fMat& Ap, const aTv& T,
        << (writer.nnzTest() ? GREEN__ "passed" : RED__ "failed") << RESET__
        << "\n";
 }
-template void ll__::hctor(const ll_hbonds& W, const fMat& B, const fMat& Ap,
-                          const aTv& T, ll_writer& writer, const double IR,
+template void ll__::hctor(const ll_hbonds &W, const fMat &B, const fMat &Ap,
+                          const aTv &T, ll_writer &writer, const double IR,
                           const bool approx, const size_t Nthreads,
-                          const size_t verbosity, std::ostream& os);
-template void ll__::hctor(const ll_hbondss& W, const fMat& B, const fMat& Ap,
-                          const aTv& T, ll_writer& writer, const double IR,
+                          const size_t verbosity, std::ostream &os);
+template void ll__::hctor(const ll_hbondss &W, const fMat &B, const fMat &Ap,
+                          const aTv &T, ll_writer &writer, const double IR,
                           const bool approx, const size_t Nthreads,
-                          const size_t verbosity, std::ostream& os);
+                          const size_t verbosity, std::ostream &os);
 
 // read hr sparse files as written by ll_writerBIN
-R_H<ll_sparse> ll__::readHrSparse(const std::string& fileName) {
+R_H<ll_sparse> ll__::readHrSparse(const std::string &fileName) {
   // open file
   auto file =
       aux::openFile<std::ifstream>(fileName, std::ios::in | std::ios::binary);
@@ -187,9 +193,9 @@ R_H<ll_sparse> ll__::readHrSparse(const std::string& fileName) {
   size_t Nw;
   {
     uint32_t dim, Nw_, NR;
-    file.read((char*)&dim, sizeof(uint32_t));
-    file.read((char*)&Nw_, sizeof(uint32_t));
-    file.read((char*)&NR, sizeof(uint32_t));
+    file.read((char *)&dim, sizeof(uint32_t));
+    file.read((char *)&Nw_, sizeof(uint32_t));
+    file.read((char *)&NR, sizeof(uint32_t));
 
     R = fMat(dim, NR);
     Nw = Nw_;
@@ -201,105 +207,105 @@ R_H<ll_sparse> ll__::readHrSparse(const std::string& fileName) {
 
   for (auto i = R.cBegin(), e = R.cEnd(); i != e; ++i) {
     // read R
-    file.read((char*)i->data(), R.M() * sizeof(double));
+    file.read((char *)i->data(), R.M() * sizeof(double));
 
     // read nnz
     uint64_t nnz;
-    file.read((char*)&nnz, sizeof(uint64_t));
+    file.read((char *)&nnz, sizeof(uint64_t));
     H.push_back(ll_sparse(Nw, Nw));
     H.back().vec_.reserve(nnz);
 
     switch (aux::fnvHash(head)) {
-      case "hrssr"_h: {
-        typedef uint16_t IT;
-        typedef float FT;
-        IT mn[2];
-        FT h;
-        for (uint32_t i = 0; i != nnz; ++i) {
-          file.read((char*)&mn, 2 * sizeof(IT));
-          file.read((char*)&h, sizeof(FT));
-          H.back().vec_.push_back({size_t(mn[0]), size_t(mn[1]), hel(h)});
-        }
-      } break;
-      case "hrlsr"_h: {
-        typedef uint32_t IT;
-        typedef float FT;
-        IT mn[2];
-        FT h;
-        for (uint32_t i = 0; i != nnz; ++i) {
-          file.read((char*)&mn, 2 * sizeof(IT));
-          file.read((char*)&h, sizeof(FT));
-          H.back().vec_.push_back({size_t(mn[0]), size_t(mn[1]), hel(h)});
-        }
-      } break;
-      case "hrsdr"_h: {
-        typedef uint16_t IT;
-        typedef double FT;
-        IT mn[2];
-        FT h;
-        for (uint32_t i = 0; i != nnz; ++i) {
-          file.read((char*)&mn, 2 * sizeof(IT));
-          file.read((char*)&h, sizeof(FT));
-          H.back().vec_.push_back({size_t(mn[0]), size_t(mn[1]), hel(h)});
-        }
-      } break;
-      case "hrldr"_h: {
-        typedef uint32_t IT;
-        typedef double FT;
-        IT mn[2];
-        FT h;
-        for (uint32_t i = 0; i != nnz; ++i) {
-          file.read((char*)&mn, 2 * sizeof(IT));
-          file.read((char*)&h, sizeof(FT));
-          H.back().vec_.push_back({size_t(mn[0]), size_t(mn[1]), hel(h)});
-        }
-      } break;
-      case "hrssc"_h: {
-        typedef uint16_t IT;
-        typedef std::complex<float> FT;
-        IT mn[2];
-        FT h;
-        for (uint32_t i = 0; i != nnz; ++i) {
-          file.read((char*)&mn, 2 * sizeof(IT));
-          file.read((char*)&h, sizeof(FT));
-          H.back().vec_.push_back({size_t(mn[0]), size_t(mn[1]), hel(h)});
-        }
-      } break;
-      case "hrlsc"_h: {
-        typedef uint32_t IT;
-        typedef std::complex<float> FT;
-        IT mn[2];
-        FT h;
-        for (uint32_t i = 0; i != nnz; ++i) {
-          file.read((char*)&mn, 2 * sizeof(IT));
-          file.read((char*)&h, sizeof(FT));
-          H.back().vec_.push_back({size_t(mn[0]), size_t(mn[1]), hel(h)});
-        }
-      } break;
-      case "hrsdc"_h: {
-        typedef uint16_t IT;
-        typedef std::complex<double> FT;
-        IT mn[2];
-        FT h;
-        for (uint32_t i = 0; i != nnz; ++i) {
-          file.read((char*)&mn, 2 * sizeof(IT));
-          file.read((char*)&h, sizeof(FT));
-          H.back().vec_.push_back({size_t(mn[0]), size_t(mn[1]), hel(h)});
-        }
-      } break;
-      case "hrldc"_h: {
-        typedef uint32_t IT;
-        typedef std::complex<double> FT;
-        IT mn[2];
-        FT h;
-        for (uint32_t i = 0; i != nnz; ++i) {
-          file.read((char*)&mn, 2 * sizeof(IT));
-          file.read((char*)&h, sizeof(FT));
-          H.back().vec_.push_back({size_t(mn[0]), size_t(mn[1]), hel(h)});
-        }
-      } break;
-      default:
-        throw(std::runtime_error("bad header in file '" + fileName + "'"));
+    case "hrssr"_h: {
+      typedef uint16_t IT;
+      typedef float FT;
+      IT mn[2];
+      FT h;
+      for (uint32_t i = 0; i != nnz; ++i) {
+        file.read((char *)&mn, 2 * sizeof(IT));
+        file.read((char *)&h, sizeof(FT));
+        H.back().vec_.push_back({size_t(mn[0]), size_t(mn[1]), hel(h)});
+      }
+    } break;
+    case "hrlsr"_h: {
+      typedef uint32_t IT;
+      typedef float FT;
+      IT mn[2];
+      FT h;
+      for (uint32_t i = 0; i != nnz; ++i) {
+        file.read((char *)&mn, 2 * sizeof(IT));
+        file.read((char *)&h, sizeof(FT));
+        H.back().vec_.push_back({size_t(mn[0]), size_t(mn[1]), hel(h)});
+      }
+    } break;
+    case "hrsdr"_h: {
+      typedef uint16_t IT;
+      typedef double FT;
+      IT mn[2];
+      FT h;
+      for (uint32_t i = 0; i != nnz; ++i) {
+        file.read((char *)&mn, 2 * sizeof(IT));
+        file.read((char *)&h, sizeof(FT));
+        H.back().vec_.push_back({size_t(mn[0]), size_t(mn[1]), hel(h)});
+      }
+    } break;
+    case "hrldr"_h: {
+      typedef uint32_t IT;
+      typedef double FT;
+      IT mn[2];
+      FT h;
+      for (uint32_t i = 0; i != nnz; ++i) {
+        file.read((char *)&mn, 2 * sizeof(IT));
+        file.read((char *)&h, sizeof(FT));
+        H.back().vec_.push_back({size_t(mn[0]), size_t(mn[1]), hel(h)});
+      }
+    } break;
+    case "hrssc"_h: {
+      typedef uint16_t IT;
+      typedef std::complex<float> FT;
+      IT mn[2];
+      FT h;
+      for (uint32_t i = 0; i != nnz; ++i) {
+        file.read((char *)&mn, 2 * sizeof(IT));
+        file.read((char *)&h, sizeof(FT));
+        H.back().vec_.push_back({size_t(mn[0]), size_t(mn[1]), hel(h)});
+      }
+    } break;
+    case "hrlsc"_h: {
+      typedef uint32_t IT;
+      typedef std::complex<float> FT;
+      IT mn[2];
+      FT h;
+      for (uint32_t i = 0; i != nnz; ++i) {
+        file.read((char *)&mn, 2 * sizeof(IT));
+        file.read((char *)&h, sizeof(FT));
+        H.back().vec_.push_back({size_t(mn[0]), size_t(mn[1]), hel(h)});
+      }
+    } break;
+    case "hrsdc"_h: {
+      typedef uint16_t IT;
+      typedef std::complex<double> FT;
+      IT mn[2];
+      FT h;
+      for (uint32_t i = 0; i != nnz; ++i) {
+        file.read((char *)&mn, 2 * sizeof(IT));
+        file.read((char *)&h, sizeof(FT));
+        H.back().vec_.push_back({size_t(mn[0]), size_t(mn[1]), hel(h)});
+      }
+    } break;
+    case "hrldc"_h: {
+      typedef uint32_t IT;
+      typedef std::complex<double> FT;
+      IT mn[2];
+      FT h;
+      for (uint32_t i = 0; i != nnz; ++i) {
+        file.read((char *)&mn, 2 * sizeof(IT));
+        file.read((char *)&h, sizeof(FT));
+        H.back().vec_.push_back({size_t(mn[0]), size_t(mn[1]), hel(h)});
+      }
+    } break;
+    default:
+      throw(std::runtime_error("bad header in file '" + fileName + "'"));
     }
 
     // sort entries in sparse
@@ -310,11 +316,12 @@ R_H<ll_sparse> ll__::readHrSparse(const std::string& fileName) {
 }
 
 // adapt ll_hbondss to structure
-void ll__::adaptWBH(ll_hbondss& W, const ll_hbondss_input& inp, const fMat& Ap,
-                    const aTv& T, std::ostream& os) {
+void ll__::adaptWBH(ll_hbondss &W, const ll_hbondss_input &inp, const fMat &Ap,
+                    const aTv &T, std::ostream &os) {
   assert(W.dim() == Ap.M());
   assert(Ap.N() == T.size());
-  if (!inp.perimeter_radius) return;
+  if (!inp.perimeter_radius)
+    return;
 
   // get connections
   const auto B = W.getPerimeterConnections(Ap, T, inp, os);

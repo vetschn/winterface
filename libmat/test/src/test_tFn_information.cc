@@ -30,7 +30,8 @@ void test_tFn_information<TT, FT, CT>::test_isnan() {
     auto tMat1 = rnd<tMat>(M, N);
     for (size_t n = 0; n != N; ++n)
       for (size_t m = 0; m != M; ++m)
-        if (m == n) tMat1(m, n) = TT(std::numeric_limits<FT>::quiet_NaN());
+        if (m == n)
+          tMat1(m, n) = TT(std::numeric_limits<FT>::quiet_NaN());
     const auto tMat2 = isnan(tMat1);
 
     CPPUNIT_ASSERT(size(tMat1) == size(tMat2));
@@ -43,7 +44,8 @@ void test_tFn_information<TT, FT, CT>::test_isnan() {
     auto tMat1 = rnd<tMat>(M, N);
     for (size_t n = 0; n != N; ++n)
       for (size_t m = 0; m != M; ++m)
-        if (m == n) tMat1(m, n) = TT(std::numeric_limits<FT>::quiet_NaN());
+        if (m == n)
+          tMat1(m, n) = TT(std::numeric_limits<FT>::quiet_NaN());
 
     auto r = tMat1.crBegin();
     const size_t lim = (M < N) ? M : N;
@@ -61,7 +63,8 @@ void test_tFn_information<TT, FT, CT>::test_isnan() {
     auto tMat1 = rnd<tMat>(M, N);
     for (size_t n = 0; n != N; ++n)
       for (size_t m = 0; m != M; ++m)
-        if (m == n) tMat1(m, n) = TT(std::numeric_limits<FT>::quiet_NaN());
+        if (m == n)
+          tMat1(m, n) = TT(std::numeric_limits<FT>::quiet_NaN());
 
     auto c = tMat1.ccBegin();
     const size_t lim = (N < M) ? N : M;
@@ -93,7 +96,8 @@ template <class TT, class FT, class CT>
 void test_tFn_information<TT, FT, CT>::test_rank() {
   size_t M = genRndST(5, 10);
   size_t N = genRndST(5, 10);
-  if (M > N) std::swap(M, N);
+  if (M > N)
+    std::swap(M, N);
 
   {
     tMat tMat1(M, N);
@@ -113,8 +117,8 @@ void test_tFn_information<TT, FT, CT>::test_rank() {
 }
 
 template <class TT, class FT, class CT>
-CppUnit::Test* test_tFn_information<TT, FT, CT>::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_tFn_information<TT, FT, CT>::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_tFn_information<TT, FT, CT>>(
       "test_isnan", &test_tFn_information<TT, FT, CT>::test_isnan));

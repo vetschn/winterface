@@ -109,7 +109,8 @@ void test_hio::test_writer() {
     ll_writerMEM<fMat> writer(R, H);
 
     std::vector<size_t> N(NR);
-    for (auto& i : N) i = genRndST(0, 10);
+    for (auto &i : N)
+      i = genRndST(0, 10);
     const size_t BS = 2 * sizeof(size_t) + sizeof(double);
 
     // try going through blocks inserting random stuff
@@ -125,7 +126,8 @@ void test_hio::test_writer() {
                           genRndST(0, Nw - 1),
                           {genRndDouble(1.0, 3.0), genRndDouble(1.0, 3.0)}};
         const auto itr = std::lower_bound(hdat.begin(), hdat.end(), ne);
-        if (itr == hdat.end() || *itr != ne) hdat.insert(itr, ne);
+        if (itr == hdat.end() || *itr != ne)
+          hdat.insert(itr, ne);
       }
 
       writer.insert(hdat);
@@ -139,7 +141,7 @@ void test_hio::test_writer() {
       CPPUNIT_ASSERT_EQUAL(N[ind], uint64_t(sum(H[ind].neq(.0))));
 
       // check data is inserted correctly
-      for (const auto& i : hdat)
+      for (const auto &i : hdat)
         CPPUNIT_ASSERT_EQUAL(std::real(i.h), H[ind](i.m, i.n));
     }
 
@@ -158,7 +160,8 @@ void test_hio::test_writer() {
     ll_writerMEM<cMat> writer(R, H);
 
     std::vector<size_t> N(NR);
-    for (auto& i : N) i = genRndST(0, 10);
+    for (auto &i : N)
+      i = genRndST(0, 10);
     const size_t BS = 2 * sizeof(size_t) + sizeof(hel);
 
     // try going through blocks inserting random stuff
@@ -174,7 +177,8 @@ void test_hio::test_writer() {
                           genRndST(0, Nw - 1),
                           {genRndDouble(1.0, 3.0), genRndDouble(1.0, 3.0)}};
         const auto itr = std::lower_bound(hdat.begin(), hdat.end(), ne);
-        if (itr == hdat.end() || *itr != ne) hdat.insert(itr, ne);
+        if (itr == hdat.end() || *itr != ne)
+          hdat.insert(itr, ne);
       }
 
       writer.insert(hdat);
@@ -188,7 +192,8 @@ void test_hio::test_writer() {
       CPPUNIT_ASSERT_EQUAL(N[ind], uint64_t(sum(H[ind].neq(.0))));
 
       // check data is inserted correctly
-      for (const auto& i : hdat) CPPUNIT_ASSERT_EQUAL(i.h, H[ind](i.m, i.n));
+      for (const auto &i : hdat)
+        CPPUNIT_ASSERT_EQUAL(i.h, H[ind](i.m, i.n));
     }
 
     CPPUNIT_ASSERT(writer.eof());
@@ -206,7 +211,8 @@ void test_hio::test_writer() {
     ll_writerMEM<ll_sparse> writer(R, H);
 
     std::vector<size_t> N(NR);
-    for (auto& i : N) i = genRndST(0, 10);
+    for (auto &i : N)
+      i = genRndST(0, 10);
     const size_t BS = sizeof(sphel);
 
     // try going through blocks inserting random stuff
@@ -222,7 +228,8 @@ void test_hio::test_writer() {
                           genRndST(0, Nw - 1),
                           {genRndDouble(1.0, 3.0), genRndDouble(1.0, 3.0)}};
         const auto itr = std::lower_bound(hdat.begin(), hdat.end(), ne);
-        if (itr == hdat.end() || *itr != ne) hdat.insert(itr, ne);
+        if (itr == hdat.end() || *itr != ne)
+          hdat.insert(itr, ne);
       }
 
       writer.insert(hdat);
@@ -236,7 +243,8 @@ void test_hio::test_writer() {
       CPPUNIT_ASSERT_EQUAL(N[ind], H[ind].nnz());
 
       // check data is inserted correctly
-      for (const auto& i : hdat) CPPUNIT_ASSERT_EQUAL(i.h, H[ind](i.m, i.n));
+      for (const auto &i : hdat)
+        CPPUNIT_ASSERT_EQUAL(i.h, H[ind](i.m, i.n));
     }
 
     CPPUNIT_ASSERT(writer.eof());
@@ -265,7 +273,8 @@ void test_hio::test_writer() {
                         genRndST(0, Nw - 1),
                         {genRndDouble(1.0, 3.0), genRndDouble(1.0, 3.0)}};
       const auto itr = std::lower_bound(hdat.begin(), hdat.end(), ne);
-      if (itr == hdat.end() || *itr != ne) hdat.insert(itr, ne);
+      if (itr == hdat.end() || *itr != ne)
+        hdat.insert(itr, ne);
     }
 
     writer.insert(hdat);
@@ -279,7 +288,7 @@ void test_hio::test_writer() {
     CPPUNIT_ASSERT_EQUAL(N, uint64_t(sum(H.neq(.0))));
 
     // check data is inserted correctly
-    for (const auto& i : hdat)
+    for (const auto &i : hdat)
       CPPUNIT_ASSERT_EQUAL(std::real(i.h), H(i.m, i.n));
 
     CPPUNIT_ASSERT(writer.eof());
@@ -307,7 +316,8 @@ void test_hio::test_writer() {
                         genRndST(0, Nw - 1),
                         {genRndDouble(1.0, 3.0), genRndDouble(1.0, 3.0)}};
       const auto itr = std::lower_bound(hdat.begin(), hdat.end(), ne);
-      if (itr == hdat.end() || *itr != ne) hdat.insert(itr, ne);
+      if (itr == hdat.end() || *itr != ne)
+        hdat.insert(itr, ne);
     }
 
     writer.insert(hdat);
@@ -321,7 +331,8 @@ void test_hio::test_writer() {
     CPPUNIT_ASSERT_EQUAL(N, uint64_t(sum(H.neq(.0))));
 
     // check data is inserted correctly
-    for (const auto& i : hdat) CPPUNIT_ASSERT_EQUAL(i.h, H(i.m, i.n));
+    for (const auto &i : hdat)
+      CPPUNIT_ASSERT_EQUAL(i.h, H(i.m, i.n));
 
     CPPUNIT_ASSERT(writer.eof());
   }
@@ -348,7 +359,8 @@ void test_hio::test_writer() {
                         genRndST(0, Nw - 1),
                         {genRndDouble(1.0, 3.0), genRndDouble(1.0, 3.0)}};
       const auto itr = std::lower_bound(hdat.begin(), hdat.end(), ne);
-      if (itr == hdat.end() || *itr != ne) hdat.insert(itr, ne);
+      if (itr == hdat.end() || *itr != ne)
+        hdat.insert(itr, ne);
     }
 
     writer.insert(hdat);
@@ -362,7 +374,8 @@ void test_hio::test_writer() {
     CPPUNIT_ASSERT_EQUAL(N, H.nnz());
 
     // check data is inserted correctly
-    for (const auto& i : hdat) CPPUNIT_ASSERT_EQUAL(i.h, H(i.m, i.n));
+    for (const auto &i : hdat)
+      CPPUNIT_ASSERT_EQUAL(i.h, H(i.m, i.n));
 
     CPPUNIT_ASSERT(writer.eof());
   }
@@ -386,7 +399,8 @@ void test_hio::test_writer() {
     CPPUNIT_ASSERT_EQUAL(fileName, writer.fileName());
 
     std::vector<size_t> N(NR);
-    for (auto& i : N) i = genRndST(0, 10);
+    for (auto &i : N)
+      i = genRndST(0, 10);
 
     // try going through blocks inserting random stuff
     for (size_t ind = 0; ind != R.N(); ++ind) {
@@ -401,7 +415,8 @@ void test_hio::test_writer() {
                           genRndST(0, Nw - 1),
                           {genRndDouble(1.0, 3.0), genRndDouble(1.0, 3.0)}};
         const auto itr = std::lower_bound(hdat.begin(), hdat.end(), ne);
-        if (itr == hdat.end() || *itr != ne) hdat.insert(itr, ne);
+        if (itr == hdat.end() || *itr != ne)
+          hdat.insert(itr, ne);
       }
 
       writer.insert(hdat);
@@ -429,7 +444,8 @@ void test_hio::test_writer() {
     std::sort(R.cBegin(), R.cEnd());
 
     std::vector<size_t> N(NR);
-    for (auto& i : N) i = genRndST(0, 10);
+    for (auto &i : N)
+      i = genRndST(0, 10);
     const size_t BS = 2 * sizeof(IT) + sizeof(FT);
 
     std::vector<std::vector<sphel>> hdat_;
@@ -446,7 +462,7 @@ void test_hio::test_writer() {
         CPPUNIT_ASSERT_EQUAL(T(R.cAt(ind)).print(0), writer.c_descr());
 
         hdat_.push_back(std::vector<sphel>());
-        std::vector<sphel>& hdat = hdat_.back();
+        std::vector<sphel> &hdat = hdat_.back();
 
         hdat.reserve(N[ind]);
         while (hdat.size() < hdat.capacity()) {
@@ -454,7 +470,8 @@ void test_hio::test_writer() {
                             genRndST(0, Nw - 1),
                             {genRndDouble(-3.0, 3.0), genRndDouble(-3.0, 3.0)}};
           const auto itr = std::lower_bound(hdat.begin(), hdat.end(), ne);
-          if (itr == hdat.end() || *itr != ne) hdat.insert(itr, ne);
+          if (itr == hdat.end() || *itr != ne)
+            hdat.insert(itr, ne);
         }
 
         writer.insert(hdat);
@@ -498,7 +515,8 @@ void test_hio::test_writer() {
     std::sort(R.cBegin(), R.cEnd());
 
     std::vector<size_t> N(NR);
-    for (auto& i : N) i = genRndST(0, 10);
+    for (auto &i : N)
+      i = genRndST(0, 10);
     const size_t BS = 2 * sizeof(IT) + sizeof(FT);
 
     std::vector<std::vector<sphel>> hdat_;
@@ -515,7 +533,7 @@ void test_hio::test_writer() {
         CPPUNIT_ASSERT_EQUAL(T(R.cAt(ind)).print(0), writer.c_descr());
 
         hdat_.push_back(std::vector<sphel>());
-        std::vector<sphel>& hdat = hdat_.back();
+        std::vector<sphel> &hdat = hdat_.back();
 
         hdat.reserve(N[ind]);
         while (hdat.size() < hdat.capacity()) {
@@ -523,7 +541,8 @@ void test_hio::test_writer() {
                             genRndST(0, Nw - 1),
                             {genRndDouble(-3.0, 3.0), genRndDouble(-3.0, 3.0)}};
           const auto itr = std::lower_bound(hdat.begin(), hdat.end(), ne);
-          if (itr == hdat.end() || *itr != ne) hdat.insert(itr, ne);
+          if (itr == hdat.end() || *itr != ne)
+            hdat.insert(itr, ne);
         }
 
         writer.insert(hdat);
@@ -567,7 +586,8 @@ void test_hio::test_writer() {
     std::sort(R.cBegin(), R.cEnd());
 
     std::vector<size_t> N(NR);
-    for (auto& i : N) i = genRndST(0, 10);
+    for (auto &i : N)
+      i = genRndST(0, 10);
     const size_t BS = 2 * sizeof(IT) + sizeof(FT);
 
     std::vector<std::vector<sphel>> hdat_;
@@ -584,7 +604,7 @@ void test_hio::test_writer() {
         CPPUNIT_ASSERT_EQUAL(T(R.cAt(ind)).print(0), writer.c_descr());
 
         hdat_.push_back(std::vector<sphel>());
-        std::vector<sphel>& hdat = hdat_.back();
+        std::vector<sphel> &hdat = hdat_.back();
 
         hdat.reserve(N[ind]);
         while (hdat.size() < hdat.capacity()) {
@@ -592,7 +612,8 @@ void test_hio::test_writer() {
                             genRndST(0, Nw - 1),
                             {genRndDouble(-3.0, 3.0), genRndDouble(-3.0, 3.0)}};
           const auto itr = std::lower_bound(hdat.begin(), hdat.end(), ne);
-          if (itr == hdat.end() || *itr != ne) hdat.insert(itr, ne);
+          if (itr == hdat.end() || *itr != ne)
+            hdat.insert(itr, ne);
         }
 
         writer.insert(hdat);
@@ -636,7 +657,8 @@ void test_hio::test_writer() {
     std::sort(R.cBegin(), R.cEnd());
 
     std::vector<size_t> N(NR);
-    for (auto& i : N) i = genRndST(0, 10);
+    for (auto &i : N)
+      i = genRndST(0, 10);
     const size_t BS = 2 * sizeof(IT) + sizeof(FT);
 
     std::vector<std::vector<sphel>> hdat_;
@@ -653,7 +675,7 @@ void test_hio::test_writer() {
         CPPUNIT_ASSERT_EQUAL(T(R.cAt(ind)).print(0), writer.c_descr());
 
         hdat_.push_back(std::vector<sphel>());
-        std::vector<sphel>& hdat = hdat_.back();
+        std::vector<sphel> &hdat = hdat_.back();
 
         hdat.reserve(N[ind]);
         while (hdat.size() < hdat.capacity()) {
@@ -661,7 +683,8 @@ void test_hio::test_writer() {
                             genRndST(0, Nw - 1),
                             {genRndDouble(-3.0, 3.0), genRndDouble(-3.0, 3.0)}};
           const auto itr = std::lower_bound(hdat.begin(), hdat.end(), ne);
-          if (itr == hdat.end() || *itr != ne) hdat.insert(itr, ne);
+          if (itr == hdat.end() || *itr != ne)
+            hdat.insert(itr, ne);
         }
 
         writer.insert(hdat);
@@ -706,7 +729,8 @@ void test_hio::test_writer() {
     std::sort(R.cBegin(), R.cEnd());
 
     std::vector<size_t> N(NR);
-    for (auto& i : N) i = genRndST(0, 10);
+    for (auto &i : N)
+      i = genRndST(0, 10);
     const size_t BS = 2 * sizeof(IT) + sizeof(FT);
 
     std::vector<std::vector<sphel>> hdat_;
@@ -723,7 +747,7 @@ void test_hio::test_writer() {
         CPPUNIT_ASSERT_EQUAL(T(R.cAt(ind)).print(0), writer.c_descr());
 
         hdat_.push_back(std::vector<sphel>());
-        std::vector<sphel>& hdat = hdat_.back();
+        std::vector<sphel> &hdat = hdat_.back();
 
         hdat.reserve(N[ind]);
         while (hdat.size() < hdat.capacity()) {
@@ -731,7 +755,8 @@ void test_hio::test_writer() {
                             genRndST(0, Nw - 1),
                             {genRndDouble(-3.0, 3.0), genRndDouble(-3.0, 3.0)}};
           const auto itr = std::lower_bound(hdat.begin(), hdat.end(), ne);
-          if (itr == hdat.end() || *itr != ne) hdat.insert(itr, ne);
+          if (itr == hdat.end() || *itr != ne)
+            hdat.insert(itr, ne);
         }
 
         writer.insert(hdat);
@@ -775,7 +800,8 @@ void test_hio::test_writer() {
     std::sort(R.cBegin(), R.cEnd());
 
     std::vector<size_t> N(NR);
-    for (auto& i : N) i = genRndST(0, 10);
+    for (auto &i : N)
+      i = genRndST(0, 10);
     const size_t BS = 2 * sizeof(IT) + sizeof(FT);
 
     std::vector<std::vector<sphel>> hdat_;
@@ -792,7 +818,7 @@ void test_hio::test_writer() {
         CPPUNIT_ASSERT_EQUAL(T(R.cAt(ind)).print(0), writer.c_descr());
 
         hdat_.push_back(std::vector<sphel>());
-        std::vector<sphel>& hdat = hdat_.back();
+        std::vector<sphel> &hdat = hdat_.back();
 
         hdat.reserve(N[ind]);
         while (hdat.size() < hdat.capacity()) {
@@ -800,7 +826,8 @@ void test_hio::test_writer() {
                             genRndST(0, Nw - 1),
                             {genRndDouble(-3.0, 3.0), genRndDouble(-3.0, 3.0)}};
           const auto itr = std::lower_bound(hdat.begin(), hdat.end(), ne);
-          if (itr == hdat.end() || *itr != ne) hdat.insert(itr, ne);
+          if (itr == hdat.end() || *itr != ne)
+            hdat.insert(itr, ne);
         }
 
         writer.insert(hdat);
@@ -844,7 +871,8 @@ void test_hio::test_writer() {
     std::sort(R.cBegin(), R.cEnd());
 
     std::vector<size_t> N(NR);
-    for (auto& i : N) i = genRndST(0, 10);
+    for (auto &i : N)
+      i = genRndST(0, 10);
     const size_t BS = 2 * sizeof(IT) + sizeof(FT);
 
     std::vector<std::vector<sphel>> hdat_;
@@ -861,7 +889,7 @@ void test_hio::test_writer() {
         CPPUNIT_ASSERT_EQUAL(T(R.cAt(ind)).print(0), writer.c_descr());
 
         hdat_.push_back(std::vector<sphel>());
-        std::vector<sphel>& hdat = hdat_.back();
+        std::vector<sphel> &hdat = hdat_.back();
 
         hdat.reserve(N[ind]);
         while (hdat.size() < hdat.capacity()) {
@@ -869,7 +897,8 @@ void test_hio::test_writer() {
                             genRndST(0, Nw - 1),
                             {genRndDouble(-3.0, 3.0), genRndDouble(-3.0, 3.0)}};
           const auto itr = std::lower_bound(hdat.begin(), hdat.end(), ne);
-          if (itr == hdat.end() || *itr != ne) hdat.insert(itr, ne);
+          if (itr == hdat.end() || *itr != ne)
+            hdat.insert(itr, ne);
         }
 
         writer.insert(hdat);
@@ -913,7 +942,8 @@ void test_hio::test_writer() {
     std::sort(R.cBegin(), R.cEnd());
 
     std::vector<size_t> N(NR);
-    for (auto& i : N) i = genRndST(0, 10);
+    for (auto &i : N)
+      i = genRndST(0, 10);
     const size_t BS = 2 * sizeof(IT) + sizeof(FT);
 
     std::vector<std::vector<sphel>> hdat_;
@@ -930,7 +960,7 @@ void test_hio::test_writer() {
         CPPUNIT_ASSERT_EQUAL(T(R.cAt(ind)).print(0), writer.c_descr());
 
         hdat_.push_back(std::vector<sphel>());
-        std::vector<sphel>& hdat = hdat_.back();
+        std::vector<sphel> &hdat = hdat_.back();
 
         hdat.reserve(N[ind]);
         while (hdat.size() < hdat.capacity()) {
@@ -938,7 +968,8 @@ void test_hio::test_writer() {
                             genRndST(0, Nw - 1),
                             {genRndDouble(-3.0, 3.0), genRndDouble(-3.0, 3.0)}};
           const auto itr = std::lower_bound(hdat.begin(), hdat.end(), ne);
-          if (itr == hdat.end() || *itr != ne) hdat.insert(itr, ne);
+          if (itr == hdat.end() || *itr != ne)
+            hdat.insert(itr, ne);
         }
 
         writer.insert(hdat);
@@ -1054,10 +1085,10 @@ void test_hio::test_hctor() {
   }
 }
 
-const char* test_hio::test_id() noexcept { return "test_hio"; }
+const char *test_hio::test_id() noexcept { return "test_hio"; }
 
-CppUnit::Test* test_hio::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_hio::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(
       new CppUnit::TestCaller<test_hio>("test_writer", &test_hio::test_writer));

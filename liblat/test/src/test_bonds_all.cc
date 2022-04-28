@@ -94,7 +94,7 @@ void test_bonds_all::test_ctor_info_print() {
   // from cell, keep all
   {
     ll_bonds<> tBonds(tCell, NN,
-                      [](const fMat& b, const i_i& j) -> bool { return true; });
+                      [](const fMat &b, const i_i &j) -> bool { return true; });
 
     CPPUNIT_ASSERT(tCell == tBonds.cell());
     CPPUNIT_ASSERT_EQUAL(size_t(4), tBonds.size());
@@ -229,7 +229,8 @@ void test_bonds_all::test_mod_conv() {
   std::vector<size_t> Iref = tBonds1.inds();
   std::vector<size_t> Ick;
   Ick.reserve(2 * b.size());
-  for (const auto& i : b) Ick.push_back(i.i1()), Ick.push_back(i.i2());
+  for (const auto &i : b)
+    Ick.push_back(i.i1()), Ick.push_back(i.i2());
   std::sort(Ick.begin(), Ick.end());
   Ick.resize(std::distance(Ick.begin(), std::unique(Ick.begin(), Ick.end())));
   CPPUNIT_ASSERT(Iref == Ick);
@@ -249,21 +250,26 @@ void test_bonds_all::test_getBondCenters() {
 
   // check ordered id lambda
   const std::regex r1("[_]+"), r2("[:()]+");
-  const auto ordId = [&r1, &r2](const idv& id) -> bool {
-    for (const auto& s : id) {
+  const auto ordId = [&r1, &r2](const idv &id) -> bool {
+    for (const auto &s : id) {
       std::vector<std::string> buff;
       for (std::sregex_token_iterator i(s.cbegin(), s.cend(), r1, -1), e;
            i != e; ++i)
-        if (!i->str().empty()) buff.push_back(i->str());
-      if (!std::is_sorted(buff.cbegin(), buff.cend())) return false;
+        if (!i->str().empty())
+          buff.push_back(i->str());
+      if (!std::is_sorted(buff.cbegin(), buff.cend()))
+        return false;
 
-      for (const auto& g : buff) {
+      for (const auto &g : buff) {
         std::vector<std::string> buff;
         for (std::sregex_token_iterator i(g.cbegin(), g.cend(), r2, -1), e;
              i != e; ++i)
-          if (!i->str().empty()) buff.push_back(i->str());
-        if (buff.size() != 2) return false;
-        if (!std::is_sorted(buff.cbegin(), buff.cend())) return false;
+          if (!i->str().empty())
+            buff.push_back(i->str());
+        if (buff.size() != 2)
+          return false;
+        if (!std::is_sorted(buff.cbegin(), buff.cend()))
+          return false;
       }
     }
     return true;
@@ -299,7 +305,8 @@ void test_bonds_all::test_getBondCenters() {
       CPPUNIT_ASSERT(BC.ccEnd() != itr);
 
       size_t i1 = sbnd[i].i1(), i2 = sbnd[i].i2();
-      if (i2 < i1) std::swap(i1, i2);
+      if (i2 < i1)
+        std::swap(i1, i2);
       const std::string cid =
           "_" + tCell.id(tCell.type(i1)) + "_" + tCell.id(tCell.type(i2)) + "_";
 
@@ -312,7 +319,8 @@ void test_bonds_all::test_getBondCenters() {
   // check expanded Zincblende
   {
     auto C = randi<fMat>(D, D, -2, 2);
-    do C = randi<fMat>(D, D, -2, 2);
+    do
+      C = randi<fMat>(D, D, -2, 2);
     while (std::abs(det(C)) < mtol());
     const auto tCell = genZincblende(D, 1.0).expand(C);
 
@@ -335,7 +343,8 @@ void test_bonds_all::test_getBondCenters() {
       CPPUNIT_ASSERT(BC.ccEnd() != itr);
 
       size_t i1 = sbnd[i].i1(), i2 = sbnd[i].i2();
-      if (i2 < i1) std::swap(i1, i2);
+      if (i2 < i1)
+        std::swap(i1, i2);
       const std::string cid =
           "_" + tCell.id(tCell.type(i1)) + "_" + tCell.id(tCell.type(i2)) + "_";
 
@@ -368,7 +377,8 @@ void test_bonds_all::test_getBondCenters() {
       CPPUNIT_ASSERT(BC.ccEnd() != itr);
 
       size_t i1 = sbnd[i].i1(), i2 = sbnd[i].i2();
-      if (i2 < i1) std::swap(i1, i2);
+      if (i2 < i1)
+        std::swap(i1, i2);
       const std::string cid =
           "_" + tCell.id(tCell.type(i1)) + "_" + tCell.id(tCell.type(i2)) + "_";
 
@@ -381,7 +391,8 @@ void test_bonds_all::test_getBondCenters() {
   // check expanded Zincblende
   {
     auto C = randi<fMat>(D, D, -2, 2);
-    do C = randi<fMat>(D, D, -2, 2);
+    do
+      C = randi<fMat>(D, D, -2, 2);
     while (std::abs(det(C)) < mtol());
     const auto tCell = genRandom(D).expand(C);
 
@@ -404,7 +415,8 @@ void test_bonds_all::test_getBondCenters() {
       CPPUNIT_ASSERT(BC.ccEnd() != itr);
 
       size_t i1 = sbnd[i].i1(), i2 = sbnd[i].i2();
-      if (i2 < i1) std::swap(i1, i2);
+      if (i2 < i1)
+        std::swap(i1, i2);
       const std::string cid =
           "_" + tCell.id(tCell.type(i1)) + "_" + tCell.id(tCell.type(i2)) + "_";
 
@@ -441,7 +453,8 @@ void test_bonds_all::test_getBondCenters() {
       CPPUNIT_ASSERT(BC.ccEnd() != itr);
 
       size_t i1 = sbnd[i].i1(), i2 = sbnd[i].i2();
-      if (i2 < i1) std::swap(i1, i2);
+      if (i2 < i1)
+        std::swap(i1, i2);
       const std::string cid =
           "_" + tCell.id(tCell.type(i1)) + "_" + tCell.id(tCell.type(i2)) + "_";
 
@@ -501,7 +514,7 @@ void test_bonds_all::test_search() {
     tBonds.setQueryTolDirect(tBonds.maxtol());
 
     auto j = b.ccBegin();
-    for (const auto& i : b) {
+    for (const auto &i : b) {
       const auto itr = tBonds.search(i);
       CPPUNIT_ASSERT(itr != tBonds.cend());
 
@@ -516,10 +529,10 @@ void test_bonds_all::test_search() {
   }
 }
 
-const char* test_bonds_all::test_id() noexcept { return "test_bonds_all"; }
+const char *test_bonds_all::test_id() noexcept { return "test_bonds_all"; }
 
-CppUnit::Test* test_bonds_all::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_bonds_all::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   //	suite->addTest(new CppUnit::TestCaller<test_bonds_all>(
   //		"test_i_i_R", &test_bonds_all::test_i_i_R));

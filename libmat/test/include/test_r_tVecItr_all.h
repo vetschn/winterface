@@ -8,12 +8,11 @@
 
 #include "lm_tVecItr.h"
 
-template <class TT, class FT, class CT>
-class lm_tMat;
+template <class TT, class FT, class CT> class lm_tMat;
 
 template <class TT, class FT, class CT, class VT>
 class test_r_tVecItr_all : public CppUnit::TestFixture {
- public:
+public:
   // types
   typedef lm_tMat<FT, FT, CT> fMat;
   typedef lm_tMat<CT, FT, CT> cMat;
@@ -30,11 +29,11 @@ class test_r_tVecItr_all : public CppUnit::TestFixture {
   void test_dereference();
   void test_arithmetic_difference();
 
- protected:
-  static const char* test_id() noexcept;
+protected:
+  static const char *test_id() noexcept;
 
- public:
-  static CppUnit::Test* suite();
+public:
+  static CppUnit::Test *suite();
 };
 
-#endif  // _TEST_R_TVECITR_ALL_
+#endif // _TEST_R_TVECITR_ALL_

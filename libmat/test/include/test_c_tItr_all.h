@@ -8,9 +8,8 @@
 
 #include "lm_tItr.h"
 
-template <class TT>
-class test_c_tItr_all : public CppUnit::TestFixture {
- public:
+template <class TT> class test_c_tItr_all : public CppUnit::TestFixture {
+public:
   // types
   typedef lm_c_tItr<TT> c_tItr;
   typedef lm_tItr<TT> tItr;
@@ -22,11 +21,11 @@ class test_c_tItr_all : public CppUnit::TestFixture {
   void test_dereference();
   void test_arithmetic_difference();
 
- protected:
-  static const char* test_id() noexcept;
+protected:
+  static const char *test_id() noexcept;
 
- public:
-  static CppUnit::Test* suite();
+public:
+  static CppUnit::Test *suite();
 };
 
-#endif  // _TEST_C_TITR_ALL_
+#endif // _TEST_C_TITR_ALL_

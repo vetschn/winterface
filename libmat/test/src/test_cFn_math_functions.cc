@@ -272,7 +272,7 @@ void test_tFn_math_functions<CPX__, RE__, CPX__>::test_signEq_sign() {
       RE__(2.0) * round(rnd<tMat>(M, N, RE__(-.4999), RE__(1.4999))) -
       RE__(1.0);
 
-  const auto sgn_ = [](const CPX__& i) -> CPX__ {
+  const auto sgn_ = [](const CPX__ &i) -> CPX__ {
     return std::abs(i) <= RE__(0.0) ? CPX__(0.0) : i / std::abs(i);
   };
 
@@ -351,7 +351,7 @@ void test_tFn_math_functions<CPX__, RE__, CPX__>::test_signEq_sign() {
 
 // test id
 template <>
-const char* test_tFn_math_functions<CPX__, RE__, CPX__>::test_id() noexcept {
+const char *test_tFn_math_functions<CPX__, RE__, CPX__>::test_id() noexcept {
   return "test_cFn_math_functions";
 }
 

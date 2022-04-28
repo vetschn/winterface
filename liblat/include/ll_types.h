@@ -18,28 +18,27 @@
 #include "lm_tMat.h"
 
 class test_io;
-template <class MT>
-class ll_writerMEM;
+template <class MT> class ll_writerMEM;
 
 namespace ll__ {
 
 using namespace lm__;
 using namespace aux;
 
-typedef size_t aT;                 //!< atomic type
-typedef size_t aC;                 //!< atomic count
-typedef size_t wT;                 //!< wannier type
-typedef size_t wC;                 //!< wannier count
-typedef std::complex<double> hel;  //!< hamiltonian element
+typedef size_t aT;                //!< atomic type
+typedef size_t aC;                //!< atomic count
+typedef size_t wT;                //!< wannier type
+typedef size_t wC;                //!< wannier count
+typedef std::complex<double> hel; //!< hamiltonian element
 
-typedef std::vector<bool> rv;          //!< restriction vector
-typedef std::vector<aT> aTv;           //!< atomic type vector
-typedef std::vector<aC> aCv;           //!< atomic count vector
-typedef std::vector<std::string> idv;  //!< atomic id strings
-typedef std::vector<wT> wTv;           //!< wannier type vector
-typedef std::vector<wTv> wi;           //!< wannier indexing
-typedef std::vector<cMat> cMatv;       //!< complex matrix vector
-typedef std::vector<fMat> fMatv;       //!< real matrix vector
+typedef std::vector<bool> rv;         //!< restriction vector
+typedef std::vector<aT> aTv;          //!< atomic type vector
+typedef std::vector<aC> aCv;          //!< atomic count vector
+typedef std::vector<std::string> idv; //!< atomic id strings
+typedef std::vector<wT> wTv;          //!< wannier type vector
+typedef std::vector<wTv> wi;          //!< wannier indexing
+typedef std::vector<cMat> cMatv;      //!< complex matrix vector
+typedef std::vector<fMat> fMatv;      //!< real matrix vector
 
 //! operator! for rv
 inline std::vector<bool> operator!(rv inp) noexcept {
@@ -50,30 +49,30 @@ inline std::vector<bool> operator!(rv inp) noexcept {
 namespace atom {
 //! atomic mass
 extern const std::map<std::string, double> mass;
-}  // namespace atom
+} // namespace atom
 
 //! raw poscar info
 struct psc {
-  fMat B;   //!< basis
-  fMat Ap;  //!< atomic positions
-  aCv N;    //!< atomic count for each atomic type
-  idv id;   //!< id strings for each atomic type
+  fMat B;  //!< basis
+  fMat Ap; //!< atomic positions
+  aCv N;   //!< atomic count for each atomic type
+  idv id;  //!< id strings for each atomic type
 };
 //! valence, conduction band edges
 struct vb_cb {
-  double vb;  //!< valence band edge
-  double cb;  //!< conduction band edge
+  double vb; //!< valence band edge
+  double cb; //!< conduction band edge
 };
 //! distance and bonds
 struct d_b {
-  double val;  //!< distance
-  fMat bonds;  //!< bonds
+  double val; //!< distance
+  fMat bonds; //!< bonds
 };
 //! omen material file
 struct omf {
-  vb_cb E;                   //!< band edges
-  std::vector<size_t> Norb;  //!< number of orbitals
-  std::vector<double> mass;  //!< atomic masses
+  vb_cb E;                  //!< band edges
+  std::vector<size_t> Norb; //!< number of orbitals
+  std::vector<double> mass; //!< atomic masses
   //! number of entries
   inline size_t N() const noexcept { return Norb.size(); }
   //! check whether struct is empty
@@ -81,12 +80,12 @@ struct omf {
 };
 //! omen lattice file
 struct olf {
-  fMat B;     //!< basis
-  fMat Ap;    //!< atomic positions
-  idv id;     //!< id strings for each atomic type
-  aTv T;      //!< atomic types
-  size_t nn;  //!< number of next neighbors
-  double bl;  //!< bond length encompassing nn bonds
+  fMat B;    //!< basis
+  fMat Ap;   //!< atomic positions
+  idv id;    //!< id strings for each atomic type
+  aTv T;     //!< atomic types
+  size_t nn; //!< number of next neighbors
+  double bl; //!< bond length encompassing nn bonds
   //! dimension of space
   inline size_t dim() const noexcept { return B.M(); }
   //! number of atomic positions
@@ -96,9 +95,9 @@ struct olf {
 };
 //! sparse hamiltonian element
 struct sphel {
-  size_t m;  //!< row index
-  size_t n;  //!< column index
-  hel h;     //!< hamiltonian element
+  size_t m; //!< row index
+  size_t n; //!< column index
+  hel h;    //!< hamiltonian element
 
   //! comparison
   inline bool operator<(const sphel &rhs) const noexcept {
@@ -122,7 +121,7 @@ struct sphel {
 };
 //! atomic positions and types
 class Ap_T final : public mat_vec_b<fMat, fArray, aTv, aT> {
- public:
+public:
   /** @name constructors
    */
   using mat_vec_b<fMat, fArray, aTv, aT>::mat_vec_b;
@@ -140,7 +139,7 @@ class Ap_T final : public mat_vec_b<fMat, fArray, aTv, aT> {
 };
 //! atomic positions and id strings
 class Ap_id final : public mat_vec_b<fMat, fArray, idv, std::string> {
- public:
+public:
   /** @name constructors
    */
   using mat_vec_b<fMat, fArray, idv, std::string>::mat_vec_b;
@@ -158,7 +157,7 @@ class Ap_id final : public mat_vec_b<fMat, fArray, idv, std::string> {
 };
 //! wannier positions and spread
 class Wp_s final : public mat_vec_b<fMat, fArray, fMat, double> {
- public:
+public:
   /** @name constructors
    */
   using mat_vec_b<fMat, fArray, fMat, double>::mat_vec_b;
@@ -177,7 +176,7 @@ class Wp_s final : public mat_vec_b<fMat, fArray, fMat, double> {
 //! H blocks and R vectors
 template <class MT = cMat>
 class R_H final : public mat_vec_cb<fMat, fArray, std::vector<MT>, MT> {
- public:
+public:
   /** @name constructors
    */
   using mat_vec_cb<fMat, fArray, std::vector<MT>, MT>::mat_vec_cb;
@@ -251,7 +250,7 @@ class R_H final : public mat_vec_cb<fMat, fArray, std::vector<MT>, MT> {
 };
 //! wannier 90 transformation matrices
 class k_U final : public mat_vec_cb<fMat, fArray, std::vector<cMat>, cMat> {
- public:
+public:
   /** @name constructors
    */
   using mat_vec_cb<fMat, fArray, std::vector<cMat>, cMat>::mat_vec_cb;
@@ -281,7 +280,7 @@ class k_U final : public mat_vec_cb<fMat, fArray, std::vector<cMat>, cMat> {
 };
 //! path and position
 class p_p final : public mat_vec_cb<fMat, fArray, fMat, double> {
- public:
+public:
   /** @name constructors
    */
   using mat_vec_cb<fMat, fArray, fMat, double>::mat_vec_cb;
@@ -306,14 +305,14 @@ class p_p final : public mat_vec_cb<fMat, fArray, fMat, double> {
   //! number of points const reference
   inline const std::vector<size_t> &Nps() const noexcept { return Nps_; }
 
- protected:
+protected:
   /** @name member variables
    */
-  std::vector<size_t> Nps_;  //!< Number of points
+  std::vector<size_t> Nps_; //!< Number of points
 };
-}  // namespace ll__
+} // namespace ll__
 
-#endif  // _LL_TYPES_
+#endif // _LL_TYPES_
 
 /** @}
  */

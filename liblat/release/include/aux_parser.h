@@ -24,35 +24,35 @@
 #include "lm_types.h"
 
 #ifndef ICOM__
-#define ICOM__ "!#%"  //!< comment symbols
+#define ICOM__ "!#%" //!< comment symbols
 #endif
 
 #ifndef RGX__
-#define RGX__ "[\\s,;]+"  //!< regex for tokenizing lines
+#define RGX__ "[\\s,;]+" //!< regex for tokenizing lines
 #endif
 
 #ifndef ALLOC__
-#define ALLOC__ 10  //!< default allocation for vectors of indeterminant size
+#define ALLOC__ 10 //!< default allocation for vectors of indeterminant size
 #endif
 
 #ifndef DIM__
-#define DIM__ 3  //!< dimension of space
+#define DIM__ 3 //!< dimension of space
 #endif
 
 #ifndef PRINTBIT__
-#define PRINTBIT__ 1  //!< bitmask bit for printing to stream
+#define PRINTBIT__ 1 //!< bitmask bit for printing to stream
 #endif
 #ifndef VERBOBIT__
-#define VERBOBIT__ 2  //!< bitmask for verbose printing to stream
+#define VERBOBIT__ 2 //!< bitmask for verbose printing to stream
 #endif
 #ifndef WRITEBIT__
-#define WRITEBIT__ 4  //!< bitmask bit for writing files to disk
+#define WRITEBIT__ 4 //!< bitmask bit for writing files to disk
 #endif
 #ifndef DEBUGBIT__
-#define DEBUGBIT__ 8  //!< bitmask bit for writing debug files to disk
+#define DEBUGBIT__ 8 //!< bitmask bit for writing debug files to disk
 #endif
 #ifndef MD5BIT__
-#define MD5BIT__ 16  //!< bitmask bit for printing md5 sums
+#define MD5BIT__ 16 //!< bitmask bit for printing md5 sums
 #endif
 
 //! parse entry macro for 1 input
@@ -64,22 +64,22 @@
 //! parse entry macro selector
 #define PARSE_SELECT__(_1, _2, _3, NAME, ...) NAME
 //! parse entry variadic macro
-#define PARSE__(...) \
+#define PARSE__(...)                                                           \
   PARSE_SELECT__(__VA_ARGS__, PARSE_3__, PARSE_2__, PARSE_1__)(__VA_ARGS__)
 
 //! help entry macro for 1 entry
-#define HELP_1__(s, i1, text) \
+#define HELP_1__(s, i1, text)                                                  \
   help_<decltype(i1)> { s, text, i1, 0, 0 }
 //! help entry macro for 2 entries
-#define HELP_2__(s, i1, i2, text) \
+#define HELP_2__(s, i1, i2, text)                                              \
   help_<decltype(i1)> { s, text, i1, i2, 0 }
 //! help entry macro for 3 entries
-#define HELP_3__(s, i1, i2, i3, text) \
+#define HELP_3__(s, i1, i2, i3, text)                                          \
   help_<decltype(i1)> { s, text, i1, i2, i3 }
 //! help entry macro selector
 #define HELP_SELECT__(_1, _2, _3, _4, _5, NAME, ...) NAME
 //! help entry variadic macro
-#define HELP__(...) \
+#define HELP__(...)                                                            \
   HELP_SELECT__(__VA_ARGS__, HELP_3__, HELP_2__, HELP_1__)(__VA_ARGS__)
 
 //! topic macro
@@ -99,20 +99,18 @@ constexpr uint32_t fnvHash(const char *str) {
 constexpr uint32_t operator"" _h(const char *str, size_t) {
   return fnvHash(str);
 }
-}  // namespace aux
+} // namespace aux
 
 namespace aux {
 namespace parse {
 
 //! id strings for types aux_parser can parse
-template <class T>
-inline constexpr const char *idstr() noexcept {
+template <class T> inline constexpr const char *idstr() noexcept {
   return "UNKNOWN";
 }
 
 //! idstr specialization for std::string
-template <>
-inline constexpr const char *idstr<std::string>() noexcept {
+template <> inline constexpr const char *idstr<std::string>() noexcept {
   return "STRING";
 }
 //! idstr specialization for std::vector<std::string>
@@ -121,42 +119,35 @@ inline constexpr const char *idstr<std::vector<std::string>>() noexcept {
   return "STRINGS";
 }
 //! idstr specialization for double
-template <>
-inline constexpr const char *idstr<double>() noexcept {
+template <> inline constexpr const char *idstr<double>() noexcept {
   return "DOUBLE";
 }
 //! idstr specialization for std::vector<double>
-template <>
-inline constexpr const char *idstr<std::vector<double>>() noexcept {
+template <> inline constexpr const char *idstr<std::vector<double>>() noexcept {
   return "DOUBLES";
 }
 //! idstr specialization for size_t
-template <>
-inline constexpr const char *idstr<size_t>() noexcept {
+template <> inline constexpr const char *idstr<size_t>() noexcept {
   return "UINT";
 }
 //! idstr specialization for std::vector<size_t>
-template <>
-inline constexpr const char *idstr<std::vector<size_t>>() noexcept {
+template <> inline constexpr const char *idstr<std::vector<size_t>>() noexcept {
   return "UINTS";
 }
 //! idstr specialization for bool
-template <>
-inline constexpr const char *idstr<bool>() noexcept {
+template <> inline constexpr const char *idstr<bool>() noexcept {
   return "BOOL";
 }
 //! idstr specialization for std::vector<bool>
-template <>
-inline constexpr const char *idstr<std::vector<bool>>() noexcept {
+template <> inline constexpr const char *idstr<std::vector<bool>>() noexcept {
   return "BOOLS";
 }
 //! idstr specialization for fMat
-template <>
-inline constexpr const char *idstr<lm__::fMat>() noexcept {
+template <> inline constexpr const char *idstr<lm__::fMat>() noexcept {
   return "FMAT";
 }
-}  // namespace parse
-}  // namespace aux
+} // namespace parse
+} // namespace aux
 
 namespace aux {
 
@@ -186,7 +177,7 @@ inline CT parseFile(const std::string &fileName, size_t &lcnt, size_t &kcnt,
   const std::regex rgx(RGX__);
 
   // read line by line and tokenize
-  lcnt = 0;  // line counter
+  lcnt = 0; // line counter
   try {
     std::string line;
     while (std::getline(file, line)) {
@@ -196,9 +187,12 @@ inline CT parseFile(const std::string &fileName, size_t &lcnt, size_t &kcnt,
       line = line.substr(0, line.find_first_of(ICOM__));
 
       std::sregex_token_iterator i(line.begin(), line.end(), rgx, -1), e;
-      if (i == e) continue;
-      if (!i->length()) ++i;  // line starts with delimiter
-      if (i == e) continue;
+      if (i == e)
+        continue;
+      if (!i->length())
+        ++i; // line starts with delimiter
+      if (i == e)
+        continue;
 
       // hash key and check for duplicate
       const uint32_t key = aux::fnvHash(i->str().c_str());
@@ -222,7 +216,7 @@ inline CT parseFile(const std::string &fileName, size_t &lcnt, size_t &kcnt,
   assert(file.eof());
   file.close();
 
-  kcnt = pk.size();  // key counter
+  kcnt = pk.size(); // key counter
   if (res.verbosity) {
     os << "file \'" << fileName << "\' successfully parsed\n";
     os << kcnt << " keys parsed on " << lcnt << " lines\n\n";
@@ -252,7 +246,7 @@ template <class CT>
 inline void printHelp(const CT &inp, std::ostream &os = std::cout) {
   typename CT::printHelp_ prnt(inp, os);
 }
-}  // namespace aux
+} // namespace aux
 
 /** Basic parser struct to inherit from.
  * Inheriting from this struct enables initialization of its member variables
@@ -269,13 +263,13 @@ inline void printHelp(const CT &inp, std::ostream &os = std::cout) {
  * parsing process does not get in the way when not needed.
  */
 struct aux_parser {
- public:
+public:
   /** @name basic members
    */
-  size_t verbosity = (PRINTBIT__ | WRITEBIT__);  //!< level of verbosity
-  std::string prefix = "./";  //!< prefix to be added in front of output files
+  size_t verbosity = (PRINTBIT__ | WRITEBIT__); //!< level of verbosity
+  std::string prefix = "./"; //!< prefix to be added in front of output files
 
- public:
+public:
   /** Parse key struct. This struct defines how keys are parsed, that is it
    * provides the keywords in the input script and into which variable the
    * result should be stored. Each child of aux_parser must provide their own
@@ -286,7 +280,7 @@ struct aux_parser {
    * for a new type.
    */
   struct parseKey_ {
-   public:
+  public:
     /** @name constructor
      */
     /** Constructor by parsing from file.
@@ -332,12 +326,12 @@ struct aux_parser {
       ++rcnt_;
     }
 
-   private:
+  private:
     /** @name member variables
      */
-    size_t rcnt_ = 0;  //!< key read flag
+    size_t rcnt_ = 0; //!< key read flag
 
-   protected:
+  protected:
     /** @name helpers
      */
     /** Generic exception thrower. This function advances the regex iterator
@@ -345,11 +339,11 @@ struct aux_parser {
      */
     static inline void bitch_(std::sregex_token_iterator &i,
                               const std::sregex_token_iterator &e) {
-      if (i == e)  // complain about empty tokens after key
+      if (i == e) // complain about empty tokens after key
         throw(std::invalid_argument("argument expected"));
       if (*i == "=") {
         ++i;
-        if (i == e)  // complain about empty tokens after '='
+        if (i == e) // complain about empty tokens after '='
           throw(std::invalid_argument("argument expected"));
       }
     }
@@ -487,7 +481,8 @@ struct aux_parser {
       } else {
         inp.reserve(ALLOC__);
         while (i != e) {
-          if (inp.size() == inp.capacity()) inp.reserve(inp.size() + ALLOC__);
+          if (inp.size() == inp.capacity())
+            inp.reserve(inp.size() + ALLOC__);
           inp.push_back(std::stod((i++)->str()));
         }
         inp.shrink_to_fit();
@@ -529,25 +524,30 @@ struct aux_parser {
       auto extRes = [&inp](const std::string &tok) -> void {
         const size_t mpos = tok.find_first_of("-:");
 
-        if (!mpos) throw(std::invalid_argument("indices must be >=0"));
-        if (mpos > tok.size())  // one number
+        if (!mpos)
+          throw(std::invalid_argument("indices must be >=0"));
+        if (mpos > tok.size()) // one number
           inp.push_back(std::stoul(tok));
-        else {  // range
+        else { // range
           size_t l = std::stoul(tok.substr(0, mpos));
           size_t u = std::stoul(tok.substr(mpos + 1));
-          if (u <= l) std::swap(l, u);
+          if (u <= l)
+            std::swap(l, u);
 
           inp.reserve(inp.size() + u - l);
-          for (size_t j = l; j <= u; ++j) inp.push_back(j);
+          for (size_t j = l; j <= u; ++j)
+            inp.push_back(j);
         }
       };
       if (n < NPOS__) {
         inp.reserve(n);
-        while (i != e && inp.size() <= n) extRes((i++)->str());
+        while (i != e && inp.size() <= n)
+          extRes((i++)->str());
       } else {
         inp.reserve(ALLOC__);
         while (i != e) {
-          if (inp.size() == inp.capacity()) inp.reserve(inp.size() + ALLOC__);
+          if (inp.size() == inp.capacity())
+            inp.reserve(inp.size() + ALLOC__);
           extRes((i++)->str());
         }
         inp.shrink_to_fit();
@@ -621,11 +621,13 @@ struct aux_parser {
 
       if (n < NPOS__) {
         inp.reserve(n);
-        while (i != e && inp.size() <= n) extRes((i++)->str());
+        while (i != e && inp.size() <= n)
+          extRes((i++)->str());
       } else {
         inp.reserve(ALLOC__);
         while (i != e) {
-          if (inp.size() == inp.capacity()) inp.reserve(inp.size() + ALLOC__);
+          if (inp.size() == inp.capacity())
+            inp.reserve(inp.size() + ALLOC__);
           extRes((i++)->str());
         }
         inp.shrink_to_fit();
@@ -670,7 +672,8 @@ struct aux_parser {
       auto tokrd = [&lcnt, &file, &rgx]() -> std::vector<double> {
         std::string line;
 
-        if (!std::getline(file, line)) return {};
+        if (!std::getline(file, line))
+          return {};
         ++lcnt;
 
         // resize line to first occurrence of comment symbol
@@ -678,9 +681,12 @@ struct aux_parser {
 
         // tokenize line
         std::sregex_token_iterator i(line.begin(), line.end(), rgx, -1), e;
-        if (i == e) return {};  // return empty when encountering empty line
-        if (!i->length()) ++i;
-        if (i == e) return {};  // return empty when encountering empty line
+        if (i == e)
+          return {}; // return empty when encountering empty line
+        if (!i->length())
+          ++i;
+        if (i == e)
+          return {}; // return empty when encountering empty line
 
         std::vector<double> res;
         parse_(res, NPOS__, file, lcnt, i, e);
@@ -704,14 +710,15 @@ struct aux_parser {
           throw(std::invalid_argument("found " + std::to_string(ccol.size()) +
                                       " entries, expected " +
                                       std::to_string(DIM__)));
-        if (inp.ccap() == inp.N()) inp.reserve(inp.N() + DIM__);
+        if (inp.ccap() == inp.N())
+          inp.reserve(inp.N() + DIM__);
         inp.push_back(lm__::fMat(ccol));
       }
       inp.shrink_to_fit();
     }
   };
 
- public:
+public:
   /** Print help struct. This struct defines how help messages for each key
    * should be printed. Each child of aux_parser must provide their own version
    * of this struct which must inherit from this class. The printing process is
@@ -723,7 +730,7 @@ struct aux_parser {
    * functions.
    */
   struct printHelp_ {
-   public:
+  public:
     /** @name constructors
      */
     /** Constructor from struct.
@@ -732,38 +739,35 @@ struct aux_parser {
      */
     explicit printHelp_(const aux_parser &p, std::ostream &os);
 
-   private:
+  private:
     /** @name printer
      */
     //! tuple printer
-    template <class Tuple, std::size_t N>
-    struct tuplePrinter_ {
+    template <class Tuple, std::size_t N> struct tuplePrinter_ {
       static void print(std::ostream &os, const Tuple &t) {
         tuplePrinter_<Tuple, N - 1>::print(os, t);
         os << "\n" << std::get<N - 1>(t);
       }
     };
     //! tuple printer root
-    template <class Tuple>
-    struct tuplePrinter_<Tuple, 1> {
+    template <class Tuple> struct tuplePrinter_<Tuple, 1> {
       static void print(std::ostream &os, const Tuple &t) {
         os << "\n" << std::get<0>(t);
       }
     };
 
-   protected:
+  protected:
     /** Basic help struct. This provides a printing interface.
      */
-    template <class T>
-    struct help_ {
-     public:
+    template <class T> struct help_ {
+    public:
       /** @name member variables
        */
-      const char *key;   //!< the key in the file
-      const char *text;  //!< the help message
-      const T &def;      //!< the variable corresponding to the key
-      const size_t M;    //!< optional size argument (number of rows)
-      const size_t N;    //!< optional size argument (number of columns)
+      const char *key;  //!< the key in the file
+      const char *text; //!< the help message
+      const T &def;     //!< the variable corresponding to the key
+      const size_t M;   //!< optional size argument (number of rows)
+      const size_t N;   //!< optional size argument (number of columns)
 
       //! print type dimensions
       inline std::string type() const noexcept {
@@ -809,36 +813,41 @@ struct aux_parser {
       template <class VT>
       inline static std::string print_(const std::vector<VT> &inp) noexcept {
         using namespace aux;
-        if (inp.empty()) return "{}";
+        if (inp.empty())
+          return "{}";
         std::stringstream sstr;
         sstr << inp;
         return sstr.str();
       }
       //! defines how to print std::vector<std::string>
-      inline static std::string print_(
-          const std::vector<std::string> &inp) noexcept {
-        if (inp.empty()) return "{}";
+      inline static std::string
+      print_(const std::vector<std::string> &inp) noexcept {
+        if (inp.empty())
+          return "{}";
         std::stringstream sstr;
-        for (const auto &s : inp) sstr << print_(s);
+        for (const auto &s : inp)
+          sstr << print_(s);
         return sstr.str();
       }
       //! defines how to print std::vector<double>
-      inline static std::string print_(
-          const std::vector<double> &inp) noexcept {
+      inline static std::string
+      print_(const std::vector<double> &inp) noexcept {
         using namespace aux;
-        if (inp.empty()) return "{}";
+        if (inp.empty())
+          return "{}";
         std::stringstream sstr;
         sstr << std::scientific << inp;
         return sstr.str();
       }
       //! defines how to print fMat
       inline static std::string print_(const lm__::fMat &inp) noexcept {
-        if (inp.empty()) return "{}";
+        if (inp.empty())
+          return "{}";
         return lm__::T(inp).print();
       }
     };
 
-   protected:
+  protected:
     //! format strings
     inline constexpr const char *helpFormat() noexcept {
       return help_<size_t>::format();
@@ -871,9 +880,9 @@ namespace aux {
 //! read file, screen out keys and dump result into provided stream
 void screenFile(std::ostream &sstr, const std::string &fileName,
                 const std::vector<std::string> &keys = {});
-}  // namespace aux
+} // namespace aux
 
-#endif  // _AUX_PARSER_
+#endif // _AUX_PARSER_
 
 /** @}
  */

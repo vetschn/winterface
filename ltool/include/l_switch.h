@@ -17,31 +17,31 @@
  * parseKey_ and printHelp_.
  */
 struct l_input : public virtual aux_parser {
- public:
+public:
   /** @name filenames
    */
-  std::string pscin = POSCAR__;    //!< input POSCAR file
-  std::string wbh = "";            //!< wbh to extract unit cell from
-  std::string pscout = "out.psc";  //!< output POSCAR file
+  std::string pscin = POSCAR__;   //!< input POSCAR file
+  std::string wbh = "";           //!< wbh to extract unit cell from
+  std::string pscout = "out.psc"; //!< output POSCAR file
 
   /** @name parameters
    */
-  ll__::rv r = ll__::rv(DIM__, false);          //!< restriction vector
-  std::vector<double> vac = {};                 //!< replacement vacuum length
-  lm__::fMat C = lm__::eye<lm__::fMat>(DIM__);  //!< expansion matrix
-  lm__::fMat R = lm__::zeros<lm__::fMat>(DIM__, 1);  //!< grid of R vectors
-  double bond_factor = 0.0;  //!< bond factor for adding bond centers
-  lm__::fMat ROT = lm__::eye<lm__::fMat>(DIM__);  //!< rotation matrix
-  double phi_x = 0.0;  //!< rotation angle around x axis
-  double phi_y = 0.0;  //!< rotation angle around y axis
-  double phi_z = 0.0;  //!< rotation angle around z axis
+  ll__::rv r = ll__::rv(DIM__, false);         //!< restriction vector
+  std::vector<double> vac = {};                //!< replacement vacuum length
+  lm__::fMat C = lm__::eye<lm__::fMat>(DIM__); //!< expansion matrix
+  lm__::fMat R = lm__::zeros<lm__::fMat>(DIM__, 1); //!< grid of R vectors
+  double bond_factor = 0.0; //!< bond factor for adding bond centers
+  lm__::fMat ROT = lm__::eye<lm__::fMat>(DIM__); //!< rotation matrix
+  double phi_x = 0.0; //!< rotation angle around x axis
+  double phi_y = 0.0; //!< rotation angle around y axis
+  double phi_z = 0.0; //!< rotation angle around z axis
 
   /** @name switches
    */
-  bool direct = true;  //!< switch for direct coordinates
-  bool strip = false;  //!< switch for stripping indices
+  bool direct = true; //!< switch for direct coordinates
+  bool strip = false; //!< switch for stripping indices
 
- public:
+public:
   //! parseKey_ redefinition
   struct parseKey_ : public virtual aux_parser::parseKey_ {
     /** constructor defining keys
@@ -54,58 +54,58 @@ struct l_input : public virtual aux_parser {
       using namespace aux;
 
       switch (key) {
-        // filenames
-        case "pscin"_h:
-          PARSE__(p.pscin);
-          return;
-        case "wbh"_h:
-          PARSE__(p.wbh);
-          return;
-        case "pscout"_h:
-          PARSE__(p.pscout);
-          return;
+      // filenames
+      case "pscin"_h:
+        PARSE__(p.pscin);
+        return;
+      case "wbh"_h:
+        PARSE__(p.wbh);
+        return;
+      case "pscout"_h:
+        PARSE__(p.pscout);
+        return;
 
-        // parameters
-        case "r"_h:
-          PARSE__(p.r);
-          return;
-        case "vac"_h:
-          PARSE__(p.vac);
-          return;
-        case "C"_h:
-          PARSE__(p.C);
-          return;
-        case "R"_h:
-          PARSE__(p.R);
-          return;
-        case "bond_factor"_h:
-          PARSE__(p.bond_factor);
-          return;
-        case "ROT"_h:
-          PARSE__(p.ROT);
-          return;
-        case "phi_x"_h:
-          PARSE__(p.phi_x);
-          return;
-        case "phi_y"_h:
-          PARSE__(p.phi_y);
-          return;
-        case "phi_z"_h:
-          PARSE__(p.phi_z);
-          return;
+      // parameters
+      case "r"_h:
+        PARSE__(p.r);
+        return;
+      case "vac"_h:
+        PARSE__(p.vac);
+        return;
+      case "C"_h:
+        PARSE__(p.C);
+        return;
+      case "R"_h:
+        PARSE__(p.R);
+        return;
+      case "bond_factor"_h:
+        PARSE__(p.bond_factor);
+        return;
+      case "ROT"_h:
+        PARSE__(p.ROT);
+        return;
+      case "phi_x"_h:
+        PARSE__(p.phi_x);
+        return;
+      case "phi_y"_h:
+        PARSE__(p.phi_y);
+        return;
+      case "phi_z"_h:
+        PARSE__(p.phi_z);
+        return;
 
-        // switches
-        case "direct"_h:
-          PARSE__(p.direct);
-          return;
-        case "strip"_h:
-          PARSE__(p.strip);
-          return;
+      // switches
+      case "direct"_h:
+        PARSE__(p.direct);
+        return;
+      case "strip"_h:
+        PARSE__(p.strip);
+        return;
       }
     }
   };
 
- public:
+public:
   //! printHelp_ redefinition
   struct printHelp_ : public virtual aux_parser::printHelp_ {
     /** constructor defining help messages
@@ -156,7 +156,7 @@ struct l_input : public virtual aux_parser {
  */
 void l_switch(const l_input &inp, std::ostream &os = std::cout);
 
-#endif  // _L_SWITCH_
+#endif // _L_SWITCH_
 
 /** @}
  */

@@ -17,65 +17,64 @@ namespace lm__ {
 /* helper structs return types
  */
 //! matrix and position struct
-template <class TT, class FT, class CT>
-struct mnp {
-  lm_tMat<TT, FT, CT> mat;  //!< matrix
-  std::vector<size_t> pos;  //!< position
+template <class TT, class FT, class CT> struct mnp {
+  lm_tMat<TT, FT, CT> mat; //!< matrix
+  std::vector<size_t> pos; //!< position
 };
 //! eigenvalues struct for real matrices
 struct fevr {
-  fMat Er;  //!< eigenvalues real parts
-  fMat Ei;  //!< eigenvalies complex parts
-  fMat Vr;  //!< right eigenvectors
+  fMat Er; //!< eigenvalues real parts
+  fMat Ei; //!< eigenvalies complex parts
+  fMat Vr; //!< right eigenvectors
 };
 //! eigenvalues struct for complex matrices
 struct cevr {
-  cMat E;   //!< complex eigenvalues
-  cMat Vr;  //!< right eigenvectors
+  cMat E;  //!< complex eigenvalues
+  cMat Vr; //!< right eigenvectors
 };
 //! eigenvalues and left eigenvectors struct for real matrices
 struct fevl {
-  fMat Er;  //!< eigenvalues real parts
-  fMat Ei;  //!< eigenvalues imaginary parts
-  fMat Vl;  //!< left eigenvectors
+  fMat Er; //!< eigenvalues real parts
+  fMat Ei; //!< eigenvalues imaginary parts
+  fMat Vl; //!< left eigenvectors
 };
 //! eigenvalues and left eigenvectors struct for complex matrices
 struct cevl {
-  cMat E;   //!< eigenvalues
-  cMat Vl;  //!< left eigenvectors
+  cMat E;  //!< eigenvalues
+  cMat Vl; //!< left eigenvectors
 };
 //! eigenvalues, left and right eigenvectors struct for real matrices
 struct fevrl {
-  fMat Er;  //!< eigenvalues real parts
-  fMat Ei;  //!< eigenvalues complex parts
-  fMat Vr;  //!< right eigenvectors
-  fMat Vl;  //!< left eigenvectors
+  fMat Er; //!< eigenvalues real parts
+  fMat Ei; //!< eigenvalues complex parts
+  fMat Vr; //!< right eigenvectors
+  fMat Vl; //!< left eigenvectors
 };
 //! eigenvalues, left and right eigenvectors struct for complex matrices
 struct cevrl {
-  cMat E;   //!< eigenvalues
-  cMat Vr;  //!< right eigenvectors
-  cMat Vl;  //!< left eigenvectors
+  cMat E;  //!< eigenvalues
+  cMat Vr; //!< right eigenvectors
+  cMat Vl; //!< left eigenvectors
 };
 //! complex eigenvalue eigenvector
 struct env {
-  CPX__ e;  //!< eigenvalue
-  cMat v;   //!< eigenvector
+  CPX__ e; //!< eigenvalue
+  cMat v;  //!< eigenvector
 };
 //! real eigenvalues and real eigenvectors for real hermition matrices
 struct fehv {
-  fMat E;  //!< real eigenvalues
-  fMat V;  //!< real eigenvectors
+  fMat E; //!< real eigenvalues
+  fMat V; //!< real eigenvectors
 };
 //! real eigenvalues and complex eigenvectors for complex hermition matrices
 struct cehv {
-  fMat E;  //!< real eigenvalues
-  cMat V;  //!< complex eigenvectors
+  fMat E; //!< real eigenvalues
+  cMat V; //!< complex eigenvectors
 };
 //! row, column index pair struct
 struct Ipair {
-  size_t m;  //!< row index
-  size_t n;  //!< column index
+  size_t m; //!< row index
+  size_t n; //!< column index
 };
 
 /* math functions
@@ -143,68 +142,56 @@ cehv eighv(cMat inp) noexcept;
 /** square matrix filled with 1
  * @param M number of rows/columns
  */
-template <class MT>
-MT ones(const size_t M) noexcept;
+template <class MT> MT ones(const size_t M) noexcept;
 /** matrix filled with 1
  * @param M number of rows
  * @param N number of columns
  */
-template <class MT>
-MT ones(const size_t M, const size_t N) noexcept;
+template <class MT> MT ones(const size_t M, const size_t N) noexcept;
 /** matrix filled with 1
  * @param S size struct
  */
-template <class MT>
-MT ones(const lm_size &S) noexcept;
+template <class MT> MT ones(const lm_size &S) noexcept;
 /** square matrix filled with 0
  * @param M number of rows/columns
  */
-template <class MT>
-MT zeros(const size_t M) noexcept;
+template <class MT> MT zeros(const size_t M) noexcept;
 /** matrix filled with 0
  * @param M number of rows
  * @param N number of columns
  */
-template <class MT>
-MT zeros(const size_t M, const size_t N) noexcept;
+template <class MT> MT zeros(const size_t M, const size_t N) noexcept;
 /** matrix filled with 0
  * @param S size struct
  */
-template <class MT>
-MT zeros(const lm_size &S) noexcept;
+template <class MT> MT zeros(const lm_size &S) noexcept;
 /** square identity matrix
  * @param M number of rows/columns
  */
-template <class MT>
-MT eye(const size_t M) noexcept;
+template <class MT> MT eye(const size_t M) noexcept;
 /** identity matrix
  * @param M number of rows
  * @param N number of columns
  */
-template <class MT>
-MT eye(const size_t M, const size_t N) noexcept;
+template <class MT> MT eye(const size_t M, const size_t N) noexcept;
 /** identity matrix
  * @param S size struct
  */
-template <class MT>
-MT eye(const lm_size &S) noexcept;
+template <class MT> MT eye(const lm_size &S) noexcept;
 /** identity row
  * @param N length of row
  * @param i index of 1
  */
-template <class MT>
-MT rId(const size_t N, const size_t i) noexcept;
+template <class MT> MT rId(const size_t N, const size_t i) noexcept;
 /** identity column
  * @param M length of row
  * @param i index of 1
  */
-template <class MT>
-MT cId(const size_t M, const size_t i) noexcept;
+template <class MT> MT cId(const size_t M, const size_t i) noexcept;
 /** square matrix filled with random numbers
  * @param M number of rows/columns
  */
-template <class MT>
-MT rand(const size_t M) noexcept;
+template <class MT> MT rand(const size_t M) noexcept;
 /** matrix filled with random numbers
  * @param M number of rows
  * @param N number of columns
@@ -226,13 +213,11 @@ MT rand(const lm_size &S, const RE__ rand_min = 0.0,
  * @param l lower bound for each element
  * @param u upper bound for each element
  */
-template <class MT>
-MT rand(const fMat &l, const fMat &u) noexcept;
+template <class MT> MT rand(const fMat &l, const fMat &u) noexcept;
 /** square matrix filled with random integers
  * @param M number of rows/columns
  */
-template <class MT>
-MT randi(const size_t M) noexcept;
+template <class MT> MT randi(const size_t M) noexcept;
 /** matrix filled with random integers
  * @param M number of rows
  * @param N number of columns
@@ -254,8 +239,7 @@ MT randi(const lm_size &S, const long rand_min = 0,
  * @param l lower bound for each element
  * @param u upper bound for each element
  */
-template <class MT>
-MT randi(const fMat &l, const fMat &u) noexcept;
+template <class MT> MT randi(const fMat &l, const fMat &u) noexcept;
 //! concatenate along rows [lhs;rhs]
 template <class TT, class FT, class CT>
 lm_tMat<TT, FT, CT> mcat(const lm_tMat<TT, FT, CT> &lhs,
@@ -577,9 +561,9 @@ std::vector<size_t> find(const lm_tArray<TT, FT, CT> &inp) noexcept;
 //! find the amount of non zero entries
 template <class TT, class FT, class CT>
 size_t nnz(const lm_tArray<TT, FT, CT> &inp) noexcept;
-}  // namespace lm__
+} // namespace lm__
 
-#endif  // _LM_FN_
+#endif // _LM_FN_
 
 /** @}
  */

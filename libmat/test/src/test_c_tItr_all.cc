@@ -9,17 +9,16 @@
 
 using namespace lm__::test;
 
-template <class TT>
-void test_c_tItr_all<TT>::test_ctor_assign() {
+template <class TT> void test_c_tItr_all<TT>::test_ctor_assign() {
   // lambda to generate const random range
-  auto gen = [](const size_t L) -> const TT* {
-    TT* res = new TT[L];
+  auto gen = [](const size_t L) -> const TT * {
+    TT *res = new TT[L];
     rnd(res, L);
     return res;
   };
 
   const size_t L = genRndST();
-  const TT* rg = gen(L);
+  const TT *rg = gen(L);
   const size_t incr = genRndST();
 
   // default
@@ -49,34 +48,33 @@ void test_c_tItr_all<TT>::test_ctor_assign() {
 
   // from itr
   {
-    c_tItr tItr1(const_cast<TT*>(rg), incr);
+    c_tItr tItr1(const_cast<TT *>(rg), incr);
     c_tItr tItr2(tItr1);
-    CPPUNIT_ASSERT_EQUAL(const_cast<const TT*>(tItr1.data()), tItr2.data());
+    CPPUNIT_ASSERT_EQUAL(const_cast<const TT *>(tItr1.data()), tItr2.data());
     CPPUNIT_ASSERT_EQUAL(tItr1.incr(), tItr2.incr());
 
     tItr2 = tItr1;
-    CPPUNIT_ASSERT_EQUAL(const_cast<const TT*>(tItr1.data()), tItr2.data());
+    CPPUNIT_ASSERT_EQUAL(const_cast<const TT *>(tItr1.data()), tItr2.data());
     CPPUNIT_ASSERT_EQUAL(tItr1.incr(), tItr2.incr());
   }
 
   delete[] rg;
 }
 
-template <class TT>
-void test_c_tItr_all<TT>::test_swap() {
+template <class TT> void test_c_tItr_all<TT>::test_swap() {
   // lambda to generate const random range
-  auto gen = [](const size_t L) -> const TT* {
-    TT* res = new TT[L];
+  auto gen = [](const size_t L) -> const TT * {
+    TT *res = new TT[L];
     rnd(res, L);
     return res;
   };
 
   const size_t L1 = genRndST();
-  const TT* rg1 = gen(L1);
+  const TT *rg1 = gen(L1);
   const size_t incr1 = genRndST();
 
   const size_t L2 = genRndST();
-  const TT* rg2 = gen(L2);
+  const TT *rg2 = gen(L2);
   const size_t incr2 = genRndST();
 
   c_tItr tItr1(rg1, incr1);
@@ -93,17 +91,16 @@ void test_c_tItr_all<TT>::test_swap() {
   delete[] rg2;
 }
 
-template <class TT>
-void test_c_tItr_all<TT>::test_comparison() {
+template <class TT> void test_c_tItr_all<TT>::test_comparison() {
   // lambda to generate const random range
-  auto gen = [](const size_t L) -> const TT* {
-    TT* res = new TT[L];
+  auto gen = [](const size_t L) -> const TT * {
+    TT *res = new TT[L];
     rnd(res, L);
     return res;
   };
 
   const size_t L = genRndST();
-  const TT* rg = gen(L);
+  const TT *rg = gen(L);
   const size_t incr = genRndST();
 
   c_tItr tItr1(rg, incr);
@@ -124,7 +121,7 @@ void test_c_tItr_all<TT>::test_comparison() {
 
   // to itr
   {
-    tItr tItr2(const_cast<TT*>(rg) + L / 2, incr);
+    tItr tItr2(const_cast<TT *>(rg) + L / 2, incr);
 
     CPPUNIT_ASSERT(tItr1 == tItr1);
     CPPUNIT_ASSERT(tItr1 != tItr2);
@@ -139,17 +136,16 @@ void test_c_tItr_all<TT>::test_comparison() {
   delete[] rg;
 }
 
-template <class TT>
-void test_c_tItr_all<TT>::test_dereference() {
+template <class TT> void test_c_tItr_all<TT>::test_dereference() {
   // lambda to generate const random range
-  auto gen = [](const size_t L) -> const TT* {
-    TT* res = new TT[L];
+  auto gen = [](const size_t L) -> const TT * {
+    TT *res = new TT[L];
     rnd(res, L);
     return res;
   };
 
   const size_t L = genRndST();
-  const TT* rg = gen(L);
+  const TT *rg = gen(L);
   const size_t incr = genRndST();
 
   c_tItr tItr1(rg, incr);
@@ -163,17 +159,16 @@ void test_c_tItr_all<TT>::test_dereference() {
   delete[] rg;
 }
 
-template <class TT>
-void test_c_tItr_all<TT>::test_arithmetic_difference() {
+template <class TT> void test_c_tItr_all<TT>::test_arithmetic_difference() {
   // lambda to generate const random range
-  auto gen = [](const size_t L) -> const TT* {
-    TT* res = new TT[L];
+  auto gen = [](const size_t L) -> const TT * {
+    TT *res = new TT[L];
     rnd(res, L);
     return res;
   };
 
   const size_t L = genRndST();
-  const TT* rg = gen(L);
+  const TT *rg = gen(L);
   const size_t incr = genRndST();
 
   c_tItr tItr1(rg, incr);
@@ -249,9 +244,8 @@ void test_c_tItr_all<TT>::test_arithmetic_difference() {
   delete[] rg;
 }
 
-template <class TT>
-CppUnit::Test* test_c_tItr_all<TT>::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+template <class TT> CppUnit::Test *test_c_tItr_all<TT>::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_c_tItr_all>(
       "test_ctor_assign", &test_c_tItr_all<TT>::test_ctor_assign));

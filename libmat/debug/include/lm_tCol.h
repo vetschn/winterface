@@ -12,22 +12,14 @@
 
 #include "lm_ref_tArray.h"
 
-template <class TT, class FT, class CT>
-class lm_tMat;
-template <class TT, class FT, class CT>
-class lm_tRow;
-template <class MT, class VT, class RT, class RT_>
-class lm_tVecItr_b;
-template <class MT, class VT>
-class lm_c_tVecItr;
-template <class MT, class VT>
-class lm_tVecItr;
-template <class MT, class VT, class RT, class RT_>
-class lm_r_tVecItr_b;
-template <class MT, class VT>
-class lm_cr_tVecItr;
-template <class MT, class VT>
-class lm_r_tVecItr;
+template <class TT, class FT, class CT> class lm_tMat;
+template <class TT, class FT, class CT> class lm_tRow;
+template <class MT, class VT, class RT, class RT_> class lm_tVecItr_b;
+template <class MT, class VT> class lm_c_tVecItr;
+template <class MT, class VT> class lm_tVecItr;
+template <class MT, class VT, class RT, class RT_> class lm_r_tVecItr_b;
+template <class MT, class VT> class lm_cr_tVecItr;
+template <class MT, class VT> class lm_r_tVecItr;
 
 /**
  * The column class as hosted by lm_tMat.
@@ -47,7 +39,7 @@ class lm_r_tVecItr;
  */
 template <class TT, class FT, class CT>
 class lm_tCol final : public lm_ref_tArray<TT, FT, CT, lm_tCol<TT, FT, CT>> {
- public:
+public:
   /** @name friend classes
    */
   friend class lm_tMat<TT, FT, CT>;
@@ -74,62 +66,63 @@ class lm_tCol final : public lm_ref_tArray<TT, FT, CT, lm_tCol<TT, FT, CT>> {
 
   /** @name types
    */
-  typedef lm_tArray<FT, FT, CT> fArray;  //!< a real array
-  typedef lm_tArray<CT, FT, CT> cArray;  //!< a complex array
-  typedef lm_tRow<TT, FT, CT> tRow;      //!< a row, either real or complex
-  typedef lm_tRow<FT, FT, CT> fRow;      //!< a real row
-  typedef lm_tRow<CT, FT, CT> cRow;      //!< a complex row
-  typedef lm_tCol<TT, FT, CT> tCol;      //!< a column, either real or complex
-  typedef lm_tCol<FT, FT, CT> fCol;      //!< a real column
-  typedef lm_tCol<CT, FT, CT> cCol;      //!< a complex column
-  typedef lm_tMat<TT, FT, CT> tMat;      //!< a matrix, either real or complex
-  typedef lm_tMat<FT, FT, CT> fMat;      //!< a real matrix
-  typedef lm_tMat<CT, FT, CT> cMat;      //!< a complex matrix
-  typedef lm__::lm_size lm_size;         //!< a size struct holding M and N
+  typedef lm_tArray<FT, FT, CT> fArray; //!< a real array
+  typedef lm_tArray<CT, FT, CT> cArray; //!< a complex array
+  typedef lm_tRow<TT, FT, CT> tRow;     //!< a row, either real or complex
+  typedef lm_tRow<FT, FT, CT> fRow;     //!< a real row
+  typedef lm_tRow<CT, FT, CT> cRow;     //!< a complex row
+  typedef lm_tCol<TT, FT, CT> tCol;     //!< a column, either real or complex
+  typedef lm_tCol<FT, FT, CT> fCol;     //!< a real column
+  typedef lm_tCol<CT, FT, CT> cCol;     //!< a complex column
+  typedef lm_tMat<TT, FT, CT> tMat;     //!< a matrix, either real or complex
+  typedef lm_tMat<FT, FT, CT> fMat;     //!< a real matrix
+  typedef lm_tMat<CT, FT, CT> cMat;     //!< a complex matrix
+  typedef lm__::lm_size lm_size;        //!< a size struct holding M and N
 
   /** @name copy constructor and destructor
    */
   //! copy constructor
-  lm_tCol(const lm_tCol& inp) noexcept;
+  lm_tCol(const lm_tCol &inp) noexcept;
   //! destructor
   inline ~lm_tCol() noexcept {
-    if (i() == PTRDIFF_MAX) delete ptr_;
+    if (i() == PTRDIFF_MAX)
+      delete ptr_;
   }
 
- private:
+private:
   /** @name constructor from matrix
    */
   //! hidden constructor from matrix
-  inline explicit lm_tCol(const tMat* ptr = nullptr,
+  inline explicit lm_tCol(const tMat *ptr = nullptr,
                           const ptrdiff_t i = 0) noexcept
-      : ptr_(const_cast<tMat*>(ptr)), i_(i) {}
+      : ptr_(const_cast<tMat *>(ptr)), i_(i) {}
 
- public:
+public:
   /** @name assignment
    */
   //! assignment from a real number
-  tCol& operator=(const FT rhs) noexcept;
+  tCol &operator=(const FT rhs) noexcept;
   //! assignment from a complex number
-  tCol& operator=(const CT& rhs) noexcept;
+  tCol &operator=(const CT &rhs) noexcept;
   //! assignment from a real row
-  tCol& operator=(const fRow& rhs) noexcept;
+  tCol &operator=(const fRow &rhs) noexcept;
   //! assignment from a complex row
-  tCol& operator=(const cRow& rhs) noexcept;
+  tCol &operator=(const cRow &rhs) noexcept;
   //! assignment from a real array
-  tCol& operator=(const fArray& rhs) noexcept;
+  tCol &operator=(const fArray &rhs) noexcept;
   //! assignment from a complex array
-  tCol& operator=(const cArray& rhs) noexcept;
+  tCol &operator=(const cArray &rhs) noexcept;
   //! assignment from a column
-  tCol& operator=(const tCol& rhs) noexcept;
+  tCol &operator=(const tCol &rhs) noexcept;
   //! swap function, swapping matrix contents
-  inline friend void swap(tCol&& lhs, tCol&& rhs) noexcept {
+  inline friend void swap(tCol &&lhs, tCol &&rhs) noexcept {
     assert(lhs.M() == rhs.M());
     for (auto il = lhs.begin(), ir = rhs.begin(), e = lhs.end(); il != e;
          ++il, ++ir)
       std::iter_swap(il, ir);
   }
   //! swap function, swapping hosts
-  inline friend void swap_(tCol& lhs, tCol& rhs) noexcept {
+  inline friend void swap_(tCol &lhs, tCol &rhs) noexcept {
     using std::swap;
     swap(lhs.i_, rhs.i_);
     swap(lhs.ptr_, rhs.ptr_);
@@ -138,19 +131,19 @@ class lm_tCol final : public lm_ref_tArray<TT, FT, CT, lm_tCol<TT, FT, CT>> {
   /** @name data access
    */
   //! const pointer to underlying data
-  inline const TT* data() const noexcept {
+  inline const TT *data() const noexcept {
     return this->ptr()->data() +
            (this->i() == PTRDIFF_MAX ? 0 : this->i() * M());
   }
   //! pointer to underlying data
-  inline TT* data() noexcept {
-    return const_cast<TT*>(static_cast<const lm_tCol*>(this)->data());
+  inline TT *data() noexcept {
+    return const_cast<TT *>(static_cast<const lm_tCol *>(this)->data());
   }
   //! const pointer to the 'host' matrix
-  const tMat* ptr() const noexcept { return this->ptr_; }
+  const tMat *ptr() const noexcept { return this->ptr_; }
   //! pointer to the 'host' matrix
-  tMat* ptr() noexcept {
-    return const_cast<tMat*>(static_cast<const lm_tCol*>(this)->ptr());
+  tMat *ptr() noexcept {
+    return const_cast<tMat *>(static_cast<const lm_tCol *>(this)->ptr());
   }
 
   /** @name conversion
@@ -187,24 +180,24 @@ class lm_tCol final : public lm_ref_tArray<TT, FT, CT, lm_tCol<TT, FT, CT>> {
   /** @name matrix arithmetic
    */
   //! matrix product with a real array
-  tMat prod(const fArray& inp) const noexcept;
+  tMat prod(const fArray &inp) const noexcept;
   //! matrix product with a complex array
-  cMat prod(const cArray& inp) const noexcept;
+  cMat prod(const cArray &inp) const noexcept;
 
   /** @name printing
    */
   //! write this to binary file
-  void writeToFile(const std::string& fileName,
+  void writeToFile(const std::string &fileName,
                    const bool noheader = false) const;
 
- private:
+private:
   /** @name member variables
    */
-  tMat* ptr_;    //!< pointer to the 'host' matrix
-  ptrdiff_t i_;  //!< column index
+  tMat *ptr_;   //!< pointer to the 'host' matrix
+  ptrdiff_t i_; //!< column index
 };
 
-#endif  // _LM_TCOL_
+#endif // _LM_TCOL_
 
 /** @}
  */

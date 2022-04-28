@@ -9,12 +9,12 @@
 #include "ll_cell.h"
 
 class test_hbonds_all : public CppUnit::TestFixture {
- public:
+public:
   void test_ctor_exceptions();
   void test_all();
 
-  static CppUnit::Test* suite();
-  static const char* test_id() noexcept;
+  static CppUnit::Test *suite();
+  static const char *test_id() noexcept;
 };
 
-#endif  // _TEST_HBONDS_ALL_
+#endif // _TEST_HBONDS_ALL_

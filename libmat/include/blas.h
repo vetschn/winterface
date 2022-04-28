@@ -697,4 +697,4 @@ inline void c_xheev(const char jobz, const char uplo, const int n, dcpx *a,
   (&jobz, &uplo, &n, a, &lda, w, work, &lwork, rwork, info);
 }
 
-#endif  // _BLAS_
+#endif // _BLAS_

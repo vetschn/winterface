@@ -21,44 +21,44 @@
 struct ll_wf_input : public virtual ll_wmatching_input,
                      public virtual ll_BStest_input,
                      public virtual ll_hbondss_input {
- public:
+public:
   //! resolve ambiguities
   using ll_wmatching_input::hrdat;
 
   /** @name input for basic electronic properties
    */
-  std::string weig = WEIG__;      //!< wannier90.eig file
-  std::string outcar = OUTCAR__;  //!< VASP OUTCAR file
-  double Ef = nan("");            //!< Fermi energy (if no OUTCAR is present)
+  std::string weig = WEIG__;     //!< wannier90.eig file
+  std::string outcar = OUTCAR__; //!< VASP OUTCAR file
+  double Ef = nan("");           //!< Fermi energy (if no OUTCAR is present)
 
   /** @name orthorhombic cell (ORC) detection
    * and next neighbour (NN) expansion
    */
-  double itol = 5e-2;  //!< tolerance used in fraction detection
-  fMat xyz = lm__::eye<fMat>(DIM__, DIM__);  //!< xyz direction matrix
-  fMat S = {};                               //!< stress tensor
-  fMat C = {};                               //!< expansion to ORC manually
-  std::vector<size_t> l =                    //!< expansion to NN manually
+  double itol = 5e-2; //!< tolerance used in fraction detection
+  fMat xyz = lm__::eye<fMat>(DIM__, DIM__); //!< xyz direction matrix
+  fMat S = {};                              //!< stress tensor
+  fMat C = {};                              //!< expansion to ORC manually
+  std::vector<size_t> l =                   //!< expansion to NN manually
       std::vector<size_t>(DIM__, 0);
-  double vac = 0.0;  //!< vacuum modification length
+  double vac = 0.0; //!< vacuum modification length
   ll__::rv filter_wbh =
-      ll__::rv(DIM__, true);  //!< filter bonds in wbh (in each direction)
-                              //!< to match expansion in nn-only ORC
+      ll__::rv(DIM__, true); //!< filter bonds in wbh (in each direction)
+                             //!< to match expansion in nn-only ORC
 
   /** @name BS test parameters specific to OMEN
    */
-  size_t expand_mesh = 1;   //!< level of cell expansion for mesh mode
-  size_t expand_trace = 1;  //!< level of cell expansion for trace mode
+  size_t expand_mesh = 1;  //!< level of cell expansion for mesh mode
+  size_t expand_trace = 1; //!< level of cell expansion for trace mode
 
   /** @name hamiltonian scaling
    */
-  double IR = nan("");          //!< interaction radius cutoff manually
-  bool strict_matching = true;  //!< allow only exact type matches
+  double IR = nan("");         //!< interaction radius cutoff manually
+  bool strict_matching = true; //!< allow only exact type matches
   double device_length =
-      400.0;                 //!< OMEN device length [ANGSTROM] for input stump
-  bool force_check = false;  //!< force consistency check
+      400.0;                //!< OMEN device length [ANGSTROM] for input stump
+  bool force_check = false; //!< force consistency check
 
- public:
+public:
   //! parseKey_ redefinition
   struct parseKey_ : public virtual ll_wmatching_input::parseKey_,
                      public virtual ll_BStest_input::parseKey_,
@@ -76,66 +76,66 @@ struct ll_wf_input : public virtual ll_wmatching_input,
       using namespace aux;
 
       switch (key) {
-        // input for basis electronic properties
-        case "weig"_h:
-          PARSE__(p.weig);
-          return;
-        case "outcar"_h:
-          PARSE__(p.outcar);
-          return;
-        case "Ef"_h:
-          PARSE__(p.Ef);
-          return;
+      // input for basis electronic properties
+      case "weig"_h:
+        PARSE__(p.weig);
+        return;
+      case "outcar"_h:
+        PARSE__(p.outcar);
+        return;
+      case "Ef"_h:
+        PARSE__(p.Ef);
+        return;
 
-        // ORC and NN
-        case "itol"_h:
-          PARSE__(p.itol);
-          return;
-        case "xyz"_h:
-          PARSE__(p.xyz);
-          return;
-        case "S"_h:
-          PARSE__(p.S);
-          return;
-        case "C"_h:
-          PARSE__(p.C);
-          return;
-        case "l"_h:
-          PARSE__(p.l, false, DIM__);
-          return;
-        case "vac"_h:
-          PARSE__(p.vac);
-          return;
-        case "filter_wbh"_h:
-          PARSE__(p.filter_wbh, DIM__);
-          return;
+      // ORC and NN
+      case "itol"_h:
+        PARSE__(p.itol);
+        return;
+      case "xyz"_h:
+        PARSE__(p.xyz);
+        return;
+      case "S"_h:
+        PARSE__(p.S);
+        return;
+      case "C"_h:
+        PARSE__(p.C);
+        return;
+      case "l"_h:
+        PARSE__(p.l, false, DIM__);
+        return;
+      case "vac"_h:
+        PARSE__(p.vac);
+        return;
+      case "filter_wbh"_h:
+        PARSE__(p.filter_wbh, DIM__);
+        return;
 
-        // BS parameters
-        case "expand_mesh"_h:
-          PARSE__(p.expand_mesh);
-          return;
-        case "expand_trace"_h:
-          PARSE__(p.expand_trace);
-          return;
+      // BS parameters
+      case "expand_mesh"_h:
+        PARSE__(p.expand_mesh);
+        return;
+      case "expand_trace"_h:
+        PARSE__(p.expand_trace);
+        return;
 
-        // hamiltonian scaling
-        case "IR"_h:
-          PARSE__(p.IR);
-          return;
-        case "strict_matching"_h:
-          PARSE__(p.strict_matching);
-          return;
-        case "device_length"_h:
-          PARSE__(p.device_length);
-          return;
-        case "force_check"_h:
-          PARSE__(p.force_check);
-          return;
+      // hamiltonian scaling
+      case "IR"_h:
+        PARSE__(p.IR);
+        return;
+      case "strict_matching"_h:
+        PARSE__(p.strict_matching);
+        return;
+      case "device_length"_h:
+        PARSE__(p.device_length);
+        return;
+      case "force_check"_h:
+        PARSE__(p.force_check);
+        return;
       }
     }
   };
 
- public:
+public:
   /** printHelp_ redinition
    */
   struct printHelp_ : public virtual ll_wmatching_input::printHelp_,
@@ -144,10 +144,9 @@ struct ll_wf_input : public virtual ll_wmatching_input,
     /** constructor defining help messages
      */
     inline explicit printHelp_(const ll_wf_input &p, std::ostream &os)
-        : aux_parser::printHelp_(p, os),
-          ll_wmatching_input::printHelp_(p, os),
-          ll_BStest_input::printHelp_(p, os),
-          ll_hbondss_input::printHelp_(p, os) {
+        : aux_parser::printHelp_(p, os), ll_wmatching_input::printHelp_(p, os),
+          ll_BStest_input::printHelp_(p, os), ll_hbondss_input::printHelp_(p,
+                                                                           os) {
       printHelpTuple_(
           os, std::make_tuple(
 
@@ -234,14 +233,14 @@ struct ll_wf_input : public virtual ll_wmatching_input,
 
 //! struct containing all the relevant information for phinterface
 struct ll_ph_input : public virtual aux_parser {
- public:
+public:
   /** @name filenames
    */
-  std::string myfile = "this_n_that";  //!< my filename
+  std::string myfile = "this_n_that"; //!< my filename
 
   // ...
 
- public:
+public:
   //! parseKey_ redefinition
   struct parseKey_ : public virtual aux_parser::parseKey_ {
     /** constructor defining keys
@@ -254,15 +253,15 @@ struct ll_ph_input : public virtual aux_parser {
       using namespace aux;
 
       switch (key) {
-        // filenames
-        case "myfile"_h:
-          PARSE__(p.myfile);
-          return;
+      // filenames
+      case "myfile"_h:
+        PARSE__(p.myfile);
+        return;
       }
     }
   };
 
- public:
+public:
   //! printHelp_ redefinition
   struct printHelp_ : public virtual aux_parser::printHelp_ {
     /** constructor defining help messages
@@ -296,7 +295,8 @@ inline fMat rToR(const rv &r) noexcept {
 
   // get bounds and total number of shift vectors
   fMat bnds(DIM__, 1);
-  for (size_t d = 0; d != DIM__; ++d) bnds[d] = r[d] ? 0.0 : 1.0;
+  for (size_t d = 0; d != DIM__; ++d)
+    bnds[d] = r[d] ? 0.0 : 1.0;
 
   // result, allocate space
   fMat res(DIM__, 0);
@@ -306,14 +306,15 @@ inline fMat rToR(const rv &r) noexcept {
   fMat vec(DIM__, 1);
   for (vec[0] = -bnds[0]; vec[0] <= bnds[0]; ++vec[0])
     for (vec[1] = -bnds[1]; vec[1] <= bnds[1]; ++vec[1])
-      for (vec[2] = -bnds[2]; vec[2] <= bnds[2]; ++vec[2]) res.push_back(vec);
+      for (vec[2] = -bnds[2]; vec[2] <= bnds[2]; ++vec[2])
+        res.push_back(vec);
 
   return res;
 }
 
 //! OMEN style binary sparse hamiltonian writer
 class writer final : public ll_writer {
- public:
+public:
   /** @name constructors
    */
   /** constructor from R vectors and number of Wannier functions
@@ -359,7 +360,7 @@ class writer final : public ll_writer {
     file_.write((char *)&head, 3 * sizeof(double));
   }
 
- protected:
+protected:
   /** internals
    */
   //! the number of bytes for each Hamiltonian entry
@@ -388,24 +389,24 @@ class writer final : public ll_writer {
     file_.close();
   }
 
- protected:
+protected:
   /** member variables
    */
-  std::fstream file_;   //!< file stream
-  size_t Nw_;           //!< number of Wannier functions
-  std::string prefix_;  //!< prefix to put in front of filenames
+  std::fstream file_;  //!< file stream
+  size_t Nw_;          //!< number of Wannier functions
+  std::string prefix_; //!< prefix to put in front of filenames
 };
 
 /* running winterface
  */
 //! struct containing all the data needed for OMEN input
 struct prepper {
- public:
-  ll_hbonds W;     //!< wbh
-  ll_cell ORcell;  //!< ORC cell
-  rv r;            //!< restriction vector
-  fMat C;          //!< expansion to ORC
-  fMat NNE;        //!< next neighbor expansion matrix
+public:
+  ll_hbonds W;    //!< wbh
+  ll_cell ORcell; //!< ORC cell
+  rv r;           //!< restriction vector
+  fMat C;         //!< expansion to ORC
+  fMat NNE;       //!< next neighbor expansion matrix
 
   /** @name constructors
    */
@@ -531,10 +532,10 @@ inline void gb_phinterFace(std::ostream &os) noexcept {
      << " ╚═════╝  ╚═════╝  ╚═════╝ ╚═════╝     ╚═════╝    ╚═╝   ╚══════╝ \n"
      << RESET__;
 }
-}  // namespace omen
-}  // namespace ll__
+} // namespace omen
+} // namespace ll__
 
-#endif  // _LL_OMEN_
+#endif // _LL_OMEN_
 
 /** @}
  */

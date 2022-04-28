@@ -10,7 +10,7 @@
 
 template <class TT, class FT, class CT>
 class test_tMat_basic_modification : public CppUnit::TestFixture {
- public:
+public:
   // types
   typedef lm_tMat<FT, FT, CT> fMat;
   typedef lm_tMat<CT, FT, CT> cMat;
@@ -22,11 +22,11 @@ class test_tMat_basic_modification : public CppUnit::TestFixture {
   void test_push_back_shift();
   void test_pop_back();
 
- protected:
-  static const char* test_id() noexcept;
+protected:
+  static const char *test_id() noexcept;
 
- public:
-  static CppUnit::Test* suite();
+public:
+  static CppUnit::Test *suite();
 };
 
-#endif  // _TEST_TMAT_BASIC_MODIFICATION_
+#endif // _TEST_TMAT_BASIC_MODIFICATION_

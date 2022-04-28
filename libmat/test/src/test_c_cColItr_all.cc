@@ -23,8 +23,9 @@ void test_c_tVecItr_all<CPX__, RE__, CPX__,
 
 // test id
 template <>
-const char* test_c_tVecItr_all<
-    CPX__, RE__, CPX__, lm_tCol<CPX__, RE__, CPX__>>::test_id() noexcept {
+const char *
+test_c_tVecItr_all<CPX__, RE__, CPX__,
+                   lm_tCol<CPX__, RE__, CPX__>>::test_id() noexcept {
   return "test_c_cColItr_all";
 }
 

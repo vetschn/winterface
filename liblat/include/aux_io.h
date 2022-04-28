@@ -17,16 +17,16 @@
 
 // ansi color codes
 #ifndef NCOLOR
-#define RESET__ "\033[0m"  //!< reset color
+#define RESET__ "\033[0m" //!< reset color
 
-#define BLACK__ "\033[1;30m"    //!< set black
-#define RED__ "\033[1;31m"      //!< set red
-#define GREEN__ "\033[1;32m"    //!< set green
-#define YELLOW__ "\033[1;33m"   //!< set yellow
-#define BLUE__ "\033[1;34m"     //!< set blue
-#define MAGENTA__ "\033[1;35m"  //!< set magenta
-#define CYAN__ "\033[1;36m"     //!< set cyan
-#define WHITE__ "\033[1;37m"    //!< set white
+#define BLACK__ "\033[1;30m"   //!< set black
+#define RED__ "\033[1;31m"     //!< set red
+#define GREEN__ "\033[1;32m"   //!< set green
+#define YELLOW__ "\033[1;33m"  //!< set yellow
+#define BLUE__ "\033[1;34m"    //!< set blue
+#define MAGENTA__ "\033[1;35m" //!< set magenta
+#define CYAN__ "\033[1;36m"    //!< set cyan
+#define WHITE__ "\033[1;37m"   //!< set white
 #else
 #define RESET__ ""
 
@@ -79,7 +79,7 @@ inline ST openFile(const std::string &fileName,
 
   // imbue to print commas every 6 digits
   class cnp_ : public std::numpunct<char> {
-   protected:
+  protected:
     virtual char do_thousands_sep() const { return ','; }
     virtual std::string do_grouping() const { return "\06"; }
   };
@@ -98,12 +98,14 @@ namespace detail {
 template <class ITR>
 std::ostream &pws(std::ostream &os, ITR b, ITR e, const char ws) {
   using std::distance;
-  if (!distance(b, e)) return os;
+  if (!distance(b, e))
+    return os;
   --e;
-  while (b != e) os << *b++ << ws;
+  while (b != e)
+    os << *b++ << ws;
   return (os << *e);
 };
-}  // namespace detail
+} // namespace detail
 
 //! vector printing
 template <typename T>
@@ -112,14 +114,14 @@ std::ostream &operator<<(std::ostream &os, const std::vector<T> &inp) noexcept {
 }
 //! vector printing for size_t
 template <>
-inline std::ostream &operator<<<size_t>(
-    std::ostream &os, const std::vector<size_t> &inp) noexcept {
+inline std::ostream &
+operator<<<size_t>(std::ostream &os, const std::vector<size_t> &inp) noexcept {
   return detail::pws(os, inp.cbegin(), inp.cend(), ' ');
 }
 //! vector printing for double
 template <>
-inline std::ostream &operator<<<double>(
-    std::ostream &os, const std::vector<double> &inp) noexcept {
+inline std::ostream &
+operator<<<double>(std::ostream &os, const std::vector<double> &inp) noexcept {
   return detail::pws(os, inp.cbegin(), inp.cend(), ' ');
 }
 //! vector printing for bool
@@ -130,22 +132,23 @@ inline std::ostream &operator<<<bool>(std::ostream &os,
 }
 //! vector printing for std::string
 template <>
-inline std::ostream &operator<<<std::string>(
-    std::ostream &os, const std::vector<std::string> &inp) noexcept {
+inline std::ostream &
+operator<<<std::string>(std::ostream &os,
+                        const std::vector<std::string> &inp) noexcept {
   return detail::pws(os, inp.cbegin(), inp.cend(), ' ');
 }
-}  // namespace aux
+} // namespace aux
 
 //! Tee buffer class.
 template <class CT, class TT = std::char_traits<CT>>
 class aux_b_teebuf : public std::basic_streambuf<CT, TT> {
- public:
+public:
   /** @name types
    */
-  typedef typename TT::int_type int_type;    //!< integer type
-  typedef typename TT::char_type char_type;  //!< char type
+  typedef typename TT::int_type int_type;   //!< integer type
+  typedef typename TT::char_type char_type; //!< char type
 
- public:
+public:
   /** @name constructors
    */
   //! constructor from streambuffers
@@ -153,7 +156,7 @@ class aux_b_teebuf : public std::basic_streambuf<CT, TT> {
                std::basic_streambuf<CT, TT> *sb2)
       : sb1_(sb1), sb2_(sb2) {}
 
- private:
+private:
   //! stream sync
   virtual int sync() noexcept {
     const int r1 = sb1_->pubsync();
@@ -163,7 +166,8 @@ class aux_b_teebuf : public std::basic_streambuf<CT, TT> {
   //! overflow to two streams
   virtual int_type overflow(const int_type c) noexcept {
     const int_type eof = TT::eof();
-    if (TT::eq_int_type(c, eof)) return TT::not_eof(c);
+    if (TT::eq_int_type(c, eof))
+      return TT::not_eof(c);
 
     const char_type ch = TT::to_char_type(c);
     const int_type r1 = sb1_->sputc(ch);
@@ -172,11 +176,11 @@ class aux_b_teebuf : public std::basic_streambuf<CT, TT> {
     return TT::eq_int_type(r1, eof) || TT::eq_int_type(r2, eof) ? eof : c;
   }
 
- private:
+private:
   /** @name member variables
    */
-  std::basic_streambuf<CT, TT> *sb1_;  //!< first streambuffer
-  std::basic_streambuf<CT, TT> *sb2_;  //!< second streambuffer
+  std::basic_streambuf<CT, TT> *sb1_; //!< first streambuffer
+  std::basic_streambuf<CT, TT> *sb2_; //!< second streambuffer
 };
 
 //! teebuffer shorthand
@@ -184,20 +188,20 @@ typedef aux_b_teebuf<char> aux_teebuf;
 
 //! Tee stream class.
 class aux_tee : public std::ostream {
- public:
+public:
   /** @name constructors
    */
   //! constructor from two streams
   inline aux_tee(std::ostream &os1, std::ostream &os2)
       : std::ostream(&tbuf_), tbuf_(os1.rdbuf(), os2.rdbuf()) {}
 
- private:
+private:
   /** @name member variables
    */
-  aux_teebuf tbuf_;  //!< tee streambuffer
+  aux_teebuf tbuf_; //!< tee streambuffer
 };
 
-#endif  // _AUX_IO_
+#endif // _AUX_IO_
 
 /** @}
  */

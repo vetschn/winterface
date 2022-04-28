@@ -17,28 +17,26 @@ using namespace lm__;
 
 // constructors
 template <>
-cMat::lm_tMat(const fArray& re, const fArray& im) noexcept
+cMat::lm_tMat(const fArray &re, const fArray &im) noexcept
     : tMat(re.M(), re.N()) {
   assert(re.M() == im.M());
   assert(re.N() == im.N());
   std::copy(re.cbegin(), re.cend(), reItr(this->begin()));
   std::copy(im.cbegin(), im.cend(), imItr(this->begin()));
 }
-template <>
-cMat::lm_tMat(const cArray& inp) noexcept : tMat(inp.M(), inp.N()) {
+template <> cMat::lm_tMat(const cArray &inp) noexcept : tMat(inp.M(), inp.N()) {
   if (inp.incr() == 1)
     memcpy(data(), inp.data(), this->L() * sizeof(CPX__));
   else {
     auto j = inp.begin();
     std::for_each(this->begin(), this->end(),
-                  [&j](CPX__& i) { ops::assign(i, *j++); });
+                  [&j](CPX__ &i) { ops::assign(i, *j++); });
   }
 }
 
 // assignment
-template <>
-cMat& cMat::operator=(const cArray& rhs) noexcept {
-  if ((void*)this != (void*)&rhs) {
+template <> cMat &cMat::operator=(const cArray &rhs) noexcept {
+  if ((void *)this != (void *)&rhs) {
     resize(rhs.M(), rhs.N());
 
     if (rhs.incr() == 1)
@@ -46,28 +44,22 @@ cMat& cMat::operator=(const cArray& rhs) noexcept {
     else {
       auto j = rhs.begin();
       std::for_each(this->begin(), this->end(),
-                    [&j](CPX__& i) { ops::assign(i, *j++); });
+                    [&j](CPX__ &i) { ops::assign(i, *j++); });
     }
   }
   return *this;
 }
 
 // conversion
-template <>
-fMat cMat::fcopy() const noexcept {
-  return fMat(*this);
-}
-template <>
-cMat cMat::ccopy() const noexcept {
-  return *this;
-}
+template <> fMat cMat::fcopy() const noexcept { return fMat(*this); }
+template <> cMat cMat::ccopy() const noexcept { return *this; }
 
 // basic modification
-template <>
-cMat& cMat::T() noexcept {
+template <> cMat &cMat::T() noexcept {
   if (this->empty() || M() == 1 || N() == 1) {
     std::swap(M_, N_);
-    for (imItr i = this->begin(), e = this->end(); i != e; ++i) *i = -(*i);
+    for (imItr i = this->begin(), e = this->end(); i != e; ++i)
+      *i = -(*i);
     return *this;
   }
   if (square()) {
@@ -80,7 +72,8 @@ cMat& cMat::T() noexcept {
         *cj = std::conj(*rj);
         *rj = tmp;
       }
-    for (imItr i = this->dbegin(), e = this->dend(); i != e; ++i) *i = -*i;
+    for (imItr i = this->dbegin(), e = this->dend(); i != e; ++i)
+      *i = -*i;
     return *this;
   }
 
@@ -93,19 +86,17 @@ cMat& cMat::T() noexcept {
 }
 
 // matrix arithmetic
-template <>
-fCol& cMat::leftDivideEq(fCol& inp) const noexcept {
+template <> fCol &cMat::leftDivideEq(fCol &inp) const noexcept {
   // left matrix division (aka A\B) equals version, equivalent to B=A^-1*B
   return inp = fMat(leftDivide(inp));
 }
-template <>
-cCol& cMat::leftDivideEq(cCol& inp) const noexcept {
+template <> cCol &cMat::leftDivideEq(cCol &inp) const noexcept {
   // left matrix division (aka A\B) equals version, equivalent to B=A^-1*B
   assert(square());
   assert(N() == inp.M());
 
   cMat tmp = *this;
-  int* ipiv = new int[M()];
+  int *ipiv = new int[M()];
   int info;
   c_xgesv(M(), 1, tmp.data(), M(), ipiv, inp.data(), M(), &info);
   assert(!info);
@@ -113,19 +104,17 @@ cCol& cMat::leftDivideEq(cCol& inp) const noexcept {
   delete[] ipiv;
   return inp;
 }
-template <>
-fMat& cMat::leftDivideEq(fMat& inp) const noexcept {
+template <> fMat &cMat::leftDivideEq(fMat &inp) const noexcept {
   // left matrix division (aka A\B) equals version, equivalent to B=A^-1*B
   return inp = fMat(leftDivide(inp));
 }
-template <>
-cMat& cMat::leftDivideEq(cMat& inp) const noexcept {
+template <> cMat &cMat::leftDivideEq(cMat &inp) const noexcept {
   // left matrix division (aka A\B) equals version, equivalent to B=A^-1*B
   assert(square());
   assert(N() == inp.M());
 
   cMat tmp = *this;
-  int* ipiv = new int[M()];
+  int *ipiv = new int[M()];
   int info;
   c_xgesv(M(), inp.N(), tmp.data(), M(), ipiv, inp.data(), M(), &info);
   assert(!info);
@@ -133,17 +122,16 @@ cMat& cMat::leftDivideEq(cMat& inp) const noexcept {
   delete[] ipiv;
   return inp;
 }
-template <>
-cMat cMat::prod(const fArray& inp) const noexcept {
+template <> cMat cMat::prod(const fArray &inp) const noexcept {
   assert(!empty());
   assert(!inp.empty());
   assert(N() == inp.M());
 
   cMat res(M(), inp.N());
 
-  const RE__* this_ptr = c_reItr(begin()).data();
-  const RE__* const this_end = this_ptr + 2 * M();
-  RE__* res_ptr = reItr(res.begin()).data();
+  const RE__ *this_ptr = c_reItr(begin()).data();
+  const RE__ *const this_end = this_ptr + 2 * M();
+  RE__ *res_ptr = reItr(res.begin()).data();
   const size_t thisM = 2 * M(), resM = 2 * res.M();
 
   while (this_ptr != this_end) {
@@ -155,8 +143,7 @@ cMat cMat::prod(const fArray& inp) const noexcept {
 
   return res;
 }
-template <>
-cMat cMat::prod(const cArray& inp) const noexcept {
+template <> cMat cMat::prod(const cArray &inp) const noexcept {
   assert(!empty());
   assert(!inp.empty());
   assert(N() == inp.M());
@@ -169,24 +156,22 @@ cMat cMat::prod(const cArray& inp) const noexcept {
 }
 
 // member functions
-template <>
-void cMat::readBinary_(std::ifstream& file, const bool cpx) {
+template <> void cMat::readBinary_(std::ifstream &file, const bool cpx) {
   uint64_t M, N;
-  file.read((char*)&M, sizeof(uint64_t));
-  file.read((char*)&N, sizeof(uint64_t));
+  file.read((char *)&M, sizeof(uint64_t));
+  file.read((char *)&N, sizeof(uint64_t));
   (*this) = cMat(M, N);
 
   if (cpx)
-    file.read((char*)data(), L() * sizeof(CPX__));
+    file.read((char *)data(), L() * sizeof(CPX__));
   else
-    for (auto& i : *this) {
+    for (auto &i : *this) {
       RE__ buff;
-      file.read((char*)&buff, sizeof(RE__));
+      file.read((char *)&buff, sizeof(RE__));
       i = {buff, 0.0};
     }
 }
-template <>
-void cMat::parse_(std::ifstream& file) {
+template <> void cMat::parse_(std::ifstream &file) {
   assert(file.good());
   assert(!empty());
 
@@ -194,43 +179,42 @@ void cMat::parse_(std::ifstream& file) {
   const std::regex rn("(?=[-+i])");
 
   // lambda to parse numbers from string
-  auto pnfw = [&rn](const std::string& inp) -> std::complex<RE__> {
+  auto pnfw = [&rn](const std::string &inp) -> std::complex<RE__> {
     // tokenize number
     std::sregex_token_iterator i(inp.begin(), inp.end(), rn, -1), e;
-    if (!i->length()) ++i;  // inp starts with delimiter
+    if (!i->length())
+      ++i; // inp starts with delimiter
 
     // find position of 'i'
     auto ipos = std::find(inp.begin(), inp.end(), 'i');
     switch (std::distance(ipos, inp.end())) {
-      case 0:  // number has only real part
-        if (std::distance(i, e) > 1)
-          throw(std::invalid_argument("parsing error, bad format (1)"));
-        return std::complex<RE__>(std::stod(*i));
+    case 0: // number has only real part
+      if (std::distance(i, e) > 1)
+        throw(std::invalid_argument("parsing error, bad format (1)"));
+      return std::complex<RE__>(std::stod(*i));
 
-      case 1:  // number has imaginary part
+    case 1: // number has imaginary part
 
-        switch (std::distance(i, e)) {
-          case 1:
-            return std::complex<RE__>(0.0, 1.0);
-          case 2:
-            return std::complex<RE__>(0.0, (*i == "+")   ? 1.0
-                                           : (*i == "-") ? -1.0
-                                                         : std::stod(*i));
-          case 3: {
-            RE__ re = RE__(std::stod(*i));
-            ++i;
-            RE__ im = RE__((*i == "+")   ? 1.0
-                           : (*i == "-") ? -1.0
-                                         : std::stod(*i));
-            return std::complex<RE__>(re, im);
-          }
+      switch (std::distance(i, e)) {
+      case 1:
+        return std::complex<RE__>(0.0, 1.0);
+      case 2:
+        return std::complex<RE__>(0.0, (*i == "+")   ? 1.0
+                                       : (*i == "-") ? -1.0
+                                                     : std::stod(*i));
+      case 3: {
+        RE__ re = RE__(std::stod(*i));
+        ++i;
+        RE__ im = RE__((*i == "+") ? 1.0 : (*i == "-") ? -1.0 : std::stod(*i));
+        return std::complex<RE__>(re, im);
+      }
 
-          default:
-            throw(std::invalid_argument("parsing error, bad format (2)"));
-        }
+      default:
+        throw(std::invalid_argument("parsing error, bad format (2)"));
+      }
 
-      default:  // 'i' in bad position
-        throw(std::invalid_argument("parsing error, bad format (3)"));
+    default: // 'i' in bad position
+      throw(std::invalid_argument("parsing error, bad format (3)"));
     }
   };
 

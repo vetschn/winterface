@@ -26,11 +26,13 @@ void test_cell_type_information::test_types_inds_() {
   CPPUNIT_ASSERT(rg(0, 1, tCell.N()) == tCell.inds());
 
   // validType
-  for (aT t = 0; t != tCell.Nspecies(); ++t) CPPUNIT_ASSERT(tCell.validType(t));
+  for (aT t = 0; t != tCell.Nspecies(); ++t)
+    CPPUNIT_ASSERT(tCell.validType(t));
   CPPUNIT_ASSERT(!tCell.validType(tCell.Nspecies()));
 
   // validInd
-  for (size_t i = 0; i != tCell.N(); ++i) CPPUNIT_ASSERT(tCell.validInd(i));
+  for (size_t i = 0; i != tCell.N(); ++i)
+    CPPUNIT_ASSERT(tCell.validInd(i));
   CPPUNIT_ASSERT(!tCell.validType(tCell.N()));
 }
 
@@ -59,7 +61,8 @@ void test_cell_type_information::test_id_() {
   {
     idv id_;
     id_.reserve(tCell.Nspecies());
-    for (const auto t : tCell.types()) id_.push_back(tCell.id(t));
+    for (const auto t : tCell.types())
+      id_.push_back(tCell.id(t));
     CPPUNIT_ASSERT(id_ == tCell.id());
 
     CPPUNIT_ASSERT(tCell.type() == tCell.type(tCell.id(tCell.type())));
@@ -83,7 +86,8 @@ void test_cell_type_information::test_Ntype() {
 
   aCv N;
   N.reserve(tCell.Nspecies());
-  for (aT t = 0; t != tCell.Nspecies(); ++t) N.push_back(tCell.Ntype(t));
+  for (aT t = 0; t != tCell.Nspecies(); ++t)
+    N.push_back(tCell.Ntype(t));
   CPPUNIT_ASSERT_EQUAL(std::accumulate(N.cbegin(), N.cend(), aC(0)), tCell.N());
   CPPUNIT_ASSERT(N == tCell.Ntype(tCell.types()));
   CPPUNIT_ASSERT(N == tCell.Ntype());
@@ -113,12 +117,12 @@ void test_cell_type_information::test_ind() {
   }
 }
 
-const char* test_cell_type_information::test_id() noexcept {
+const char *test_cell_type_information::test_id() noexcept {
   return "test_cell_type_information";
 }
 
-CppUnit::Test* test_cell_type_information::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_cell_type_information::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_cell_type_information>(
       "test_types_inds_", &test_cell_type_information::test_types_inds_));

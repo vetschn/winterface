@@ -31,9 +31,8 @@ namespace ll__ {
  * write A.ccBegin() instead of A.mat_.ccBegin() without having to write a pass-
  * through manually.
  */
-template <class MT, class AT>
-class mat_cb {
- public:
+template <class MT, class AT> class mat_cb {
+public:
   /** @name constructors
    */
   //! default constructor
@@ -88,7 +87,7 @@ class mat_cb {
   //! const_iterator past the end of the range
   inline auto ccEnd() const noexcept { return cEnd(); }
 
- protected:
+protected:
   /** @name iterators
    */
   //! iterator to the beginning of the range
@@ -131,10 +130,10 @@ class mat_cb {
   //! friend test class
   friend class ::test_compound_all;
 
- protected:
+protected:
   /** @name member variables
    */
-  MT mat_;  //!< matrix container
+  MT mat_; //!< matrix container
 };
 
 /** Wrapper for a matrix.
@@ -145,9 +144,8 @@ class mat_cb {
  * write A.ccBegin() instead of A.mat_.ccBegin() without having to write a pass-
  * through manually.
  */
-template <class MT, class AT>
-class mat_b {
- public:
+template <class MT, class AT> class mat_b {
+public:
   /** @name constructors
    */
   //! default constructor
@@ -202,7 +200,7 @@ class mat_b {
   //! const_iterator past the end of the range
   inline auto ccEnd() const noexcept { return cEnd(); }
 
- public:
+public:
   /** @name data access
    */
   //! data pointer
@@ -263,10 +261,10 @@ class mat_b {
   //! friend test class
   friend class ::test_compound_all;
 
- protected:
+protected:
   /** @name member variables
    */
-  MT mat_;  //!< matrix container
+  MT mat_; //!< matrix container
 };
 
 /** Wrapper for a const vector (std::vector or otherwise).
@@ -277,9 +275,8 @@ class mat_b {
  * write A.cbegin() instead of A.vec_.cbegin() without having to write a pass-
  * through manually.
  */
-template <class CT, class CB>
-class vec_cb {
- public:
+template <class CT, class CB> class vec_cb {
+public:
   /** @name constructor
    */
   //! default constructor
@@ -329,7 +326,7 @@ class vec_cb {
   //! const_iterator past the end of the range
   inline auto cend() const noexcept { return end(); }
 
- protected:
+protected:
   /** @name iterators
    */
   //! iterator to the beginning of the range
@@ -374,10 +371,10 @@ class vec_cb {
   //! friend test class
   friend class ::test_compound_all;
 
- protected:
+protected:
   /** @name member variables
    */
-  CT vec_;  //!< vector container
+  CT vec_; //!< vector container
 };
 
 /** Wrapper for a vector (std::vector or otherwise).
@@ -388,9 +385,8 @@ class vec_cb {
  * write A.cbegin() instead of A.vec_.cbegin() without having to write a pass-
  * through manually.
  */
-template <class CT, class CB>
-class vec_b {
- public:
+template <class CT, class CB> class vec_b {
+public:
   /** name constructors
    */
   //! default constructor
@@ -440,7 +436,7 @@ class vec_b {
   //! const_iterator past the end of the range
   inline auto cend() const noexcept { return end(); }
 
- public:
+public:
   /** @name data access
    */
   //! direct access to the first element
@@ -508,10 +504,10 @@ class vec_b {
   //! friend test class
   friend class ::test_compound_all;
 
- protected:
+protected:
   /** @name member variables
    */
-  CT vec_;  //!< vector container
+  CT vec_; //!< vector container
 };
 
 /** Wrapper for a class holding a matrix and vector of the same number of
@@ -524,7 +520,7 @@ class vec_b {
  */
 template <class MT, class AT, class CT, class CB>
 class mat_vec_cb : public mat_cb<MT, AT>, public vec_cb<CT, CB> {
- public:
+public:
   /** @name constuctors
    */
   //! default constructor
@@ -553,7 +549,7 @@ class mat_vec_cb : public mat_cb<MT, AT>, public vec_cb<CT, CB> {
   //! data const pointer of the vector
   auto vdata() const noexcept { return this->vec_.data(); }
 
- protected:
+protected:
   /** @name data access
    */
   //! data pointer of the matrix
@@ -622,7 +618,7 @@ class mat_vec_cb : public mat_cb<MT, AT>, public vec_cb<CT, CB> {
  */
 template <class MT, class AT, class CT, class CB>
 class mat_vec_b : public mat_b<MT, AT>, public vec_b<CT, CB> {
- public:
+public:
   /** @name constuctors
    */
   //! default constructor
@@ -651,7 +647,7 @@ class mat_vec_b : public mat_b<MT, AT>, public vec_b<CT, CB> {
   //! data const pointer of the vector
   auto vdata() const noexcept { return this->vec_.data(); }
 
- public:
+public:
   /** @name data access
    */
   //! data pointer of the matrix
@@ -709,9 +705,9 @@ class mat_vec_b : public mat_b<MT, AT>, public vec_b<CT, CB> {
   //! friend test class
   friend class ::test_compound_all;
 };
-}  // namespace ll__
+} // namespace ll__
 
-#endif  // _LL_COMPOUND_
+#endif // _LL_COMPOUND_
 
 /** @}
  */

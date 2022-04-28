@@ -17,28 +17,28 @@
  * parseKey_ and printHelp_.
  */
 struct ll_wmatching_input : public virtual aux_parser {
- public:
+public:
   /** @name filenames
    */
-  std::string wout = WOUT__;  //!< wannier90.wout file
-  std::string hrdat = HR__;   //!< wannier90_hr.dat file
+  std::string wout = WOUT__; //!< wannier90.wout file
+  std::string hrdat = HR__;  //!< wannier90_hr.dat file
 
   /** @name material generation
    */
-  std::vector<std::string> mode = {"atomic"};  //!< mode string
+  std::vector<std::string> mode = {"atomic"}; //!< mode string
   double tol =
-      1e-4;  //!< tolerance as to when hamiltonian data should be discarded
-  std::vector<size_t> wbl = {};  //!< wannier black list
-  std::vector<size_t> abl = {};  //!< atomic black list
-  double bond_factor = -1.2;     //!< bond factor
+      1e-4; //!< tolerance as to when hamiltonian data should be discarded
+  std::vector<size_t> wbl = {}; //!< wannier black list
+  std::vector<size_t> abl = {}; //!< atomic black list
+  double bond_factor = -1.2;    //!< bond factor
   size_t rm_unmatched =
-      1;  //!< remove centers with no wannier centers matched to it
-  bool simplify_composite = false;  //!< switch to simplify composite ids
-  bool balance_matches = false;     //!< try to balance matches among same type
-  size_t minpts = 2;                //!< minimum number of points per cluster
-  double wradius = 1.5;             //!< search radius for clustering
+      1; //!< remove centers with no wannier centers matched to it
+  bool simplify_composite = false; //!< switch to simplify composite ids
+  bool balance_matches = false;    //!< try to balance matches among same type
+  size_t minpts = 2;               //!< minimum number of points per cluster
+  double wradius = 1.5;            //!< search radius for clustering
 
- public:
+public:
   /** parseKey_ redefinition
    */
   struct parseKey_ : public virtual aux_parser::parseKey_ {
@@ -52,50 +52,50 @@ struct ll_wmatching_input : public virtual aux_parser {
       using namespace aux;
 
       switch (key) {
-        // filenames
-        case "wout"_h:
-          PARSE__(p.wout);
-          return;
-        case "hrdat"_h:
-          PARSE__(p.hrdat);
-          return;
+      // filenames
+      case "wout"_h:
+        PARSE__(p.wout);
+        return;
+      case "hrdat"_h:
+        PARSE__(p.hrdat);
+        return;
 
-        // material generation
-        case "mode"_h:
-          PARSE__(p.mode);
-          return;
-        case "tol"_h:
-          PARSE__(p.tol);
-          return;
-        case "wbl"_h:
-          PARSE__(p.wbl);
-          return;
-        case "abl"_h:
-          PARSE__(p.abl);
-          return;
-        case "bond_factor"_h:
-          PARSE__(p.bond_factor);
-          return;
-        case "rm_unmatched"_h:
-          PARSE__(p.rm_unmatched);
-          return;
-        case "simplify_composite"_h:
-          PARSE__(p.simplify_composite);
-          return;
-        case "balance_matches"_h:
-          PARSE__(p.balance_matches);
-          return;
-        case "minpts"_h:
-          PARSE__(p.minpts);
-          return;
-        case "wradius"_h:
-          PARSE__(p.wradius);
-          return;
+      // material generation
+      case "mode"_h:
+        PARSE__(p.mode);
+        return;
+      case "tol"_h:
+        PARSE__(p.tol);
+        return;
+      case "wbl"_h:
+        PARSE__(p.wbl);
+        return;
+      case "abl"_h:
+        PARSE__(p.abl);
+        return;
+      case "bond_factor"_h:
+        PARSE__(p.bond_factor);
+        return;
+      case "rm_unmatched"_h:
+        PARSE__(p.rm_unmatched);
+        return;
+      case "simplify_composite"_h:
+        PARSE__(p.simplify_composite);
+        return;
+      case "balance_matches"_h:
+        PARSE__(p.balance_matches);
+        return;
+      case "minpts"_h:
+        PARSE__(p.minpts);
+        return;
+      case "wradius"_h:
+        PARSE__(p.wradius);
+        return;
       }
     }
   };
 
- public:
+public:
   /** printHelp_ redefinition
    */
   struct printHelp_ : public virtual aux_parser::printHelp_ {
@@ -168,7 +168,7 @@ namespace ll__ {
  */
 class i_i_R_H final : public i_i,
                       public mat_vec_b<fMat, fArray, std::vector<cMat>, cMat> {
- public:
+public:
   /** @name constructors
    */
   //! default constructor
@@ -228,7 +228,7 @@ class i_i_R_H final : public i_i,
     return i_i_R_H(inp.i2(), inp.i1(), -inp.R(), std::move(cH));
   }
 };
-}  // namespace ll__
+} // namespace ll__
 
 /** bonds with interactions class.
  * Each bond has an interaction matrix attached, which is directly constructed
@@ -241,16 +241,16 @@ class i_i_R_H final : public i_i,
  * functions matched to them.
  */
 class ll_hbonds final : public ll_bonds<ll__::i_i_R_H> {
- public:
+public:
   // types
-  typedef ll__::fMat fMat;  //!< real matrix
-  typedef ll__::cMat cMat;  //!< complex matrix
-  typedef ll__::fCol fCol;  //!< real column
-  typedef ll__::wi wi;      //!< wannier matching
-  typedef ll__::R_H<> R_H;  //!< R_H Hamiltonian container
-  typedef ll__::idv idv;    //!< range of id strings
+  typedef ll__::fMat fMat; //!< real matrix
+  typedef ll__::cMat cMat; //!< complex matrix
+  typedef ll__::fCol fCol; //!< real column
+  typedef ll__::wi wi;     //!< wannier matching
+  typedef ll__::R_H<> R_H; //!< R_H Hamiltonian container
+  typedef ll__::idv idv;   //!< range of id strings
 
- public:
+public:
   /** @name constructors
    */
   //! default constructor
@@ -312,7 +312,8 @@ class ll_hbonds final : public ll_bonds<ll__::i_i_R_H> {
             if (d != de && d == i)
               ++d;
             else {
-              if (!ll__::cmph(*i, tol)) *i = 0.0;
+              if (!ll__::cmph(*i, tol))
+                *i = 0.0;
             }
           return std::move(inp);
         }) {}
@@ -331,7 +332,7 @@ class ll_hbonds final : public ll_bonds<ll__::i_i_R_H> {
    */
   ll_hbonds(const std::string &fileName);
 
- public:
+public:
   /** @name data access
    */
   //! reference to empty interaction matrix
@@ -377,7 +378,8 @@ class ll_hbonds final : public ll_bonds<ll__::i_i_R_H> {
    * number of orbitals are thus treated as the same type.
    */
   inline ll_cell symCell() const noexcept {
-    if (empty()) return ll_cell(cell().B());
+    if (empty())
+      return ll_cell(cell().B());
 
     idv id;
     id.reserve(cell().N());
@@ -413,11 +415,10 @@ class ll_hbonds final : public ll_bonds<ll__::i_i_R_H> {
   }
   //! helper struct for approximate interaction queries
   struct am_ {
-    cMat H;  //!< The interaction matrix
+    cMat H;    //!< The interaction matrix
+    size_t pi; //!< The substitute index for the bond in positive direction: 'b'
     size_t
-        pi;  //!< The substitute index for the bond in positive direction: 'b'
-    size_t
-        mi;  //!< The substitute index for the bond in negative direction: '-b'
+        mi; //!< The substitute index for the bond in negative direction: '-b'
     //! cast to cMat
     inline operator cMat() const noexcept { return H; }
   };
@@ -457,7 +458,8 @@ class ll_hbonds final : public ll_bonds<ll__::i_i_R_H> {
                                         ll__::i_i{i, i});
       const auto jtr = itr->center();
       if (jtr != itr->end())
-        for (auto d = jtr->dbegin(), e = jtr->dend(); d != e; ++d) *d += sh;
+        for (auto d = jtr->dbegin(), e = jtr->dend(); d != e; ++d)
+          *d += sh;
     }
   }
   /** function to flip Wannier signs in the interaction matrices. This must be
@@ -474,7 +476,8 @@ class ll_hbonds final : public ll_bonds<ll__::i_i_R_H> {
     for (auto &b : *this)
       for (auto &h : b)
         for (auto i = h.dbegin(), e = h.dend(); i != e; ++i)
-          if (std::abs(*i) < tol) *i = tol;
+          if (std::abs(*i) < tol)
+            *i = tol;
   }
 
   /** printing
@@ -501,14 +504,14 @@ class ll_hbonds final : public ll_bonds<ll__::i_i_R_H> {
     return inp.print(os);
   }
 
- protected:
+protected:
   /** @name member variables
    */
-  static const cMat eH_;      //!< empty interaction matrix
-  std::vector<size_t> Norb_;  //!< Norb vector
+  static const cMat eH_;     //!< empty interaction matrix
+  std::vector<size_t> Norb_; //!< Norb vector
 };
 
-#endif  // _LL_HBONDS_
+#endif // _LL_HBONDS_
 
 /** @}
  */

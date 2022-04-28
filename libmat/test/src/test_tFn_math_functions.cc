@@ -35,8 +35,8 @@ void test_tFn_math_functions<TT, FT, CT>::test_abs() {
 }
 
 template <class TT, class FT, class CT>
-CppUnit::Test* test_tFn_math_functions<TT, FT, CT>::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_tFn_math_functions<TT, FT, CT>::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_tFn_math_functions>(
       "test_abs", &test_tFn_math_functions<TT, FT, CT>::test_abs));

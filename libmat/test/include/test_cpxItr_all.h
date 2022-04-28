@@ -10,9 +10,8 @@
 
 #include "lm_cpxItr.h"
 
-template <ptrdiff_t s>
-class test_cpxItr_all : public CppUnit::TestFixture {
- public:
+template <ptrdiff_t s> class test_cpxItr_all : public CppUnit::TestFixture {
+public:
   // types
   typedef lm_c_cpxItr<s> c_cpxItr;
   typedef lm_cpxItr<s> cpxItr;
@@ -23,11 +22,11 @@ class test_cpxItr_all : public CppUnit::TestFixture {
   void test_swap_distance();
   void test_all_dereference();
 
- protected:
-  static const char* test_id() noexcept;
+protected:
+  static const char *test_id() noexcept;
 
- public:
-  static CppUnit::Test* suite();
+public:
+  static CppUnit::Test *suite();
 };
 
-#endif  // _TEST_CPXITR_ALL_
+#endif // _TEST_CPXITR_ALL_

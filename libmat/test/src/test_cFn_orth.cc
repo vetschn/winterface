@@ -6,8 +6,7 @@
 #include "test_tFn_orth.h"
 
 // test id
-template <>
-const char* test_tFn_orth<CPX__, RE__, CPX__>::test_id() noexcept {
+template <> const char *test_tFn_orth<CPX__, RE__, CPX__>::test_id() noexcept {
   return "test_cFn_orth";
 }
 

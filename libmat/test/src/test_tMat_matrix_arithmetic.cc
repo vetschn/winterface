@@ -308,8 +308,8 @@ void test_tMat_matrix_arithmetic<TT, FT, CT>::test_leftDivideEq() {
 }
 
 template <class TT, class FT, class CT>
-CppUnit::Test* test_tMat_matrix_arithmetic<TT, FT, CT>::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_tMat_matrix_arithmetic<TT, FT, CT>::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_tMat_matrix_arithmetic>(
       "test_prod", &test_tMat_matrix_arithmetic<TT, FT, CT>::test_prod));

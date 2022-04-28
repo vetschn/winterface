@@ -10,7 +10,7 @@
 #include "ll_types.h"
 
 class test_compound_all : public CppUnit::TestFixture {
- public:
+public:
   // types
   typedef ll__::mat_cb<lm__::fMat, ll__::fArray> mat_cb;
   typedef ll__::mat_b<lm__::fMat, lm__::fArray> mat_b;
@@ -30,8 +30,8 @@ class test_compound_all : public CppUnit::TestFixture {
   void test_mat_vec_b();
   void test_compound_classes();
 
-  static CppUnit::Test* suite();
-  static const char* test_id() noexcept;
+  static CppUnit::Test *suite();
+  static const char *test_id() noexcept;
 };
 
-#endif  // _TEST_COMPOUND_ALL_
+#endif // _TEST_COMPOUND_ALL_

@@ -15,22 +15,20 @@
  * parseKey_ and printHelp_.
  */
 struct ll_hbondss_input : public virtual aux_parser {
- public:
+public:
   /** @name filenames
    */
-  std::vector<std::string> wbh = {
-      WBH__};  //!< filenames for each input ll_bonds
-  std::vector<std::string> wbh_out =
-      {};  //!< filenames for each output ll_bonds
+  std::vector<std::string> wbh = {WBH__}; //!< filenames for each input ll_bonds
+  std::vector<std::string> wbh_out = {}; //!< filenames for each output ll_bonds
 
   /** @name parameters
    */
-  double sptol = 1e-1;           //!< spacial tolerance when querying for bonds
-  double perimeter_radius = .0;  //!< radius factor to use when detecting bonds
-                                 //!< across the perimeter between wbhs
-  double signs_tol = 1e-3;       //!< tolerance level for sign equalizing
+  double sptol = 1e-1;          //!< spacial tolerance when querying for bonds
+  double perimeter_radius = .0; //!< radius factor to use when detecting bonds
+                                //!< across the perimeter between wbhs
+  double signs_tol = 1e-3;      //!< tolerance level for sign equalizing
 
- public:
+public:
   /** parseKey_ redefinition
    */
   struct parseKey_ : public virtual aux_parser::parseKey_ {
@@ -44,29 +42,29 @@ struct ll_hbondss_input : public virtual aux_parser {
       using namespace aux;
 
       switch (key) {
-        // filenames
-        case "wbh"_h:
-          PARSE__(p.wbh);
-          return;
-        case "wbh_out"_h:
-          PARSE__(p.wbh_out);
-          return;
+      // filenames
+      case "wbh"_h:
+        PARSE__(p.wbh);
+        return;
+      case "wbh_out"_h:
+        PARSE__(p.wbh_out);
+        return;
 
-        // parameter
-        case "sptol"_h:
-          PARSE__(p.sptol);
-          return;
-        case "perimeter_radius"_h:
-          PARSE__(p.perimeter_radius);
-          return;
-        case "signs_tol"_h:
-          PARSE__(p.signs_tol);
-          return;
+      // parameter
+      case "sptol"_h:
+        PARSE__(p.sptol);
+        return;
+      case "perimeter_radius"_h:
+        PARSE__(p.perimeter_radius);
+        return;
+      case "signs_tol"_h:
+        PARSE__(p.signs_tol);
+        return;
       }
     }
   };
 
- public:
+public:
   /** printHelp_ redefinition
    */
   struct printHelp_ : public virtual aux_parser::printHelp_ {
@@ -117,16 +115,16 @@ struct ll_hbondss_input : public virtual aux_parser {
  */
 class ll_hbondss final
     : public ll__::vec_cb<std::vector<ll_hbonds>, ll_hbonds> {
- public:
+public:
   /** @name types
    */
-  typedef lm__::fMat fMat;      //!< real matrix
-  typedef lm__::cMat cMat;      //!< complex matrix
-  typedef lm__::fArray fArray;  //!< real array
-  typedef ll__::idv idv;        //!< range of id strings
-  typedef ll__::i_i i_i;        //!< index pair {i1,i2}
+  typedef lm__::fMat fMat;     //!< real matrix
+  typedef lm__::cMat cMat;     //!< complex matrix
+  typedef lm__::fArray fArray; //!< real array
+  typedef ll__::idv idv;       //!< range of id strings
+  typedef ll__::i_i i_i;       //!< index pair {i1,i2}
 
- protected:
+protected:
   /** @name helpers for handling types
    */
   //! extracts wbh index from generalized index
@@ -153,7 +151,8 @@ class ll_hbondss final
     };
 
     const size_t pos = s.find(':');
-    if (pos == std::string::npos) return res_st{0, s};
+    if (pos == std::string::npos)
+      return res_st{0, s};
 
     const std::string js = s.substr(0, pos);
     const std::string id = s.substr(pos + 1);
@@ -165,7 +164,7 @@ class ll_hbondss final
     }
   }
 
- public:
+public:
   /** @name constructors
    */
   using ll__::vec_cb<std::vector<ll_hbonds>, ll_hbonds>::vec_cb;
@@ -186,7 +185,8 @@ class ll_hbondss final
     double res = 0.0;
     for (const auto &w : *this) {
       const double r = w.radius();
-      if (r > res) res = r;
+      if (r > res)
+        res = r;
     }
     return res;
   }
@@ -196,7 +196,8 @@ class ll_hbondss final
    */
   inline fMat rmat() const noexcept {
     auto res = lm__::ones<fMat>(dim(), 1);
-    for (const auto &r : *this) res &= r.rmat();
+    for (const auto &r : *this)
+      res &= r.rmat();
     return res;
   }
   /** returns a restriction vector for space. A spacial dimension is considered
@@ -230,7 +231,8 @@ class ll_hbondss final
                                 }));
 
     for (size_t j = 0; j != this->size(); ++j)
-      for (const size_t i : (*this)[j].inds()) res.push_back(compInd_(j, i));
+      for (const size_t i : (*this)[j].inds())
+        res.push_back(compInd_(j, i));
 
     return res;
   }
@@ -239,7 +241,8 @@ class ll_hbondss final
    */
   inline size_t ind(const std::string &s) const {
     const auto I = decompId_(s);
-    if (I.j >= this->size()) return NPOS__;
+    if (I.j >= this->size())
+      return NPOS__;
     const size_t res = (*this)[I.j].ind(I.id);
     return res == NPOS__ ? NPOS__ : compInd_(I.j, res);
   }
@@ -249,7 +252,8 @@ class ll_hbondss final
   inline std::vector<size_t> ind(const idv &id) const noexcept {
     std::vector<size_t> res;
     res.reserve(id.size());
-    for (const auto &s : id) res.push_back(ind(s));
+    for (const auto &s : id)
+      res.push_back(ind(s));
     return res;
   }
   /** returns the id string for a wbh index and a normal bond index
@@ -278,7 +282,8 @@ class ll_hbondss final
   inline std::vector<double> queryTol() const noexcept {
     std::vector<double> res;
     res.reserve(this->size());
-    for (const auto &w : *this) res.push_back(w.queryTol());
+    for (const auto &w : *this)
+      res.push_back(w.queryTol());
     return res;
   }
   /** returns the neighborhood for a generalized bond index. i.e. all the bonds
@@ -293,7 +298,8 @@ class ll_hbondss final
 
     const size_t j = j_(ind);
     auto res = (*this)[j_(ind)].neighborhood(i_(ind), Rcut, sptol);
-    for (auto &ii : res) ii = {compInd_(j, ii.i1()), compInd_(j, ii.i2())};
+    for (auto &ii : res)
+      ii = {compInd_(j, ii.i1()), compInd_(j, ii.i2())};
 
     return res;
   }
@@ -303,14 +309,14 @@ class ll_hbondss final
   //! index struct for matches across domain borders
   union pbrt {
     struct {
-      size_t j1;  //!< section1 index
-      size_t i1;  //!< index inside section 1
-      size_t j2;  //!< section2 index
-      size_t i2;  //!< index inside section 2
-      size_t a2;  //!< actual target in section2
-      size_t a1;  //!< actual target in section1
+      size_t j1; //!< section1 index
+      size_t i1; //!< index inside section 1
+      size_t j2; //!< section2 index
+      size_t i2; //!< index inside section 2
+      size_t a2; //!< actual target in section2
+      size_t a1; //!< actual target in section1
     };
-    std::array<size_t, 6> dat;  //!< access the struct as one array
+    std::array<size_t, 6> dat; //!< access the struct as one array
 
     //! linear easy access operator
     inline size_t operator[](const size_t i) const noexcept {
@@ -326,8 +332,8 @@ class ll_hbondss final
   };
   //! range of index matches and corresponding bonds
   struct pb {
-    std::vector<pbrt> RT;  //!< roots and targets
-    fMat bnds12;           //!< corresponding bonds
+    std::vector<pbrt> RT; //!< roots and targets
+    fMat bnds12;          //!< corresponding bonds
   };
   /** function determining the connections at the perimeter between Wannier
    * domains.
@@ -350,9 +356,9 @@ class ll_hbondss final
    * @return sorted vector of index pairs {i1,i2} where an atom at index i1 may
    * 	   be substituted with one of index i2 and vice versa.
    */
-  std::vector<std::vector<i_i>> getSubstitutes(
-      const fMat &Ap, const std::vector<size_t> &I,
-      const double f = .5) const noexcept;
+  std::vector<std::vector<i_i>>
+  getSubstitutes(const fMat &Ap, const std::vector<size_t> &I,
+                 const double f = .5) const noexcept;
 
   /** @name modification
    */
@@ -397,11 +403,13 @@ class ll_hbondss final
   //! set bond query tolerance in direct coordinates
   inline void setQueryTolDirect(const double tol) const noexcept {
     assert(tol >= .0);
-    for (auto &w : *this) w.setQueryTolDirect(tol);
+    for (auto &w : *this)
+      w.setQueryTolDirect(tol);
   }
   //! set bond query tolerance in cartesian coordinates
   inline void setQueryTolCartesian(const double tol) const noexcept {
-    for (auto &w : *this) w.setQueryTolCartesian(tol);
+    for (auto &w : *this)
+      w.setQueryTolCartesian(tol);
   }
   /** function to query for an interaction. This is 'exact' matching of bonds.
    * @param j an index pair {i1,i2}
@@ -440,7 +448,7 @@ class ll_hbondss final
   friend class test_hbondss_all;
 };
 
-#endif  // _LL_HBONDSS_
+#endif // _LL_HBONDSS_
 
 /** @}
  */

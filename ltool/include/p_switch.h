@@ -17,20 +17,20 @@
  * parseKey_ and printHelp_.
  */
 struct p_input : public virtual aux_parser {
- public:
+public:
   /** @name filenames
    */
-  std::string pscin = POSCAR__;          //!< input POSCAR
-  std::string pscout = POSCAR__ "_mod";  //!< output POSCAR
+  std::string pscin = POSCAR__;         //!< input POSCAR
+  std::string pscout = POSCAR__ "_mod"; //!< output POSCAR
 
   /** @name parameters
    */
-  bool direct = true;                   //!< switch for direct coordinates
-  bool strip = false;                   //!< switch for stripping indices
-  double tol = WTOL__;                  //!< tolerance level
-  ll__::rv r = ll__::rv(DIM__, false);  //!< restriction vector
+  bool direct = true;                  //!< switch for direct coordinates
+  bool strip = false;                  //!< switch for stripping indices
+  double tol = WTOL__;                 //!< tolerance level
+  ll__::rv r = ll__::rv(DIM__, false); //!< restriction vector
 
- public:
+public:
   //! parseKey_ redefinition
   struct parseKey_ : public virtual aux_parser::parseKey_ {
     /** constructor defining keys
@@ -43,34 +43,34 @@ struct p_input : public virtual aux_parser {
       using namespace aux;
 
       switch (key) {
-        // filenames
-        case "pscin"_h:
-          PARSE__(p.pscin);
-          return;
-        case "pscout"_h:
-          PARSE__(p.pscout);
-          return;
+      // filenames
+      case "pscin"_h:
+        PARSE__(p.pscin);
+        return;
+      case "pscout"_h:
+        PARSE__(p.pscout);
+        return;
 
-        // parameters
-        case "r"_h:
-          PARSE__(p.r);
-          return;
-        case "tol"_h:
-          PARSE__(p.tol);
-          return;
+      // parameters
+      case "r"_h:
+        PARSE__(p.r);
+        return;
+      case "tol"_h:
+        PARSE__(p.tol);
+        return;
 
-        // switches
-        case "direct"_h:
-          PARSE__(p.direct);
-          return;
-        case "strip"_h:
-          PARSE__(p.strip);
-          return;
+      // switches
+      case "direct"_h:
+        PARSE__(p.direct);
+        return;
+      case "strip"_h:
+        PARSE__(p.strip);
+        return;
       }
     }
   };
 
- public:
+public:
   //! printHelp_ redefinition
   struct printHelp_ : public virtual aux_parser::printHelp_ {
     /** constructor defining help messages
@@ -107,7 +107,7 @@ struct p_input : public virtual aux_parser {
  */
 void p_switch(const p_input &inp, std::ostream &os = std::cout);
 
-#endif  // _P_SWITCH_
+#endif // _P_SWITCH_
 
 /** @}
  */

@@ -58,10 +58,10 @@ void test_mtol::test_all() {
 }
 
 // test id
-const char* test_mtol::test_id() noexcept { return "test_mtol"; }
+const char *test_mtol::test_id() noexcept { return "test_mtol"; }
 
-CppUnit::Test* test_mtol::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_mtol::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(
       new CppUnit::TestCaller<test_mtol>("test_all", &test_mtol::test_all));

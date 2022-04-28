@@ -62,9 +62,10 @@ void test_hbonds_all::test_all() {
   const auto hr = readHr(inp.hrdat);
 
   const auto tol = genRndDouble(1e-4, .1);
-  const auto keep = [tol](const cMat& inp) -> bool {
+  const auto keep = [tol](const cMat &inp) -> bool {
     for (const auto i : inp)
-      if (cmph(i, tol)) return true;
+      if (cmph(i, tol))
+        return true;
     return false;
   };
   const auto hr_tol = readHr(path + "wannier90_hr.dat", {}, keep);
@@ -75,12 +76,13 @@ void test_hbonds_all::test_all() {
   const ll_hbonds W(inp, std::cout);
   {
     CPPUNIT_ASSERT_EQUAL(W.cell().N() * W.cell().N() * hr.N(), W.cardinality());
-    for (const auto& i : W.inds())
+    for (const auto &i : W.inds())
       CPPUNIT_ASSERT_EQUAL(2 * W.cell().N() * hr.N(), W.Nindex(i));
 
-    CPPUNIT_ASSERT(std::all_of(
-        W.cbegin(), W.cend(),
-        [&hr](const auto& inp) -> bool { return inp.R() == hr.R(); }));
+    CPPUNIT_ASSERT(
+        std::all_of(W.cbegin(), W.cend(), [&hr](const auto &inp) -> bool {
+          return inp.R() == hr.R();
+        }));
 
     // check bonds are symmetric
     const auto b = W.simple();
@@ -107,26 +109,26 @@ void test_hbonds_all::test_all() {
     CPPUNIT_ASSERT_EQUAL(
         hr.Nw() * hr.Nw() * hr.N(),
         std::accumulate(W.cbegin(), W.cend(), size_t(0),
-                        [](const size_t acc, const auto& inp) -> size_t {
+                        [](const size_t acc, const auto &inp) -> size_t {
                           return acc + std::accumulate(
                                            inp.cbegin(), inp.cend(), size_t(0),
                                            [](const size_t acc,
-                                              const auto& inp) -> size_t {
+                                              const auto &inp) -> size_t {
                                              return acc + inp.size();
                                            });
                         }));
 
     // check all data of wannier90 hamiltonian is found somewhere in bonds
     // hamiltonian
-    for (const auto& H : hr)
-      for (const auto& h : H)
+    for (const auto &H : hr)
+      for (const auto &h : H)
         CPPUNIT_ASSERT(
-            std::any_of(W.cbegin(), W.cend(), [&h](const auto& i) -> bool {
+            std::any_of(W.cbegin(), W.cend(), [&h](const auto &i) -> bool {
               return std::any_of(
-                  i.cbegin(), i.cend(), [&h](const auto& ch) -> bool {
+                  i.cbegin(), i.cend(), [&h](const auto &ch) -> bool {
                     return std::any_of(
                         ch.cbegin(), ch.cend(),
-                        [&h](const auto& hh) -> bool { return (h == hh); });
+                        [&h](const auto &hh) -> bool { return (h == hh); });
                   });
             }));
 
@@ -139,15 +141,15 @@ void test_hbonds_all::test_all() {
   const ll_hbonds W_(inp, std::cout);
   {
     CPPUNIT_ASSERT(W.cell().N() * W.cell().N() * hr.N() >= W_.cardinality());
-    for (const auto& i : W_.inds())
+    for (const auto &i : W_.inds())
       CPPUNIT_ASSERT(2 * W.cell().N() * hr.N() >= W_.Nindex(i));
 
     // check all Rvecs in wbh_ are also found in hr
     CPPUNIT_ASSERT(
-        std::all_of(W_.cbegin(), W_.cend(), [&hr](const auto& inp) -> bool {
+        std::all_of(W_.cbegin(), W_.cend(), [&hr](const auto &inp) -> bool {
           return inp.N() <= hr.N() &&
                  std::all_of(
-                     inp.ccBegin(), inp.ccEnd(), [&hr](const auto& cr) -> bool {
+                     inp.ccBegin(), inp.ccEnd(), [&hr](const auto &cr) -> bool {
                        const auto itr =
                            std::lower_bound(hr.ccBegin(), hr.ccEnd(), cr, vcmp);
                        return itr != hr.ccEnd() && *itr == cr;
@@ -229,10 +231,10 @@ void test_hbonds_all::test_all() {
   }
 }
 
-const char* test_hbonds_all::test_id() noexcept { return "test_hbonds_all"; }
+const char *test_hbonds_all::test_id() noexcept { return "test_hbonds_all"; }
 
-CppUnit::Test* test_hbonds_all::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_hbonds_all::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_hbonds_all>(
       "test_ctor_exceptions", &test_hbonds_all::test_ctor_exceptions));

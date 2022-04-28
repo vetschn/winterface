@@ -18,42 +18,41 @@
  * parseKey_ and printHelp_.
  */
 struct b_input : public virtual aux_parser, public virtual ll_hbondss_input {
- public:
+public:
   /** @name filenames
    */
-  std::string wout = WOUT__;                      //!< wannier90.wout file
-  std::string hrdat = HR__;                       //!< wannier90_hr.dat file
-  std::string lattice_dat = "";                   //!< OMEN style lattice file
-  std::string mat_par = "ph_mat_par";             //!< OMEN style material file
-  std::string inprefix = "./";                    //!< prefix for input files
-  std::string hr = "wbh.hr";                      //!< hr file
-  std::string layer_matrix = "Layer_Matrix.dat";  //!< layer matrix file
+  std::string wout = WOUT__;                     //!< wannier90.wout file
+  std::string hrdat = HR__;                      //!< wannier90_hr.dat file
+  std::string lattice_dat = "";                  //!< OMEN style lattice file
+  std::string mat_par = "ph_mat_par";            //!< OMEN style material file
+  std::string inprefix = "./";                   //!< prefix for input files
+  std::string hr = "wbh.hr";                     //!< hr file
+  std::string layer_matrix = "Layer_Matrix.dat"; //!< layer matrix file
 
   /** @name parameters
    */
-  std::string mode = "fold";                    //!< computation mode
-  ll__::rv r = {};                              //!< restriction vector
-  lm__::fMat C = lm__::eye<lm__::fMat>(DIM__);  //!< expansion matrix
-  lm__::fMat R = lm__::fMat(DIM__, 0);          //!< R vectors
-  lm__::fMat kpts =
-      lm__::fMat({-.5, .0, .0, .5, .0, .0}, DIM__,
-                 2);               //!< kpoints aling which a trace is generated
+  std::string mode = "fold";                   //!< computation mode
+  ll__::rv r = {};                             //!< restriction vector
+  lm__::fMat C = lm__::eye<lm__::fMat>(DIM__); //!< expansion matrix
+  lm__::fMat R = lm__::fMat(DIM__, 0);         //!< R vectors
+  lm__::fMat kpts = lm__::fMat({-.5, .0, .0, .5, .0, .0}, DIM__,
+                               2); //!< kpoints aling which a trace is generated
   lm__::fMat k = {};               //!< kpoints manual specification
   bool strict_matching = true;     //!< strict matching switch
   std::vector<size_t> Nk = {100};  //!< number of k-points along trace
   double rho_k = 1000.0;           //!< kpoint density for mesh generation
-  std::string maj_style = "MATLAB";          //!< majority style in the mesh
-  std::vector<double> bzbounds = {-.5, .5};  //!< BZ bounds
-  bool re = false;      //!< use only real parts of Hamiltonians
-  size_t Nthreads = 0;  //!< number of threads for parallel sections
+  std::string maj_style = "MATLAB";         //!< majority style in the mesh
+  std::vector<double> bzbounds = {-.5, .5}; //!< BZ bounds
+  bool re = false;     //!< use only real parts of Hamiltonians
+  size_t Nthreads = 0; //!< number of threads for parallel sections
   bool dump_hamiltonians =
-      false;  //!< switch to dump generated Hamiltonian matrices
+      false; //!< switch to dump generated Hamiltonian matrices
 
   /** @name local bandstructure
    */
-  lm__::fMat LB = {};  //!< local basis for local bandstructure
+  lm__::fMat LB = {}; //!< local basis for local bandstructure
 
- public:
+public:
   //! parseKey_ redefinition
   struct parseKey_ : public virtual aux_parser::parseKey_,
                      public virtual ll_hbondss_input::parseKey_ {
@@ -68,82 +67,82 @@ struct b_input : public virtual aux_parser, public virtual ll_hbondss_input {
       using namespace aux;
 
       switch (key) {
-        // filenames
-        case "wout"_h:
-          PARSE__(p.wout);
-          return;
-        case "hrdat"_h:
-          PARSE__(p.hrdat);
-          return;
-        case "lattice_dat"_h:
-          PARSE__(p.lattice_dat);
-          return;
-        case "mat_par"_h:
-          PARSE__(p.mat_par);
-          return;
-        case "inprefix"_h:
-          PARSE__(p.inprefix);
-          return;
-        case "hr"_h:
-          PARSE__(p.hr);
-          return;
-        case "layer_matrix"_h:
-          PARSE__(p.layer_matrix);
-          return;
+      // filenames
+      case "wout"_h:
+        PARSE__(p.wout);
+        return;
+      case "hrdat"_h:
+        PARSE__(p.hrdat);
+        return;
+      case "lattice_dat"_h:
+        PARSE__(p.lattice_dat);
+        return;
+      case "mat_par"_h:
+        PARSE__(p.mat_par);
+        return;
+      case "inprefix"_h:
+        PARSE__(p.inprefix);
+        return;
+      case "hr"_h:
+        PARSE__(p.hr);
+        return;
+      case "layer_matrix"_h:
+        PARSE__(p.layer_matrix);
+        return;
 
-        // parameters
-        case "mode"_h:
-          PARSE__(p.mode);
-          return;
-        case "r"_h:
-          PARSE__(p.r);
-          return;
-        case "C"_h:
-          PARSE__(p.C);
-          return;
-        case "R"_h:
-          PARSE__(p.R);
-          return;
-        case "kpts"_h:
-          PARSE__(p.kpts);
-          return;
-        case "k"_h:
-          PARSE__(p.k);
-          return;
-        case "strict_matching"_h:
-          PARSE__(p.strict_matching);
-          return;
-        case "Nk"_h:
-          PARSE__(p.Nk);
-          return;
-        case "rho_k"_h:
-          PARSE__(p.rho_k);
-          return;
-        case "maj_style"_h:
-          PARSE__(p.maj_style);
-          return;
-        case "bzbounds"_h:
-          PARSE__(p.bzbounds, 2);
-          return;
-        case "re"_h:
-          PARSE__(p.re);
-          return;
-        case "Nthreads"_h:
-          PARSE__(p.Nthreads);
-          return;
-        case "dump_hamiltonians"_h:
-          PARSE__(p.dump_hamiltonians);
-          return;
+      // parameters
+      case "mode"_h:
+        PARSE__(p.mode);
+        return;
+      case "r"_h:
+        PARSE__(p.r);
+        return;
+      case "C"_h:
+        PARSE__(p.C);
+        return;
+      case "R"_h:
+        PARSE__(p.R);
+        return;
+      case "kpts"_h:
+        PARSE__(p.kpts);
+        return;
+      case "k"_h:
+        PARSE__(p.k);
+        return;
+      case "strict_matching"_h:
+        PARSE__(p.strict_matching);
+        return;
+      case "Nk"_h:
+        PARSE__(p.Nk);
+        return;
+      case "rho_k"_h:
+        PARSE__(p.rho_k);
+        return;
+      case "maj_style"_h:
+        PARSE__(p.maj_style);
+        return;
+      case "bzbounds"_h:
+        PARSE__(p.bzbounds, 2);
+        return;
+      case "re"_h:
+        PARSE__(p.re);
+        return;
+      case "Nthreads"_h:
+        PARSE__(p.Nthreads);
+        return;
+      case "dump_hamiltonians"_h:
+        PARSE__(p.dump_hamiltonians);
+        return;
 
-        // local bandstructure
-        case "LB"_h:
-          PARSE__(p.LB);
-          return;
+      // local bandstructure
+      case "LB"_h:
+        PARSE__(p.LB);
+        return;
       }
     }
   };
 
- public:
+public:
   //! printHelp_ redefinition
   struct printHelp_ : public virtual aux_parser::printHelp_,
                       public virtual ll_hbondss_input::printHelp_ {
@@ -217,7 +216,7 @@ struct b_input : public virtual aux_parser, public virtual ll_hbondss_input {
  */
 void b_switch(const b_input &inp, std::ostream &os = std::cout);
 
-#endif  // _B_SWITCH_
+#endif // _B_SWITCH_
 
 /** @}
  */

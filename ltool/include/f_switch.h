@@ -19,19 +19,19 @@
  * parseKey_ and printHelp_.
  */
 struct f_input : public virtual aux_parser {
- public:
+public:
   /** @name filenames
    */
-  std::string wout = "";           //!< wannier90.wout file
-  std::string lattice_dat = "";    //!< OMEN style lattice file
-  std::string pscout = "out.psc";  //!< output POSCAR file
+  std::string wout = "";          //!< wannier90.wout file
+  std::string lattice_dat = "";   //!< OMEN style lattice file
+  std::string pscout = "out.psc"; //!< output POSCAR file
 
   /** @name switches
    */
-  bool direct = true;  //!< switch to use direct coordinates
-  bool strip = false;  //!< switch to strip indices
+  bool direct = true; //!< switch to use direct coordinates
+  bool strip = false; //!< switch to strip indices
 
- public:
+public:
   //! parseKey_ redefinition
   struct parseKey_ : public virtual aux_parser::parseKey_ {
     /** constructor defining keys
@@ -44,29 +44,29 @@ struct f_input : public virtual aux_parser {
       using namespace aux;
 
       switch (key) {
-        // filenames
-        case "wout"_h:
-          PARSE__(p.wout);
-          return;
-        case "lattice_dat"_h:
-          PARSE__(p.lattice_dat);
-          return;
-        case "pscout"_h:
-          PARSE__(p.pscout);
-          return;
+      // filenames
+      case "wout"_h:
+        PARSE__(p.wout);
+        return;
+      case "lattice_dat"_h:
+        PARSE__(p.lattice_dat);
+        return;
+      case "pscout"_h:
+        PARSE__(p.pscout);
+        return;
 
-        // switches
-        case "direct"_h:
-          PARSE__(p.direct);
-          return;
-        case "strip"_h:
-          PARSE__(p.strip);
-          return;
+      // switches
+      case "direct"_h:
+        PARSE__(p.direct);
+        return;
+      case "strip"_h:
+        PARSE__(p.strip);
+        return;
       }
     }
   };
 
- public:
+public:
   //! printHelp_ redefinition
   struct printHelp_ : public virtual aux_parser::printHelp_ {
     /** constructor defining help messages
@@ -96,7 +96,7 @@ struct f_input : public virtual aux_parser {
  */
 void f_switch(const f_input &inp, std::ostream &os = std::cout);
 
-#endif  // _F_SWITCH_
+#endif // _F_SWITCH_
 
 /** @}
  */

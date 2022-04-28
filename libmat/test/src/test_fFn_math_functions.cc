@@ -315,7 +315,7 @@ void test_tFn_math_functions<RE__, RE__, CPX__>::test_signEq_sign() {
 
 // test id
 template <>
-const char* test_tFn_math_functions<RE__, RE__, CPX__>::test_id() noexcept {
+const char *test_tFn_math_functions<RE__, RE__, CPX__>::test_id() noexcept {
   return "test_fFn_math_functions";
 }
 

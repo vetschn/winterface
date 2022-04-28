@@ -27,15 +27,14 @@
 #include "lm_fn.h"
 
 #ifndef NLZ__
-#define NLZ__ 2  //!< number of leading zeros when indexing
+#define NLZ__ 2 //!< number of leading zeros when indexing
 #endif
 
 namespace ll__ {
 class i_i;
 class i_i_R;
-}  // namespace ll__
-template <class ITYPE>
-class ll_bonds;
+} // namespace ll__
+template <class ITYPE> class ll_bonds;
 
 /** This class defines a unit cell of an (atomic) lattice.
  * By convention, all coordinates of atomic positions are expressed in
@@ -55,22 +54,22 @@ class ll_bonds;
  * periodicity do not need to be of the same symmetry group.
  */
 class ll_cell : public ll__::mat_cb<ll__::fMat, ll__::fArray> {
- public:
+public:
   /** @name types
    */
-  typedef ll__::fArray fArray;  //!< real Array, fCol, fRow or fMat
-  typedef ll__::fCol fCol;      //!< real column
-  typedef ll__::fMat fMat;      //!< real matrix
-  typedef ll__::aT aT;          //!< atomic type
-  typedef ll__::aTv aTv;        //!< atomic type vector
-  typedef ll__::aC aC;          //!< atomic count
-  typedef ll__::aCv aCv;        //!< atomic count vector
-  typedef ll__::rv rv;          //!< restriction vector
-  typedef ll__::idv idv;        //!< identity string vector
-  typedef ll__::i_i i_i;        //!< index pair
-  typedef ll__::i_i_R i_i_R;    //!< index pair and R vectors
+  typedef ll__::fArray fArray; //!< real Array, fCol, fRow or fMat
+  typedef ll__::fCol fCol;     //!< real column
+  typedef ll__::fMat fMat;     //!< real matrix
+  typedef ll__::aT aT;         //!< atomic type
+  typedef ll__::aTv aTv;       //!< atomic type vector
+  typedef ll__::aC aC;         //!< atomic count
+  typedef ll__::aCv aCv;       //!< atomic count vector
+  typedef ll__::rv rv;         //!< restriction vector
+  typedef ll__::idv idv;       //!< identity string vector
+  typedef ll__::i_i i_i;       //!< index pair
+  typedef ll__::i_i_R i_i_R;   //!< index pair and R vectors
 
- public:
+public:
   /** @name contructors
    */
   //! default constructor
@@ -249,7 +248,8 @@ class ll_cell : public ll__::mat_cb<ll__::fMat, ll__::fArray> {
    * @param t atomic type
    */
   inline std::vector<size_t> inds(const aT t) const noexcept {
-    if (!validType(t)) return {};
+    if (!validType(t))
+      return {};
     std::vector<size_t> res(Ntype(t));
     std::iota(res.begin(), res.end(), T_[t]);
     return res;
@@ -263,7 +263,8 @@ class ll_cell : public ll__::mat_cb<ll__::fMat, ll__::fArray> {
         T.cbegin(), T.cend(), size_t(0),
         [this](const size_t s, const aT t) -> size_t { return s + Ntype(t); }));
     for (const auto t : T)
-      for (const auto i : inds(t)) res.push_back(i);
+      for (const auto i : inds(t))
+        res.push_back(i);
     return res;
   }
   //! returns the valid indices for atomic positions
@@ -280,24 +281,26 @@ class ll_cell : public ll__::mat_cb<ll__::fMat, ll__::fArray> {
   inline bool validInd(const size_t i) const noexcept { return i < N(); }
   //! returns the fundamental types, i.e. types that are not composite
   inline aTv fundamentalTypes() const noexcept {
-    if (!this->id().empty()) return types();
+    if (!this->id().empty())
+      return types();
     aTv res = types();
-    res.resize(std::distance(
-        res.begin(),
-        std::remove_if(res.begin(), res.end(), [this](const aT t) -> bool {
-          return isComposite(id(t));
-        })));
+    res.resize(
+        std::distance(res.begin(), std::remove_if(res.begin(), res.end(),
+                                                  [this](const aT t) -> bool {
+                                                    return isComposite(id(t));
+                                                  })));
     return res;
   }
   //! returns the composite types
   inline aTv compositeTypes() const noexcept {
-    if (!this->id().empty()) return {};
+    if (!this->id().empty())
+      return {};
     aTv res = types();
-    res.resize(std::distance(
-        res.begin(),
-        std::remove_if(res.begin(), res.end(), [this](const aT t) -> bool {
-          return !isComposite(id(t));
-        })));
+    res.resize(
+        std::distance(res.begin(), std::remove_if(res.begin(), res.end(),
+                                                  [this](const aT t) -> bool {
+                                                    return !isComposite(id(t));
+                                                  })));
     return res;
   }
   /** returns the 'equal' types, i.e. types equal upto an index on the id string
@@ -435,7 +438,8 @@ class ll_cell : public ll__::mat_cb<ll__::fMat, ll__::fArray> {
   inline aTv strippedType(const std::string &s) const noexcept {
     aTv res;
     for (size_t i = 0; i != id().size(); ++i)
-      if (stripId(id()[i]) == s) res.push_back(i);
+      if (stripId(id()[i]) == s)
+        res.push_back(i);
     return res;
   }
   /** returns the number of positions of an atomic type
@@ -757,28 +761,28 @@ class ll_cell : public ll__::mat_cb<ll__::fMat, ll__::fArray> {
 
   /** @name friends
    */
-  friend class test_cell_assign;            //!< friend test class
-  friend class test_cell_information;       //!< friend test class
-  friend class test_cell_type_information;  //!< friend test class
-  friend class test_cell_modification;      //!< friend test class
-  friend class test_cell_conversion;        //!< friend test class
+  friend class test_cell_assign;           //!< friend test class
+  friend class test_cell_information;      //!< friend test class
+  friend class test_cell_type_information; //!< friend test class
+  friend class test_cell_modification;     //!< friend test class
+  friend class test_cell_conversion;       //!< friend test class
 
- private:
+private:
   /** @name helpers
    */
   //! general make primitive function
   ll_cell &makePrimitive_(fMat C, const rv &r,
                           const std::function<bool(const fMat &)> &p) noexcept;
 
- protected:
+protected:
   /** @name members variables
    */
-  fMat B_;                      //!< basis
-  std::vector<size_t> T_;       //!< atomic type vector
-  idv id_;                      //!< id strings vector
-  static const std::string e_;  //!< empty string
+  fMat B_;                     //!< basis
+  std::vector<size_t> T_;      //!< atomic type vector
+  idv id_;                     //!< id strings vector
+  static const std::string e_; //!< empty string
 
- protected:
+protected:
   /** @name non const iterators
    */
   /** iterator to the beginning of the range of a type
@@ -799,14 +803,16 @@ class ll_cell : public ll__::mat_cb<ll__::fMat, ll__::fArray> {
    * @param ts range of atomic types
    */
   inline void sortAp_(const aTv &ts) noexcept {
-    for (const auto t : ts) std::sort(cBegin(t), cEnd(t));
+    for (const auto t : ts)
+      std::sort(cBegin(t), cEnd(t));
   }
   /** check if Ap_ is sorted
    * @param ts range of atomic types
    */
   inline bool Apsorted_(const aTv &ts) const noexcept {
     for (const auto t : ts)
-      if (!std::is_sorted(ccBegin(t), ccEnd(t))) return false;
+      if (!std::is_sorted(ccBegin(t), ccEnd(t)))
+        return false;
     return true;
   }
   //! index non unique ids
@@ -828,7 +834,7 @@ class ll_cell : public ll__::mat_cb<ll__::fMat, ll__::fArray> {
 //! streaming operator
 std::ostream &operator<<(std::ostream &os, const ll_cell &inp) noexcept;
 
-#endif  // _LL_CELL_
+#endif // _LL_CELL_
 
 /** @}
  */

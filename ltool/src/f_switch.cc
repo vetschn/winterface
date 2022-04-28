@@ -12,7 +12,7 @@
 using namespace aux;
 using namespace ll__;
 
-void f_switch(const f_input& inp, std::ostream& os) {
+void f_switch(const f_input &inp, std::ostream &os) {
   if (!inp.wout.empty()) {
     // read from wout
     const auto B = readB(inp.wout);
@@ -34,7 +34,8 @@ void f_switch(const f_input& inp, std::ostream& os) {
 
     // strip ids
     if (inp.strip)
-      for (auto& s : D.id) s = ll_cell::stripId(s);
+      for (auto &s : D.id)
+        s = ll_cell::stripId(s);
 
     // write psc
     printPOSCAR(inp.prefix + inp.pscout,

@@ -9,15 +9,15 @@
 #include "ll_cell.h"
 
 class test_cell_iterators : public CppUnit::TestFixture {
- public:
+public:
   // types
   typedef ll_cell cell;
 
- public:
+public:
   void test_all();
 
-  static CppUnit::Test* suite();
-  static const char* test_id() noexcept;
+  static CppUnit::Test *suite();
+  static const char *test_id() noexcept;
 };
 
-#endif  // _TEST_CELL_ITERATORS_
+#endif // _TEST_CELL_ITERATORS_

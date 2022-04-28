@@ -13,60 +13,61 @@ using namespace lm__;
 
 // copy constructor
 template <class TT, class FT, class CT>
-lm_tCol<TT, FT, CT>::lm_tCol(const tCol& inp) noexcept
+lm_tCol<TT, FT, CT>::lm_tCol(const tCol &inp) noexcept
     : lm_tCol(new tMat(inp), PTRDIFF_MAX) {}
 
 // assignment
 template <class TT, class FT, class CT>
-lm_tCol<TT, FT, CT>& lm_tCol<TT, FT, CT>::operator=(const FT rhs) noexcept {
+lm_tCol<TT, FT, CT> &lm_tCol<TT, FT, CT>::operator=(const FT rhs) noexcept {
   std::for_each(this->begin(), this->end(),
-                [rhs](TT& i) { ops::assign(i, rhs); });
+                [rhs](TT &i) { ops::assign(i, rhs); });
   return *this;
 }
 template <class TT, class FT, class CT>
-lm_tCol<TT, FT, CT>& lm_tCol<TT, FT, CT>::operator=(const CT& rhs) noexcept {
+lm_tCol<TT, FT, CT> &lm_tCol<TT, FT, CT>::operator=(const CT &rhs) noexcept {
   std::for_each(this->begin(), this->end(),
-                [&rhs](TT& i) { ops::assign(i, rhs); });
+                [&rhs](TT &i) { ops::assign(i, rhs); });
   return *this;
 }
 template <class TT, class FT, class CT>
-lm_tCol<TT, FT, CT>& lm_tCol<TT, FT, CT>::operator=(const fRow& rhs) noexcept {
+lm_tCol<TT, FT, CT> &lm_tCol<TT, FT, CT>::operator=(const fRow &rhs) noexcept {
   assert(this->L() == rhs.L());
   auto j = rhs.begin();
   std::for_each(this->begin(), this->end(),
-                [&j](TT& i) { ops::assign(i, *j++); });
+                [&j](TT &i) { ops::assign(i, *j++); });
   return *this;
 }
 template <class TT, class FT, class CT>
-lm_tCol<TT, FT, CT>& lm_tCol<TT, FT, CT>::operator=(const cRow& rhs) noexcept {
+lm_tCol<TT, FT, CT> &lm_tCol<TT, FT, CT>::operator=(const cRow &rhs) noexcept {
   assert(this->L() == rhs.L());
   auto j = rhs.begin();
   std::for_each(this->begin(), this->end(),
-                [&j](TT& i) { ops::assign(i, *j++); });
+                [&j](TT &i) { ops::assign(i, *j++); });
   return *this;
 }
 template <class TT, class FT, class CT>
-lm_tCol<TT, FT, CT>& lm_tCol<TT, FT, CT>::operator=(
-    const fArray& rhs) noexcept {
+lm_tCol<TT, FT, CT> &
+lm_tCol<TT, FT, CT>::operator=(const fArray &rhs) noexcept {
   assert(this->L() == rhs.L());
   auto j = rhs.begin();
   std::for_each(this->begin(), this->end(),
-                [&j](TT& i) { ops::assign(i, *j++); });
+                [&j](TT &i) { ops::assign(i, *j++); });
   return *this;
 }
 template <class TT, class FT, class CT>
-lm_tCol<TT, FT, CT>& lm_tCol<TT, FT, CT>::operator=(
-    const cArray& rhs) noexcept {
+lm_tCol<TT, FT, CT> &
+lm_tCol<TT, FT, CT>::operator=(const cArray &rhs) noexcept {
   assert(this->L() == rhs.L());
   auto j = rhs.begin();
   std::for_each(this->begin(), this->end(),
-                [&j](TT& i) { ops::assign(i, *j++); });
+                [&j](TT &i) { ops::assign(i, *j++); });
   return *this;
 }
 template <class TT, class FT, class CT>
-lm_tCol<TT, FT, CT>& lm_tCol<TT, FT, CT>::operator=(const tCol& rhs) noexcept {
+lm_tCol<TT, FT, CT> &lm_tCol<TT, FT, CT>::operator=(const tCol &rhs) noexcept {
   assert(this->L() == rhs.L());
-  if (this != &rhs) memcpy(this->data(), rhs.data(), rhs.L() * sizeof(TT));
+  if (this != &rhs)
+    memcpy(this->data(), rhs.data(), rhs.L() * sizeof(TT));
   return *this;
 }
 
@@ -86,8 +87,8 @@ lm_tMat<CT, FT, CT> lm_tCol<TT, FT, CT>::ccopy() const noexcept {
 
 // matrix arithmetic
 template <class TT, class FT, class CT>
-lm_tMat<TT, FT, CT> lm_tCol<TT, FT, CT>::prod(
-    const fArray& inp) const noexcept {
+lm_tMat<TT, FT, CT>
+lm_tCol<TT, FT, CT>::prod(const fArray &inp) const noexcept {
   tMat res(this->M(), inp.N());
 
   auto j = res.begin();
@@ -97,8 +98,8 @@ lm_tMat<TT, FT, CT> lm_tCol<TT, FT, CT>::prod(
   return res;
 }
 template <class TT, class FT, class CT>
-lm_tMat<CT, FT, CT> lm_tCol<TT, FT, CT>::prod(
-    const cArray& inp) const noexcept {
+lm_tMat<CT, FT, CT>
+lm_tCol<TT, FT, CT>::prod(const cArray &inp) const noexcept {
   cMat res(this->M(), inp.N());
 
   auto j = res.begin();
@@ -110,7 +111,7 @@ lm_tMat<CT, FT, CT> lm_tCol<TT, FT, CT>::prod(
 
 // printing
 template <class TT, class FT, class CT>
-void lm_tCol<TT, FT, CT>::writeToFile(const std::string& fileName,
+void lm_tCol<TT, FT, CT>::writeToFile(const std::string &fileName,
                                       const bool noheader) const {
   // open file
   std::ofstream file;
@@ -123,12 +124,12 @@ void lm_tCol<TT, FT, CT>::writeToFile(const std::string& fileName,
   if (!noheader) {
     const std::string hdr = this->cpx() ? "fMat" : "cMat";
     file.write(hdr.c_str(), 5);
-    file.write((char*)&M, sizeof(unsigned long));
-    file.write((char*)&N, sizeof(unsigned long));
+    file.write((char *)&M, sizeof(unsigned long));
+    file.write((char *)&N, sizeof(unsigned long));
   }
 
   // write matrix
-  file.write((char*)data(), this->L() * sizeof(TT));
+  file.write((char *)data(), this->L() * sizeof(TT));
   file.flush();
   file.close();
 }

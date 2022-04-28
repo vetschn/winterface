@@ -11,7 +11,7 @@
 using namespace lm__;
 using namespace ll__;
 
-void b_switch(const b_input& inp, std::ostream& os) {
+void b_switch(const b_input &inp, std::ostream &os) {
   try {
     // check input properties
     if (inp.C != round(inp.C) || std::abs(det(inp.C)) < .5)
@@ -20,32 +20,34 @@ void b_switch(const b_input& inp, std::ostream& os) {
       throw(std::invalid_argument("parameter R invalid"));
     if (inp.Nk.size() != 1 && (inp.Nk.size() != inp.kpts.N() - 1))
       throw(std::invalid_argument("bad Nk"));
-    if (inp.rho_k < 0.0) throw(std::invalid_argument("bad rho_k"));
+    if (inp.rho_k < 0.0)
+      throw(std::invalid_argument("bad rho_k"));
     if (!inp.k.empty() && inp.k.M() != DIM__)
       throw(std::invalid_argument("bad k"));
 
     // lambdas to write unit cell as POSCAR file
-    const auto wPSC = [&inp, &os](const std::string& fileName, const fMat& B,
-                                  const fMat& Ap, const idv& id,
+    const auto wPSC = [&inp, &os](const std::string &fileName, const fMat &B,
+                                  const fMat &Ap, const idv &id,
                                   const bool direct) -> void {
-      if (~inp.verbosity & WRITEBIT__) return;
+      if (~inp.verbosity & WRITEBIT__)
+        return;
 
       printPOSCAR(fileName, B, Ap, id, 1.0, direct);
       if (inp.verbosity & PRINTBIT__)
         os << "file '" << fileName << "' written\n";
     };
-    const auto wPSCc = [&wPSC](const std::string& fileName,
-                               const ll_cell& cell) -> void {
+    const auto wPSCc = [&wPSC](const std::string &fileName,
+                               const ll_cell &cell) -> void {
       wPSC(fileName, cell.B(), cell.Ap(), cell.id(cell.type()), true);
     };
 
     // lambda to generate reciprocal basis
-    const auto getRB = [](const fMat& B) -> fMat {
+    const auto getRB = [](const fMat &B) -> fMat {
       return 2.0 * M_PI * T(inv(B));
     };
 
     // lambda to generate path using basis B
-    const auto gnwPath = [&inp, &os, &getRB](const fMat& B) -> p_p {
+    const auto gnwPath = [&inp, &os, &getRB](const fMat &B) -> p_p {
       p_p res;
       if (inp.Nk.size() == 1) {
         const fMat RB = getRB(B);
@@ -75,8 +77,8 @@ void b_switch(const b_input& inp, std::ostream& os) {
       return res;
     };
     // lambda to generate mesh using basis B and restriction vector r
-    const auto gnwMesh = [&inp, &os, &getRB](const fMat& B,
-                                             const rv& r) -> ll_mesh<> {
+    const auto gnwMesh = [&inp, &os, &getRB](const fMat &B,
+                                             const rv &r) -> ll_mesh<> {
       // check bzbounds
       if (inp.bzbounds.size() != 2)
         throw(std::invalid_argument("bad bzbounds"));
@@ -85,18 +87,18 @@ void b_switch(const b_input& inp, std::ostream& os) {
 
       std::vector<size_t> maj;
       switch (fnvHash(inp.maj_style.c_str())) {
-        case "inorder"_h:
-          maj = maj_default(r.size());
-          break;
-        case "matlab"_h:
-          maj = maj_MATLAB(r);
-          break;
-        case "MATLAB"_h:
-          maj = maj_MATLAB(r);
-          break;
-        default:
-          throw(std::invalid_argument("maj style '" + inp.maj_style +
-                                      "'not recognized"));
+      case "inorder"_h:
+        maj = maj_default(r.size());
+        break;
+      case "matlab"_h:
+        maj = maj_MATLAB(r);
+        break;
+      case "MATLAB"_h:
+        maj = maj_MATLAB(r);
+        break;
+      default:
+        throw(std::invalid_argument("maj style '" + inp.maj_style +
+                                    "'not recognized"));
       }
 
       const fMat RB = getRB(B);
@@ -131,9 +133,10 @@ void b_switch(const b_input& inp, std::ostream& os) {
     };
 
     // lambda to write EGC to disk
-    const auto wEGC = [inp, &os](const auto& EGC,
-                                 const std::string& idstr) -> void {
-      if (!(inp.verbosity & WRITEBIT__)) return;
+    const auto wEGC = [inp, &os](const auto &EGC,
+                                 const std::string &idstr) -> void {
+      if (!(inp.verbosity & WRITEBIT__))
+        return;
 
       {
         const std::string fileName = inp.prefix + "E" + idstr + ".bin";
@@ -157,179 +160,218 @@ void b_switch(const b_input& inp, std::ostream& os) {
 
     // mode switch
     switch (fnvHash(inp.mode.c_str())) {
-      case "fold"_h: {
-        if (inp.verbosity & PRINTBIT__)
-          os << "computing bandstructure using '" << GREEN__ << "folding"
-             << RESET__ << "' mode\n";
+    case "fold"_h: {
+      if (inp.verbosity & PRINTBIT__)
+        os << "computing bandstructure using '" << GREEN__ << "folding"
+           << RESET__ << "' mode\n";
 
-        // read data from files
-        const auto B = readB(inp.wout);
-        const auto hr = readHr(inp.hrdat);
-        if (inp.verbosity & PRINTBIT__)
-          os << "input data from files '" << inp.wout << "' and '" << inp.hrdat
-             << "'\n";
+      // read data from files
+      const auto B = readB(inp.wout);
+      const auto hr = readHr(inp.hrdat);
+      if (inp.verbosity & PRINTBIT__)
+        os << "input data from files '" << inp.wout << "' and '" << inp.hrdat
+           << "'\n";
 
-        const auto NB = B.prod(inp.C);
-        if (inp.verbosity & PRINTBIT__)
-          os << "expanding using matrix\n" << inp.C.print(0, 1) << "\n";
-        if (inp.verbosity & WRITEBIT__) NB.printToFile(inp.prefix + "NB.mat");
+      const auto NB = B.prod(inp.C);
+      if (inp.verbosity & PRINTBIT__)
+        os << "expanding using matrix\n" << inp.C.print(0, 1) << "\n";
+      if (inp.verbosity & WRITEBIT__)
+        NB.printToFile(inp.prefix + "NB.mat");
+
+      // trace
+      if (inp.Nk.front())
+        wEGC(calcFoldedBS_gc(hr, gnwPath(NB).path(), NB, B, inp.Nthreads),
+             "fold");
+      // mesh
+      if (inp.rho_k) {
+        // get correct r for matrix C
+        const auto r_ = T(fMat(inp.r.empty() ? hr.r() : inp.r)).prod(inp.C);
+        rv r(r_.size());
+        std::transform(r_.cbegin(), r_.cend(), r.begin(),
+                       [](const double i) -> bool { return i; });
+
+        wEGC(calcFoldedBS_gc(hr, gnwMesh(NB, r), NB, B, inp.Nthreads),
+             "fold_mesh");
+      }
+      // k spec
+      if (!inp.k.empty())
+        wEGC(calcFoldedBS_gc(hr, inp.k, NB, B, inp.Nthreads), "fold_spec");
+    } break;
+    case "scale"_h: {
+      if (inp.verbosity & PRINTBIT__)
+        os << "computing bandstructure using '" << GREEN__ << "scaling"
+           << RESET__ << "' mode\n";
+
+      // read wbh from file
+      const ll_hbondss W(inp, os);
+      W.setQueryTolCartesian(inp.sptol);
+
+      // read structure
+      ll__::olf OLF;
+      {
+        if (inp.lattice_dat.empty()) {
+          if (W.size() > 1)
+            throw(std::invalid_argument("found more than one whb"
+                                        ", need lattice_dat file"));
+
+          // use cell from wbh and expand with C matrix
+          if (inp.verbosity & PRINTBIT__)
+            os << "using cell from file wannier bonds file\n"
+               << "expanding using matrix\n"
+               << inp.C.print(0, 1) << "\n";
+          const auto cell = W.front().cell().copy().expand(inp.C);
+          if (inp.verbosity & WRITEBIT__)
+            cell.B().printToFile(inp.prefix + "NB.mat");
+
+          OLF.B = cell.B();
+          OLF.Ap = cell.getcAp();
+          OLF.T = cell.type();
+          OLF.id = cell.id(OLF.T);
+          OLF.nn = 0;
+          OLF.bl = .0;
+
+        } else {
+          if (inp.verbosity & PRINTBIT__)
+            os << "using structure from file '" << inp.lattice_dat << "'\n";
+          OLF = readOlf(inp.lattice_dat);
+        }
+      }
+
+      // restriction vector
+      const rv r = inp.r.empty() ? W.r() : inp.r;
+
+      if (inp.re) {
+        // generate hamiltonians
+        set_mtol(inp.sptol);
+        const auto HH = !inp.R.empty()
+                            ? genHam<fMat>(OLF.B, OLF.Ap, OLF.id, W, inp.R,
+                                           inp.strict_matching)
+                            : genHam<fMat>(OLF.B, OLF.Ap, OLF.id, W.r(), W,
+                                           inp.strict_matching);
+        reset_mtol();
+        if (inp.dump_hamiltonians)
+          HH.writeToFile(inp.prefix + "scal");
 
         // trace
         if (inp.Nk.front())
-          wEGC(calcFoldedBS_gc(hr, gnwPath(NB).path(), NB, B, inp.Nthreads),
-               "fold");
+          wEGC(calcBS_gc(HH, gnwPath(OLF.B).path(), OLF.B, inp.Nthreads),
+               "scal");
         // mesh
-        if (inp.rho_k) {
-          // get correct r for matrix C
-          const auto r_ = T(fMat(inp.r.empty() ? hr.r() : inp.r)).prod(inp.C);
-          rv r(r_.size());
-          std::transform(r_.cbegin(), r_.cend(), r.begin(),
-                         [](const double i) -> bool { return i; });
-
-          wEGC(calcFoldedBS_gc(hr, gnwMesh(NB, r), NB, B, inp.Nthreads),
-               "fold_mesh");
-        }
-        // k spec
+        if (inp.rho_k)
+          wEGC(calcBS_gc(HH, gnwMesh(OLF.B, r), OLF.B, inp.Nthreads),
+               "scal_mesh");
+        // spec
         if (!inp.k.empty())
-          wEGC(calcFoldedBS_gc(hr, inp.k, NB, B, inp.Nthreads), "fold_spec");
-      } break;
-      case "scale"_h: {
-        if (inp.verbosity & PRINTBIT__)
-          os << "computing bandstructure using '" << GREEN__ << "scaling"
-             << RESET__ << "' mode\n";
+          wEGC(calcBS_gc(HH, inp.k, OLF.B, inp.Nthreads), "scal_spec");
+      } else {
+        // generate hamiltonians
+        const auto HH = !inp.R.empty()
+                            ? genHam<cMat>(OLF.B, OLF.Ap, OLF.id, W, inp.R,
+                                           inp.strict_matching)
+                            : genHam<cMat>(OLF.B, OLF.Ap, OLF.id, r, W,
+                                           inp.strict_matching);
+        if (inp.dump_hamiltonians)
+          HH.writeToFile(inp.prefix + "scal");
 
-        // read wbh from file
-        const ll_hbondss W(inp, os);
-        W.setQueryTolCartesian(inp.sptol);
+        // trace
+        if (inp.Nk.front())
+          wEGC(calcBS_gc(HH, gnwPath(OLF.B).path(), OLF.B, inp.Nthreads),
+               "scal");
+        // mesh
+        if (inp.rho_k)
+          wEGC(calcBS_gc(HH, gnwMesh(OLF.B, r), OLF.B, inp.Nthreads),
+               "scal_mesh");
+        // spec
+        if (!inp.k.empty())
+          wEGC(calcBS_gc(HH, inp.k, OLF.B, inp.Nthreads), "scal_spec");
+      }
+    } break;
+    case "legacy"_h: {
+      if (inp.verbosity & PRINTBIT__)
+        os << "computing bandstructure using '" << GREEN__ << "legacy"
+           << RESET__ << "' mode\n";
 
-        // read structure
-        ll__::olf OLF;
-        {
-          if (inp.lattice_dat.empty()) {
-            if (W.size() > 1)
-              throw(
-                  std::invalid_argument("found more than one whb"
-                                        ", need lattice_dat file"));
+      // read data from files
+      const auto OMF = readOmf(inp.inprefix + inp.mat_par);
+      const auto OLF = readOlf(inp.inprefix + inp.lattice_dat);
+      if (inp.verbosity & PRINTBIT__)
+        os << "input data from files '" << inp.mat_par << "' and '"
+           << inp.lattice_dat << "'\n";
 
-            // use cell from wbh and expand with C matrix
-            if (inp.verbosity & PRINTBIT__)
-              os << "using cell from file wannier bonds file\n"
-                 << "expanding using matrix\n"
-                 << inp.C.print(0, 1) << "\n";
-            const auto cell = W.front().cell().copy().expand(inp.C);
-            if (inp.verbosity & WRITEBIT__)
-              cell.B().printToFile(inp.prefix + "NB.mat");
+      // Norb for structure in L
+      const size_t Norb =
+          std::accumulate(OLF.T.cbegin(), OLF.T.cend(), size_t(0),
+                          [&OMF](const size_t s, const aT t) -> size_t {
+                            return s + OMF.Norb[t];
+                          });
 
-            OLF.B = cell.B();
-            OLF.Ap = cell.getcAp();
-            OLF.T = cell.type();
-            OLF.id = cell.id(OLF.T);
-            OLF.nn = 0;
-            OLF.bl = .0;
+      // get hr from subblocks of sparse device hamiltonians
+      R_H<cMat> hr;
+      {
+        const auto dh = omen::readOMENhr(
+            inp.inprefix, inp.r.empty() ? rv{true, true, false}
+                                        : rv{true, inp.r[1], inp.r[2]});
 
-          } else {
-            if (inp.verbosity & PRINTBIT__)
-              os << "using structure from file '" << inp.lattice_dat << "'\n";
-            OLF = readOlf(inp.lattice_dat);
-          }
+        fMat R(DIM__, 0);
+        R.reserve(dh.size() * DIM__);
+        std::vector<cMat> H;
+        H.reserve(dh.size() * DIM__);
+
+        auto r = dh.ccBegin();
+        for (auto i = dh.cbegin(), e = dh.cend(); i != e; ++i, ++r) {
+          R.push_back(*r);
+          R.cBack()[0] = -1.0;
+          H.push_back(i->get(Norb, 0, Norb, Norb).full());
+
+          R.push_back(*r);
+          R.cBack()[0] = 0.0;
+          H.push_back(i->get(0, 0, Norb, Norb).full());
+
+          R.push_back(*r);
+          R.cBack()[0] = 1.0;
+          H.push_back(i->get(0, Norb, Norb, Norb).full());
         }
 
-        // restriction vector
-        const rv r = inp.r.empty() ? W.r() : inp.r;
+        hr = {std::move(R), std::move(H)};
+      }
+      if (inp.dump_hamiltonians)
+        hr.writeToFile(inp.prefix + "scal");
 
-        if (inp.re) {
-          // generate hamiltonians
-          set_mtol(inp.sptol);
-          const auto HH = !inp.R.empty()
-                              ? genHam<fMat>(OLF.B, OLF.Ap, OLF.id, W, inp.R,
-                                             inp.strict_matching)
-                              : genHam<fMat>(OLF.B, OLF.Ap, OLF.id, W.r(), W,
-                                             inp.strict_matching);
-          reset_mtol();
-          if (inp.dump_hamiltonians) HH.writeToFile(inp.prefix + "scal");
+      // trace
+      if (inp.Nk.front())
+        wEGC(calcBS_gc(hr, gnwPath(OLF.B).path(), OLF.B, inp.Nthreads), "scal");
 
-          // trace
-          if (inp.Nk.front())
-            wEGC(calcBS_gc(HH, gnwPath(OLF.B).path(), OLF.B, inp.Nthreads),
-                 "scal");
-          // mesh
-          if (inp.rho_k)
-            wEGC(calcBS_gc(HH, gnwMesh(OLF.B, r), OLF.B, inp.Nthreads),
-                 "scal_mesh");
-          // spec
-          if (!inp.k.empty())
-            wEGC(calcBS_gc(HH, inp.k, OLF.B, inp.Nthreads), "scal_spec");
-        } else {
-          // generate hamiltonians
-          const auto HH = !inp.R.empty()
-                              ? genHam<cMat>(OLF.B, OLF.Ap, OLF.id, W, inp.R,
-                                             inp.strict_matching)
-                              : genHam<cMat>(OLF.B, OLF.Ap, OLF.id, r, W,
-                                             inp.strict_matching);
-          if (inp.dump_hamiltonians) HH.writeToFile(inp.prefix + "scal");
+      // mesh
+      if (inp.rho_k)
+        wEGC(calcBS_gc(
+                 hr,
+                 gnwMesh(OLF.B, inp.r.empty() ? rv{false, true, false} : inp.r),
+                 OLF.B, inp.Nthreads),
+             "scal_mesh");
 
-          // trace
-          if (inp.Nk.front())
-            wEGC(calcBS_gc(HH, gnwPath(OLF.B).path(), OLF.B, inp.Nthreads),
-                 "scal");
-          // mesh
-          if (inp.rho_k)
-            wEGC(calcBS_gc(HH, gnwMesh(OLF.B, r), OLF.B, inp.Nthreads),
-                 "scal_mesh");
-          // spec
-          if (!inp.k.empty())
-            wEGC(calcBS_gc(HH, inp.k, OLF.B, inp.Nthreads), "scal_spec");
-        }
-      } break;
-      case "legacy"_h: {
-        if (inp.verbosity & PRINTBIT__)
-          os << "computing bandstructure using '" << GREEN__ << "legacy"
-             << RESET__ << "' mode\n";
+      // spec
+      if (!inp.k.empty())
+        wEGC(calcBS_gc(hr, inp.k, OLF.B, inp.Nthreads), "scal_spec");
+    } break;
+    case "hr"_h: {
+      if (inp.verbosity & PRINTBIT__)
+        os << "computing bandstructure using '" << GREEN__ << "hr" << RESET__
+           << "' mode\n";
 
-        // read data from files
-        const auto OMF = readOmf(inp.inprefix + inp.mat_par);
-        const auto OLF = readOlf(inp.inprefix + inp.lattice_dat);
-        if (inp.verbosity & PRINTBIT__)
-          os << "input data from files '" << inp.mat_par << "' and '"
-             << inp.lattice_dat << "'\n";
+      // read layer matrix
+      const auto OLF = readOlf(inp.layer_matrix);
 
-        // Norb for structure in L
-        const size_t Norb =
-            std::accumulate(OLF.T.cbegin(), OLF.T.cend(), size_t(0),
-                            [&OMF](const size_t s, const aT t) -> size_t {
-                              return s + OMF.Norb[t];
-                            });
-
-        // get hr from subblocks of sparse device hamiltonians
+      if (!inp.re) { // keep complex parts
+        // read hr and convert to full
         R_H<cMat> hr;
         {
-          const auto dh = omen::readOMENhr(
-              inp.inprefix, inp.r.empty() ? rv{true, true, false}
-                                          : rv{true, inp.r[1], inp.r[2]});
-
-          fMat R(DIM__, 0);
-          R.reserve(dh.size() * DIM__);
+          const auto hr_ = readHrSparse(inp.hr);
           std::vector<cMat> H;
-          H.reserve(dh.size() * DIM__);
-
-          auto r = dh.ccBegin();
-          for (auto i = dh.cbegin(), e = dh.cend(); i != e; ++i, ++r) {
-            R.push_back(*r);
-            R.cBack()[0] = -1.0;
-            H.push_back(i->get(Norb, 0, Norb, Norb).full());
-
-            R.push_back(*r);
-            R.cBack()[0] = 0.0;
-            H.push_back(i->get(0, 0, Norb, Norb).full());
-
-            R.push_back(*r);
-            R.cBack()[0] = 1.0;
-            H.push_back(i->get(0, Norb, Norb, Norb).full());
-          }
-
-          hr = {std::move(R), std::move(H)};
+          H.reserve(hr.size());
+          for (auto i = hr_.cbegin(), e = hr_.cend(); i != e; ++i)
+            H.push_back(i->full());
+          hr = {hr_.R(), std::move(H)};
         }
-        if (inp.dump_hamiltonians) hr.writeToFile(inp.prefix + "scal");
 
         // trace
         if (inp.Nk.front())
@@ -347,216 +389,181 @@ void b_switch(const b_input& inp, std::ostream& os) {
         // spec
         if (!inp.k.empty())
           wEGC(calcBS_gc(hr, inp.k, OLF.B, inp.Nthreads), "scal_spec");
-      } break;
-      case "hr"_h: {
-        if (inp.verbosity & PRINTBIT__)
-          os << "computing bandstructure using '" << GREEN__ << "hr" << RESET__
-             << "' mode\n";
 
-        // read layer matrix
-        const auto OLF = readOlf(inp.layer_matrix);
-
-        if (!inp.re) {  // keep complex parts
-          // read hr and convert to full
-          R_H<cMat> hr;
-          {
-            const auto hr_ = readHrSparse(inp.hr);
-            std::vector<cMat> H;
-            H.reserve(hr.size());
-            for (auto i = hr_.cbegin(), e = hr_.cend(); i != e; ++i)
-              H.push_back(i->full());
-            hr = {hr_.R(), std::move(H)};
-          }
-
-          // trace
-          if (inp.Nk.front())
-            wEGC(calcBS_gc(hr, gnwPath(OLF.B).path(), OLF.B, inp.Nthreads),
-                 "scal");
-
-          // mesh
-          if (inp.rho_k)
-            wEGC(calcBS_gc(hr,
-                           gnwMesh(OLF.B, inp.r.empty() ? rv{false, true, false}
-                                                        : inp.r),
-                           OLF.B, inp.Nthreads),
-                 "scal_mesh");
-
-          // spec
-          if (!inp.k.empty())
-            wEGC(calcBS_gc(hr, inp.k, OLF.B, inp.Nthreads), "scal_spec");
-
-        } else {  // ignore complex parts
-          // read hr and convert to full
-          R_H<fMat> hr;
-          {
-            const auto hr_ = readHrSparse(inp.hr);
-            std::vector<fMat> H;
-            H.reserve(hr.size());
-            for (auto i = hr_.cbegin(), e = hr_.cend(); i != e; ++i)
-              H.push_back(real(i->full()));
-            hr = {hr_.R(), std::move(H)};
-          }
-
-          // trace
-          if (inp.Nk.front())
-            wEGC(calcBS_gc(hr, gnwPath(OLF.B).path(), OLF.B, inp.Nthreads),
-                 "scal");
-
-          // mesh
-          if (inp.rho_k)
-            wEGC(calcBS_gc(hr,
-                           gnwMesh(OLF.B, inp.r.empty() ? rv{false, true, false}
-                                                        : inp.r),
-                           OLF.B, inp.Nthreads),
-                 "scal_mesh");
-
-          // spec
-          if (!inp.k.empty())
-            wEGC(calcBS_gc(hr, inp.k, OLF.B, inp.Nthreads), "scal_spec");
+      } else { // ignore complex parts
+        // read hr and convert to full
+        R_H<fMat> hr;
+        {
+          const auto hr_ = readHrSparse(inp.hr);
+          std::vector<fMat> H;
+          H.reserve(hr.size());
+          for (auto i = hr_.cbegin(), e = hr_.cend(); i != e; ++i)
+            H.push_back(real(i->full()));
+          hr = {hr_.R(), std::move(H)};
         }
-      } break;
-      case "local"_h: {
-        // read wbh, get sym cell
-        const ll_hbonds W(inp.wbh.front());
-        W.setQueryTolCartesian(inp.sptol);
-        const ll_cell scell = W.symCell();
 
-        const rv r = inp.r.empty() ? W.r() : inp.r;
+        // trace
+        if (inp.Nk.front())
+          wEGC(calcBS_gc(hr, gnwPath(OLF.B).path(), OLF.B, inp.Nthreads),
+               "scal");
+
+        // mesh
+        if (inp.rho_k)
+          wEGC(calcBS_gc(hr,
+                         gnwMesh(OLF.B, inp.r.empty() ? rv{false, true, false}
+                                                      : inp.r),
+                         OLF.B, inp.Nthreads),
+               "scal_mesh");
+
+        // spec
+        if (!inp.k.empty())
+          wEGC(calcBS_gc(hr, inp.k, OLF.B, inp.Nthreads), "scal_spec");
+      }
+    } break;
+    case "local"_h: {
+      // read wbh, get sym cell
+      const ll_hbonds W(inp.wbh.front());
+      W.setQueryTolCartesian(inp.sptol);
+      const ll_cell scell = W.symCell();
+
+      const rv r = inp.r.empty() ? W.r() : inp.r;
+      if (inp.verbosity & PRINTBIT__)
+        os << "found similarized cell of " << BLUE__ << scell.N() << RESET__
+           << " positions, " << BLUE__ << scell.Nspecies() << RESET__
+           << " types\n";
+      if (inp.verbosity & DEBUGBIT__)
+        wPSCc(inp.prefix + "scell.psc", scell);
+
+      // find primitive version of sym cell
+      auto pcell = scell;
+      if (!inp.LB.empty()) {
+        // user defined basis
+        set_mtol(pcell.directTol(inp.sptol));
+        if (std::abs(det(inp.LB)) > pcell.vol() || !pcell.validBasis(inp.LB)) {
+          reset_mtol();
+          throw(std::invalid_argument(
+              "specified basis invalid or bad tolerance level"));
+        }
+        pcell.changeBasis(inp.LB);
+        reset_mtol();
+      } else {
+        // find primitive cell automatically
+        set_mtol(pcell.directTol(inp.sptol));
+        pcell.makePrimitive(r);
+        reset_mtol();
+      }
+
+      if (inp.verbosity & PRINTBIT__)
+        os << "found primitive similarized cell of " << BLUE__ << pcell.N()
+           << RESET__ << " positions\n";
+      if (inp.verbosity & DEBUGBIT__)
+        wPSCc(inp.prefix + "pcell.psc", pcell);
+
+      // find expansion R vectors and sort them
+      fMat R;
+      {
+        ll_cell rcell(pcell.B(), zeros<fMat>(scell.dim(), 1), {"A"});
+        set_mtol(rcell.directTol(inp.sptol));
+        rcell.changeBasis(scell.B());
+        reset_mtol();
+
+        R = round(pcell.B().leftDivide(rcell.getcAp()));
+        std::sort(R.cBegin(), R.cEnd());
+      }
+      if (inp.verbosity & DEBUGBIT__) {
+        const std::string fileName = inp.prefix + "Rvecs.mat";
+        R.printToFile(fileName, 0);
         if (inp.verbosity & PRINTBIT__)
-          os << "found similarized cell of " << BLUE__ << scell.N() << RESET__
-             << " positions, " << BLUE__ << scell.Nspecies() << RESET__
-             << " types\n";
-        if (inp.verbosity & DEBUGBIT__) wPSCc(inp.prefix + "scell.psc", scell);
+          os << "file '" << fileName << "' written\n";
+      }
 
-        // find primitive version of sym cell
-        auto pcell = scell;
-        if (!inp.LB.empty()) {
-          // user defined basis
-          set_mtol(pcell.directTol(inp.sptol));
-          if (std::abs(det(inp.LB)) > pcell.vol() ||
-              !pcell.validBasis(inp.LB)) {
+      // transformation matrix pcell -> scell, possible shiftvectors
+      const fMat TM = scell.B().leftDivide(pcell.B());
+
+      // generate mesh and trace
+      const ll_mesh<> mesh =
+          inp.rho_k ? gnwMesh(pcell.B(), inp.r.empty() ? W.r() : inp.r)
+                    : ll_mesh<>();
+      const auto PP = inp.Nk.front() ? gnwPath(pcell.B()) : ll__::p_p();
+
+      // find cells for each R vector
+      for (auto r = R.ccBegin(), re = R.ccEnd(); r != re; ++r) {
+        // get shifted positions of pcell in the basis of scell
+        fMat shm = pcell.Ap();
+        cadd(shm, *r);
+        shm = (TM.prod(shm) % 1.0);
+
+        // get id strings and positions in cartesian
+        set_mtol(inp.sptol);
+        idv id;
+        id.reserve(shm.N());
+        fMat cAp(W.cell().dim(), 0);
+        cAp.reserve(shm.N());
+        for (auto s = shm.ccBegin(), se = shm.ccEnd(); s != se; ++s) {
+          const auto itr = std::find(W.cell().ccBegin(), W.cell().ccEnd(), *s);
+
+          if (itr == W.cell().ccEnd()) {
             reset_mtol();
             throw(std::invalid_argument(
-                "specified basis invalid or bad tolerance level"));
+                "position not found! Increase tolerance"));
           }
-          pcell.changeBasis(inp.LB);
-          reset_mtol();
-        } else {
-          // find primitive cell automatically
-          set_mtol(pcell.directTol(inp.sptol));
-          pcell.makePrimitive(r);
-          reset_mtol();
-        }
 
+          id.push_back(W.cell().id((size_t)itr));
+          cAp.push_back(W.cell().B().prod(*itr));
+        }
+        reset_mtol();
         if (inp.verbosity & PRINTBIT__)
-          os << "found primitive similarized cell of " << BLUE__ << pcell.N()
-             << RESET__ << " positions\n";
-        if (inp.verbosity & DEBUGBIT__) wPSCc(inp.prefix + "pcell.psc", pcell);
+          os << "\nR: " << lm__::T(*r).print(0) << ",  ID: " << id << "\n";
 
-        // find expansion R vectors and sort them
-        fMat R;
+        // type vector
+        aTv T(id.size());
+        std::iota(T.begin(), T.end(), 0);
+
+        // idstring for filenames
+        std::string idstr;
         {
-          ll_cell rcell(pcell.B(), zeros<fMat>(scell.dim(), 1), {"A"});
-          set_mtol(rcell.directTol(inp.sptol));
-          rcell.changeBasis(scell.B());
-          reset_mtol();
-
-          R = round(pcell.B().leftDivide(rcell.getcAp()));
-          std::sort(R.cBegin(), R.cEnd());
+          std::stringstream sstr;
+          sstr << "local_" << std::setw(std::ceil(std::log10(R.N())) + 1)
+               << std::setfill('0') << ((size_t)r + 1);
+          idstr = sstr.str();
         }
-        if (inp.verbosity & DEBUGBIT__) {
-          const std::string fileName = inp.prefix + "Rvecs.mat";
-          R.printToFile(fileName, 0);
+
+        // print POSCAR file
+        if (inp.verbosity & WRITEBIT__) {
+          const std::string fileName = inp.prefix + idstr + ".psc";
+          printPOSCAR(fileName, pcell.B(), cAp, id, 1.0, false);
           if (inp.verbosity & PRINTBIT__)
             os << "file '" << fileName << "' written\n";
         }
 
-        // transformation matrix pcell -> scell, possible shiftvectors
-        const fMat TM = scell.B().leftDivide(pcell.B());
-
-        // generate mesh and trace
-        const ll_mesh<> mesh =
-            inp.rho_k ? gnwMesh(pcell.B(), inp.r.empty() ? W.r() : inp.r)
-                      : ll_mesh<>();
-        const auto PP = inp.Nk.front() ? gnwPath(pcell.B()) : ll__::p_p();
-
-        // find cells for each R vector
-        for (auto r = R.ccBegin(), re = R.ccEnd(); r != re; ++r) {
-          // get shifted positions of pcell in the basis of scell
-          fMat shm = pcell.Ap();
-          cadd(shm, *r);
-          shm = (TM.prod(shm) % 1.0);
-
-          // get id strings and positions in cartesian
-          set_mtol(inp.sptol);
-          idv id;
-          id.reserve(shm.N());
-          fMat cAp(W.cell().dim(), 0);
-          cAp.reserve(shm.N());
-          for (auto s = shm.ccBegin(), se = shm.ccEnd(); s != se; ++s) {
-            const auto itr =
-                std::find(W.cell().ccBegin(), W.cell().ccEnd(), *s);
-
-            if (itr == W.cell().ccEnd()) {
-              reset_mtol();
-              throw(std::invalid_argument(
-                  "position not found! Increase tolerance"));
-            }
-
-            id.push_back(W.cell().id((size_t)itr));
-            cAp.push_back(W.cell().B().prod(*itr));
-          }
-          reset_mtol();
-          if (inp.verbosity & PRINTBIT__)
-            os << "\nR: " << lm__::T(*r).print(0) << ",  ID: " << id << "\n";
-
-          // type vector
-          aTv T(id.size());
-          std::iota(T.begin(), T.end(), 0);
-
-          // idstring for filenames
-          std::string idstr;
-          {
-            std::stringstream sstr;
-            sstr << "local_" << std::setw(std::ceil(std::log10(R.N())) + 1)
-                 << std::setfill('0') << ((size_t)r + 1);
-            idstr = sstr.str();
-          }
-
-          // print POSCAR file
-          if (inp.verbosity & WRITEBIT__) {
-            const std::string fileName = inp.prefix + idstr + ".psc";
-            printPOSCAR(fileName, pcell.B(), cAp, id, 1.0, false);
-            if (inp.verbosity & PRINTBIT__)
-              os << "file '" << fileName << "' written\n";
-          }
-
-          // generate Hamiltonian and compute bandstructure
-          if (inp.re) {
-            const auto HH = genHam<fMat>(pcell.B(), cAp, id, W.r(), W, false);
-            if (inp.dump_hamiltonians) HH.writeToFile(inp.prefix + idstr);
-            if (inp.Nk.front())
-              wEGC(calcBS_gc(HH, PP.path(), pcell.B(), inp.Nthreads),
-                   "_trace_" + idstr);
-            if (inp.rho_k)
-              wEGC(calcBS_gc(HH, mesh, pcell.B(), inp.Nthreads),
-                   "_mesh_" + idstr);
-          } else {
-            const auto HH = genHam<cMat>(pcell.B(), cAp, id, W.r(), W, false);
-            if (inp.dump_hamiltonians) HH.writeToFile(inp.prefix + idstr);
-            if (inp.Nk.front())
-              wEGC(calcBS_gc(HH, PP.path(), pcell.B(), inp.Nthreads),
-                   "_trace_" + idstr);
-            if (inp.rho_k)
-              wEGC(calcBS_gc(HH, mesh, pcell.B(), inp.Nthreads),
-                   "_mesh_" + idstr);
-          }
+        // generate Hamiltonian and compute bandstructure
+        if (inp.re) {
+          const auto HH = genHam<fMat>(pcell.B(), cAp, id, W.r(), W, false);
+          if (inp.dump_hamiltonians)
+            HH.writeToFile(inp.prefix + idstr);
+          if (inp.Nk.front())
+            wEGC(calcBS_gc(HH, PP.path(), pcell.B(), inp.Nthreads),
+                 "_trace_" + idstr);
+          if (inp.rho_k)
+            wEGC(calcBS_gc(HH, mesh, pcell.B(), inp.Nthreads),
+                 "_mesh_" + idstr);
+        } else {
+          const auto HH = genHam<cMat>(pcell.B(), cAp, id, W.r(), W, false);
+          if (inp.dump_hamiltonians)
+            HH.writeToFile(inp.prefix + idstr);
+          if (inp.Nk.front())
+            wEGC(calcBS_gc(HH, PP.path(), pcell.B(), inp.Nthreads),
+                 "_trace_" + idstr);
+          if (inp.rho_k)
+            wEGC(calcBS_gc(HH, mesh, pcell.B(), inp.Nthreads),
+                 "_mesh_" + idstr);
         }
-      } break;
-      default:
-        throw(std::invalid_argument("mode '" + inp.mode + "' unknown"));
+      }
+    } break;
+    default:
+      throw(std::invalid_argument("mode '" + inp.mode + "' unknown"));
     }
-  } catch (const std::exception& e) {
+  } catch (const std::exception &e) {
     os << b_input() << "\n\n"
        << RED__ << "ERROR: " << e.what() << "\n"
        << RESET__;

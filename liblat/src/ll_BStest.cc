@@ -9,10 +9,11 @@
 #include "ll_io.h"
 
 // bandstructure tests
-void ll__::meshBStest(const ll_hbonds& W, const fMat& EXP, const rv& r,
-                      const vb_cb& E, const ll_BStest_input& inp,
-                      std::ostream& os) {
-  if (!(inp.rho_k && inp.verbosity)) return;
+void ll__::meshBStest(const ll_hbonds &W, const fMat &EXP, const rv &r,
+                      const vb_cb &E, const ll_BStest_input &inp,
+                      std::ostream &os) {
+  if (!(inp.rho_k && inp.verbosity))
+    return;
   if (inp.rho_k < .0)
     throw(std::invalid_argument("negative rho_k not allowed"));
   if (inp.rho_k > 1e6)
@@ -21,9 +22,10 @@ void ll__::meshBStest(const ll_hbonds& W, const fMat& EXP, const rv& r,
     throw(std::invalid_argument("bad expansion matrix"));
 
   // write to disk helper lambda
-  const auto wtd = [&inp, &os](const std::string& fileName, const auto& F,
-                               const std::string& discr = "file") -> void {
-    if (~inp.verbosity & PRINTBIT__) return;
+  const auto wtd = [&inp, &os](const std::string &fileName, const auto &F,
+                               const std::string &discr = "file") -> void {
+    if (~inp.verbosity & PRINTBIT__)
+      return;
     F.writeToFile(fileName);
     if (inp.verbosity & PRINTBIT__)
       os << (discr.empty() ? "" : discr + " ") << "'" << fileName << "' written"
@@ -31,7 +33,7 @@ void ll__::meshBStest(const ll_hbonds& W, const fMat& EXP, const rv& r,
   };
 
   // generate test cell
-  set_mtol(WTOL__);  // set tolerance due to wannier input precision
+  set_mtol(WTOL__); // set tolerance due to wannier input precision
   const auto tCell = W.cell().copy().expand(EXP);
   const auto RB = tCell.getRB();
   reset_mtol();
@@ -41,7 +43,8 @@ void ll__::meshBStest(const ll_hbonds& W, const fMat& EXP, const rv& r,
        << CYAN__ << "MESH BANDSTRUCTURE TEST" << RESET__ << "\nexpansion C:\n"
        << EXP.print(0, 1) << "\nreciprocal basis RB:\n"
        << RB.print(PPREC__, 1) << "\n\n";
-  if (inp.verbosity & DEBUGBIT__) wtd(inp.prefix + "mesh_cell.psc", tCell);
+  if (inp.verbosity & DEBUGBIT__)
+    wtd(inp.prefix + "mesh_cell.psc", tCell);
 
   // read wannier90 hamiltonian
   const auto hr = readHr(inp.hrdat);
@@ -49,18 +52,18 @@ void ll__::meshBStest(const ll_hbonds& W, const fMat& EXP, const rv& r,
   // generate kmesh
   std::vector<size_t> maj;
   switch (aux::fnvHash(inp.maj_style.c_str())) {
-    case "inorder"_h:
-      maj = maj_default(r.size());
-      break;
-    case "matlab"_h:
-      maj = maj_MATLAB(r);
-      break;
-    case "MATLAB"_h:
-      maj = maj_MATLAB(r);
-      break;
-    default:
-      throw(std::invalid_argument("maj style '" + inp.maj_style +
-                                  "' not recognized"));
+  case "inorder"_h:
+    maj = maj_default(r.size());
+    break;
+  case "matlab"_h:
+    maj = maj_MATLAB(r);
+    break;
+  case "MATLAB"_h:
+    maj = maj_MATLAB(r);
+    break;
+  default:
+    throw(std::invalid_argument("maj style '" + inp.maj_style +
+                                "' not recognized"));
   }
   const auto kmesh =
       genMesh_cell(inp.rho_k, RB, inp.bzbounds[0], inp.bzbounds[1], maj, r);
@@ -165,7 +168,8 @@ void ll__::meshBStest(const ll_hbonds& W, const fMat& EXP, const rv& r,
                 jfe = EGCfold.E.base_.cAt(i).cbegin() + cbi;
            jf != jfe; ++jf, ++js) {
         const double dev = *jf - *js;
-        if (std::abs(dev) > std::abs(Edev_vb)) Edev_vb = dev;
+        if (std::abs(dev) > std::abs(Edev_vb))
+          Edev_vb = dev;
       }
     }
 
@@ -244,7 +248,8 @@ void ll__::meshBStest(const ll_hbonds& W, const fMat& EXP, const rv& r,
                 jfe = EGCfold.E.base_.cAt(i).cbegin() + jend;
            jf != jfe; ++jf, ++js) {
         const double dev = *jf - *js;
-        if (std::abs(dev) > std::abs(Edev_cb)) Edev_cb = dev;
+        if (std::abs(dev) > std::abs(Edev_cb))
+          Edev_cb = dev;
       }
     }
 
@@ -277,10 +282,12 @@ void ll__::meshBStest(const ll_hbonds& W, const fMat& EXP, const rv& r,
        << (Emin_cb_fold - Emax_vb_fold) << RESET__ << "\nEg scaled:" << BLUE__
        << (Emin_cb_scal - Emax_vb_scal) << RESET__ << "\n\n";
 }
-void ll__::traceBStest(const ll_hbonds& W, const fMat& EXP, const rv& r,
-                       const ll_BStest_input& inp, std::ostream& os) {
-  if (!(inp.Nk && inp.verbosity)) return;
-  if (inp.Nk > 1e6) throw(std::invalid_argument("Nk > 1e6, don't be silly!"));
+void ll__::traceBStest(const ll_hbonds &W, const fMat &EXP, const rv &r,
+                       const ll_BStest_input &inp, std::ostream &os) {
+  if (!(inp.Nk && inp.verbosity))
+    return;
+  if (inp.Nk > 1e6)
+    throw(std::invalid_argument("Nk > 1e6, don't be silly!"));
   if (EXP.empty() || std::abs(det(EXP)) < mtol() || !(EXP == round(EXP)))
     throw(std::invalid_argument("bad expansion matrix"));
   if (inp.kpts.empty() || inp.kpts.M() != W.dim())
@@ -288,9 +295,10 @@ void ll__::traceBStest(const ll_hbonds& W, const fMat& EXP, const rv& r,
         "kpts may not be empty and must match dim of cell"));
 
   // write to disk helper lambda
-  const auto wtd = [&inp, &os](const std::string& fileName, const auto& F,
-                               const std::string& discr = "file") -> void {
-    if (~inp.verbosity & PRINTBIT__) return;
+  const auto wtd = [&inp, &os](const std::string &fileName, const auto &F,
+                               const std::string &discr = "file") -> void {
+    if (~inp.verbosity & PRINTBIT__)
+      return;
     F.writeToFile(fileName);
     if (inp.verbosity & PRINTBIT__)
       os << (discr.empty() ? "" : discr + " ") << "'" << fileName << "' written"
@@ -298,7 +306,7 @@ void ll__::traceBStest(const ll_hbonds& W, const fMat& EXP, const rv& r,
   };
 
   // generate test cell
-  set_mtol(WTOL__);  // set tolerance due to wannier input precision
+  set_mtol(WTOL__); // set tolerance due to wannier input precision
   const auto tCell = W.cell().copy().expand(EXP);
   const auto RB = tCell.getRB();
   reset_mtol();
@@ -308,7 +316,8 @@ void ll__::traceBStest(const ll_hbonds& W, const fMat& EXP, const rv& r,
        << CYAN__ << "TRACE BANDSTRUCTURE TEST" << RESET__ << "\nexpansion C:\n"
        << EXP.print(0, 1) << "\nreciprocal basis RB:\n"
        << RB.print(PPREC__, 1) << "\n\n";
-  if (inp.verbosity & DEBUGBIT__) wtd(inp.prefix + "trace_cell.psc", tCell);
+  if (inp.verbosity & DEBUGBIT__)
+    wtd(inp.prefix + "trace_cell.psc", tCell);
 
   const auto hr = readHr(inp.hrdat);
   const auto PP = genPath(inp.kpts, inp.Nk, tCell.getRB());

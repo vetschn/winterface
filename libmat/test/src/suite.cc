@@ -38,7 +38,7 @@
 #include "test_tRow_all.h"
 #include "test_tVecItr_all.h"
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
   CppUnit::TextUi::TestRunner runner;
 
   // mtol
@@ -142,7 +142,8 @@ int main(int argc, char** argv) {
     //		for (size_t i=0; i!=1000; ++i)
     runner.run("", false, true, false);
   else
-    for (int i = 1; i < argc; ++i) runner.run(argv[i], false, true, false);
+    for (int i = 1; i < argc; ++i)
+      runner.run(argv[i], false, true, false);
 
   return 0;
 }

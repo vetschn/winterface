@@ -6,7 +6,7 @@
 
 // test id
 template <>
-const char*
+const char *
 test_tMat_memory_management<CPX__, RE__, CPX__>::test_id() noexcept {
   return "test_cMat_memory_management";
 }

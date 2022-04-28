@@ -13,8 +13,7 @@
 #include "lm_defs.h"
 #include "lm_tItr.h"
 
-template <ptrdiff_t s>
-class lm_cpxItr;
+template <ptrdiff_t s> class lm_cpxItr;
 
 /**
  * Custom increment const_iterator over real or imag part of complex range. \n
@@ -23,15 +22,14 @@ class lm_cpxItr;
  */
 template <ptrdiff_t s = 0>
 class lm_c_cpxItr : public lm_c_tItr_b<RE__, lm_c_cpxItr<s>, lm_cpxItr<s>> {
- public:
+public:
   /** @name types
    */
-  typedef lm_c_cpxItr<s> c_cpxItr;  //!< re/im only const_iterator
-  typedef lm_cpxItr<s> cpxItr;      //!< re/im only iterator
-  typedef lm_c_tItr_b<RE__, c_cpxItr, cpxItr>
-      c_fItr_b;                     //!< real const_iterator
-  typedef lm_c_tItr<CPX__> c_cItr;  //!< complex const_iterator
-  typedef lm_tItr<CPX__> cItr;      //!< complex iterator
+  typedef lm_c_cpxItr<s> c_cpxItr; //!< re/im only const_iterator
+  typedef lm_cpxItr<s> cpxItr;     //!< re/im only iterator
+  typedef lm_c_tItr_b<RE__, c_cpxItr, cpxItr> c_fItr_b; //!< real const_iterator
+  typedef lm_c_tItr<CPX__> c_cItr; //!< complex const_iterator
+  typedef lm_tItr<CPX__> cItr;     //!< complex iterator
 
   /** @name constructors
    */
@@ -91,13 +89,13 @@ class lm_c_cpxItr : public lm_c_tItr_b<RE__, lm_c_cpxItr<s>, lm_cpxItr<s>> {
  */
 template <ptrdiff_t s = 0>
 class lm_cpxItr : public lm_tItr_b<RE__, lm_cpxItr<s>, lm_c_cpxItr<s>> {
- public:
+public:
   /** @name types
    */
-  typedef lm_c_cpxItr<s> c_cpxItr;  //!< re/im only const_iterator
-  typedef lm_cpxItr<s> cpxItr;      //!< re/im only iterator
-  typedef lm_tItr_b<RE__, cpxItr, c_cpxItr> fItr_b;  //!< real iterator
-  typedef lm_tItr<CPX__> cItr;                       //!< complex iterator
+  typedef lm_c_cpxItr<s> c_cpxItr; //!< re/im only const_iterator
+  typedef lm_cpxItr<s> cpxItr;     //!< re/im only iterator
+  typedef lm_tItr_b<RE__, cpxItr, c_cpxItr> fItr_b; //!< real iterator
+  typedef lm_tItr<CPX__> cItr;                      //!< complex iterator
 
   /** @name constructors
    */
@@ -142,7 +140,7 @@ class lm_cpxItr : public lm_tItr_b<RE__, lm_cpxItr<s>, lm_c_cpxItr<s>> {
   }
 };
 
-#endif  // _LM_CPXITR_
+#endif // _LM_CPXITR_
 
 /** @}
  */

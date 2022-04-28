@@ -73,10 +73,10 @@ void test_cell_assign::test_operator_equal() {
     auto tCell2 = genRandom();
     const auto tCell3 = tCell2;
 
-    double* B_ptr = tCell2.B_.data();
-    double* Ap_ptr = tCell2.mat_.data();
-    size_t* T_ptr = tCell2.T_.data();
-    std::string* id_ptr = tCell2.id_.data();
+    double *B_ptr = tCell2.B_.data();
+    double *Ap_ptr = tCell2.mat_.data();
+    size_t *T_ptr = tCell2.T_.data();
+    std::string *id_ptr = tCell2.id_.data();
 
     tCell1 = std::move(tCell2);
     CPPUNIT_ASSERT(tCell1 == tCell3);
@@ -87,10 +87,10 @@ void test_cell_assign::test_operator_equal() {
   }
 }
 
-const char* test_cell_assign::test_id() noexcept { return "test_cell_assign"; }
+const char *test_cell_assign::test_id() noexcept { return "test_cell_assign"; }
 
-CppUnit::Test* test_cell_assign::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_cell_assign::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_cell_assign>(
       "test_swap", &test_cell_assign::test_swap));

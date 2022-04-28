@@ -8,12 +8,11 @@
 
 #include "lm_tCol.h"
 
-template <class TT, class FT, class CT>
-class lm_tMat;
+template <class TT, class FT, class CT> class lm_tMat;
 
 template <class TT, class FT, class CT>
 class test_tCol_all : public CppUnit::TestFixture {
- public:
+public:
   // types
   typedef lm_tMat<FT, FT, CT> fMat;
   typedef lm_tMat<CT, FT, CT> cMat;
@@ -36,11 +35,11 @@ class test_tCol_all : public CppUnit::TestFixture {
   static constexpr FT delta = 1e-5f;
 #endif
 
- protected:
-  static const char* test_id() noexcept;
+protected:
+  static const char *test_id() noexcept;
 
- public:
-  static CppUnit::Test* suite();
+public:
+  static CppUnit::Test *suite();
 };
 
-#endif  // _TEST_TCOL_ALL_
+#endif // _TEST_TCOL_ALL_

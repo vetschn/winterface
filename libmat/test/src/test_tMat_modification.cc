@@ -308,12 +308,14 @@ void test_tMat_modification<TT, FT, CT>::test_set_setl() {
     std::vector<size_t> mlck;
     mlck.reserve(size_t(sum(ml)));
     for (size_t i = 0; i != ml.L(); ++i)
-      if (bool(ml[i])) mlck.push_back(i);
+      if (bool(ml[i]))
+        mlck.push_back(i);
 
     std::vector<size_t> nlck;
     nlck.reserve(size_t(sum(nl)));
     for (size_t i = 0; i != nl.L(); ++i)
-      if (bool(nl[i])) nlck.push_back(i);
+      if (bool(nl[i]))
+        nlck.push_back(i);
 
     auto ck =
         tMat1.copy().setl(tMat3, ml, nl) == tMat1.copy().set(tMat3, mlck, nlck);
@@ -337,7 +339,8 @@ void test_tMat_modification<TT, FT, CT>::test_rRm() {
       CPPUNIT_ASSERT_EQUAL(tMat1.N(), tMat2.N());
       CPPUNIT_ASSERT_EQUAL(tMat1.L() - tMat1.N(), tMat2.L());
       for (size_t m = 0; m != tMat1.M(); ++m) {
-        if (m == i) continue;
+        if (m == i)
+          continue;
         for (size_t n = 0; n < tMat1.N(); ++n)
           CPPUNIT_ASSERT_EQUAL(tMat1(m, n), tMat2(m - (m > i), n));
       }
@@ -359,7 +362,8 @@ void test_tMat_modification<TT, FT, CT>::test_rRm() {
     {
       auto tMat2 = tMat1;
       std::vector<size_t> m(tMat1.M());
-      for (size_t i = 0; i != m.size(); ++i) m[i] = i;
+      for (size_t i = 0; i != m.size(); ++i)
+        m[i] = i;
 
       tMat2.rRm(m);
       CPPUNIT_ASSERT(tMat2.empty());
@@ -439,7 +443,8 @@ void test_tMat_modification<TT, FT, CT>::test_cRm() {
       CPPUNIT_ASSERT_EQUAL(tMat1.N() - 1, tMat2.N());
       CPPUNIT_ASSERT_EQUAL(tMat1.L() - tMat1.M(), tMat2.L());
       for (size_t n = 0; n < tMat1.N(); ++n) {
-        if (n == i) continue;
+        if (n == i)
+          continue;
         for (size_t m = 0; m != tMat1.M(); ++m)
           CPPUNIT_ASSERT_EQUAL(tMat1(m, n), tMat2(m, n - (n > i)));
       }
@@ -538,7 +543,7 @@ void test_tMat_modification<TT, FT, CT>::test_dRm() {
     auto tMat2 = tMat1;
     tMat1.dRm();
 
-    if (S.N > S.M) {  // add low
+    if (S.N > S.M) { // add low
       CPPUNIT_ASSERT_EQUAL(tMat2.N() - 1, tMat1.N());
       CPPUNIT_ASSERT_EQUAL(tMat2.M(), tMat1.M());
       CPPUNIT_ASSERT_EQUAL(tMat1.M() * tMat1.N(), tMat1.L());
@@ -559,7 +564,7 @@ void test_tMat_modification<TT, FT, CT>::test_dRm() {
         for (size_t m = 0; m != tMat1.M(); ++m)
           CPPUNIT_ASSERT_EQUAL(tMat2(m, n + 1), tMat1(m, n));
 
-    } else {  // add left
+    } else { // add left
       CPPUNIT_ASSERT_EQUAL(tMat2.N(), tMat1.N());
       CPPUNIT_ASSERT_EQUAL(tMat2.M() - 1, tMat1.M());
       CPPUNIT_ASSERT_EQUAL(tMat1.M() * tMat1.N(), tMat1.L());
@@ -691,8 +696,8 @@ void test_tMat_modification<TT, FT, CT>::test_inv() {
 }
 
 template <class TT, class FT, class CT>
-CppUnit::Test* test_tMat_modification<TT, FT, CT>::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_tMat_modification<TT, FT, CT>::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_tMat_modification>(
       "test_rShift_cShift",

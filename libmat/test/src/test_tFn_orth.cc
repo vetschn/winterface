@@ -27,7 +27,8 @@ void test_tFn_orth<TT, FT, CT>::test_gsorth() {
 template <class TT, class FT, class CT>
 void test_tFn_orth<TT, FT, CT>::test_complement() {
   auto S = genRndMEST();
-  if (S.N > S.M) std::swap(S.M, S.N);
+  if (S.N > S.M)
+    std::swap(S.M, S.N);
 
   // check complement to square is empty
   {
@@ -53,8 +54,8 @@ void test_tFn_orth<TT, FT, CT>::test_complement() {
 }
 
 template <class TT, class FT, class CT>
-CppUnit::Test* test_tFn_orth<TT, FT, CT>::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_tFn_orth<TT, FT, CT>::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_tFn_orth>(
       "test_gsorth", &test_tFn_orth<TT, FT, CT>::test_gsorth));

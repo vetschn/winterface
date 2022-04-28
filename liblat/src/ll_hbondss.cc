@@ -11,34 +11,36 @@ using namespace ll__;
 using namespace lm__;
 
 // constructor
-ll_hbondss::ll_hbondss(const ll_hbondss_input& inp, std::ostream& os) {
+ll_hbondss::ll_hbondss(const ll_hbondss_input &inp, std::ostream &os) {
   assert(!inp.wbh.empty());
 
   // read wbhs
   this->vec_.reserve(inp.wbh.size());
-  for (const auto& s : inp.wbh) {
+  for (const auto &s : inp.wbh) {
     vec_.push_back(ll_hbonds(s));
     if (inp.verbosity & PRINTBIT__)
       os << "\nwannier bonds file '" << s << "' loaded containing " << BLUE__
          << vec_.back().cell().N() << RESET__ << " positions and " << BLUE__
          << vec_.back().cardinality() << RESET__ << " bonds";
   }
-  if (std::any_of(this->cbegin(), this->cend(), [this](const auto& w) -> bool {
+  if (std::any_of(this->cbegin(), this->cend(), [this](const auto &w) -> bool {
         return w.dim() != this->vec_.front().dim();
       }))
     throw(std::invalid_argument("dimensions on wbh don't match!"));
-  if (inp.verbosity & PRINTBIT__) os << "\n";
+  if (inp.verbosity & PRINTBIT__)
+    os << "\n";
 }
 
 // information from structure
-ll_hbondss::pb ll_hbondss::getPerimeterConnections(const fMat& Ap,
-                                                   const std::vector<size_t>& I,
-                                                   const ll_hbondss_input& inp,
-                                                   std::ostream& os) const {
+ll_hbondss::pb ll_hbondss::getPerimeterConnections(const fMat &Ap,
+                                                   const std::vector<size_t> &I,
+                                                   const ll_hbondss_input &inp,
+                                                   std::ostream &os) const {
   assert(Ap.M() == dim());
   assert(Ap.N() == I.size());
 
-  if (!inp.perimeter_radius) return {};
+  if (!inp.perimeter_radius)
+    return {};
 
   // cutoff level for which bonds to include
   const double Rcut =
@@ -53,7 +55,8 @@ ll_hbondss::pb ll_hbondss::getPerimeterConnections(const fMat& Ap,
 
   // get indices for each section, check basic properties
   std::vector<std::vector<size_t>> SI(size());
-  for (auto& i : SI) i.reserve(I.size());
+  for (auto &i : SI)
+    i.reserve(I.size());
   for (size_t i = 0; i != I.size(); ++i) {
     const size_t j = j_(I[i]);
     if (j >= size() || i_(I[i]) >= (*this)[j].cell().N())
@@ -61,7 +64,7 @@ ll_hbondss::pb ll_hbondss::getPerimeterConnections(const fMat& Ap,
     SI[j].push_back(i);
   }
   if (std::any_of(SI.cbegin(), SI.cend(),
-                  [](const auto& i) -> bool { return i.empty(); }))
+                  [](const auto &i) -> bool { return i.empty(); }))
     throw(std::invalid_argument("structure appears incomplete"));
 
   // result index container, reserve estimate space
@@ -81,12 +84,13 @@ ll_hbondss::pb ll_hbondss::getPerimeterConnections(const fMat& Ap,
 
           // bond 1 -> 2
           const fMat bnd12 = Ap.cAt(si2) - Ap.cAt(si1);
-          if (norm(bnd12) > Rcut) continue;
+          if (norm(bnd12) > Rcut)
+            continue;
 
           // get iterators to beginning of index range
           auto itr = std::lower_bound(
               RT.cbegin(), RT.cend(), std::array<size_t, 4>{{j1, i1, j2, i2}},
-              [](const auto& i, const auto& j) -> bool {
+              [](const auto &i, const auto &j) -> bool {
                 return std::lexicographical_compare(
                     i.dat.cbegin(), i.dat.cbegin() + 4, j.cbegin(), j.cend());
               });
@@ -104,16 +108,19 @@ ll_hbondss::pb ll_hbondss::getPerimeterConnections(const fMat& Ap,
           // check if interaction is found, 1 -> 2
           size_t a2 = 0, e2 = (*this)[j1].cell().N();
           for (; a2 != e2; ++a2)
-            if ((*this)[j1].getInteraction({i1, a2}, bnd12) != eH()) break;
+            if ((*this)[j1].getInteraction({i1, a2}, bnd12) != eH())
+              break;
 
           // check if interaction is found, 2 -> 1
           const fMat bnd21 = -bnd12;
           size_t a1 = 0, e1 = (*this)[j2].cell().N();
           for (; a1 != e1; ++a1)
-            if ((*this)[j2].getInteraction({i2, a1}, bnd21) != eH()) break;
+            if ((*this)[j2].getInteraction({i2, a1}, bnd21) != eH())
+              break;
 
           // one or both interactions not found
-          if (a2 == e2 || a1 == e1) continue;
+          if (a2 == e2 || a1 == e1)
+            continue;
 
           // insert new entry
           RT.insert(itr, pbrt{{j1, i1, j2, i2, a2, a1}});
@@ -126,9 +133,11 @@ ll_hbondss::pb ll_hbondss::getPerimeterConnections(const fMat& Ap,
         "get perimeter connections: bad section connectivity"));
   std::vector<bool> conn(size(), false);
   conn.front() = true;
-  for (const auto& rt : RT) {
-    if (conn[rt.j1]) conn[rt.j2] = true;
-    if (conn[rt.j2]) conn[rt.j1] = true;
+  for (const auto &rt : RT) {
+    if (conn[rt.j1])
+      conn[rt.j2] = true;
+    if (conn[rt.j2])
+      conn[rt.j1] = true;
   }
   if (!std::all_of(conn.cbegin(), conn.cend(),
                    [](const bool i) -> bool { return i; }))
@@ -141,9 +150,9 @@ ll_hbondss::pb ll_hbondss::getPerimeterConnections(const fMat& Ap,
 
   return {std::move(RT), std::move(bnds12)};
 }
-std::vector<std::vector<i_i>> ll_hbondss::getSubstitutes(
-    const fMat& Ap, const std::vector<size_t>& I,
-    const double f) const noexcept {
+std::vector<std::vector<i_i>>
+ll_hbondss::getSubstitutes(const fMat &Ap, const std::vector<size_t> &I,
+                           const double f) const noexcept {
   std::vector<std::vector<i_i>> res;
 
   std::vector<size_t> cI(I.size());
@@ -154,7 +163,8 @@ std::vector<std::vector<i_i>> ll_hbondss::getSubstitutes(
 
     auto p = Ap.ccBegin();
     for (auto i = I.cbegin(), e = I.cend(); i != e; ++i, ++p)
-      if (j_(*i) == j) cI.push_back(i_(*i)), cp.push_back(*p);
+      if (j_(*i) == j)
+        cI.push_back(i_(*i)), cp.push_back(*p);
 
     res.push_back((*this)[j].getSubstitutes(cp, cI, f));
   }
@@ -163,13 +173,15 @@ std::vector<std::vector<i_i>> ll_hbondss::getSubstitutes(
 }
 
 // modification
-void ll_hbondss::equalizeShifts(const ll_hbondss::pb& B,
-                                const ll_hbondss_input& inp, std::ostream& os) {
+void ll_hbondss::equalizeShifts(const ll_hbondss::pb &B,
+                                const ll_hbondss_input &inp, std::ostream &os) {
   assert(B.RT.size() == B.bnds12.N());
 
-  if (B.RT.empty()) return;
+  if (B.RT.empty())
+    return;
 
-  if (inp.verbosity & PRINTBIT__) os << "\nequalizing energy shifts...";
+  if (inp.verbosity & PRINTBIT__)
+    os << "\nequalizing energy shifts...";
 
   std::vector<size_t> leveled = {0};
   while (leveled.size() < size()) {
@@ -179,14 +191,16 @@ void ll_hbondss::equalizeShifts(const ll_hbondss::pb& B,
       // find range of this perimeter
       const auto cq = q;
       const auto cb = b;
-      while (q != qe && q->j1 == cq->j1 && q->j2 == cq->j2) ++q, ++b;
+      while (q != qe && q->j1 == cq->j1 && q->j2 == cq->j2)
+        ++q, ++b;
 
       // check if exactly one of the sections involved is leveled already
       const bool f1 =
           std::binary_search(leveled.cbegin(), leveled.cend(), cq->j1);
       const bool f2 =
           std::binary_search(leveled.cbegin(), leveled.cend(), cq->j2);
-      if (f1 + f2 != 1) continue;
+      if (f1 + f2 != 1)
+        continue;
 
       // get number of total orbitals
       size_t Norb = 0;
@@ -201,7 +215,7 @@ void ll_hbondss::equalizeShifts(const ll_hbondss::pb& B,
       fMat dd(1, 0);
       dd.reserve(Norb);
       std::for_each(
-          cq, q, [this, &dd, &iincl, &inp, &os](const auto& rt) -> void {
+          cq, q, [this, &dd, &iincl, &inp, &os](const auto &rt) -> void {
             {
               const i_i cp{rt.a2, rt.i2};
               const auto itr =
@@ -263,14 +277,16 @@ void ll_hbondss::equalizeShifts(const ll_hbondss::pb& B,
     }
   }
 
-  if (inp.verbosity & PRINTBIT__) os << "\n";
+  if (inp.verbosity & PRINTBIT__)
+    os << "\n";
 }
-void ll_hbondss::equalizeSigns(const ll_hbondss::pb& B,
-                               const std::vector<std::vector<i_i>>& SI,
-                               const ll_hbondss_input& inp, std::ostream& os) {
+void ll_hbondss::equalizeSigns(const ll_hbondss::pb &B,
+                               const std::vector<std::vector<i_i>> &SI,
+                               const ll_hbondss_input &inp, std::ostream &os) {
   assert(B.RT.size() == B.bnds12.N());
 
-  if (inp.verbosity & PRINTBIT__) os << "\nequalizing wannier signs...";
+  if (inp.verbosity & PRINTBIT__)
+    os << "\nequalizing wannier signs...";
 
   std::vector<size_t> leveled = {0};
   while (leveled.size() < size()) {
@@ -280,14 +296,16 @@ void ll_hbondss::equalizeSigns(const ll_hbondss::pb& B,
       // find range of this perimeter
       const auto cq = q;
       const auto cb = b;
-      while (q != qe && q->j1 == cq->j1 && q->j2 == cq->j2) ++q, ++b;
+      while (q != qe && q->j1 == cq->j1 && q->j2 == cq->j2)
+        ++q, ++b;
 
       // check if exactly one of the sections involved is leveled already
       const bool f1 =
           std::binary_search(leveled.cbegin(), leveled.cend(), cq->j1);
       const bool f2 =
           std::binary_search(leveled.cbegin(), leveled.cend(), cq->j2);
-      if (f1 + f2 != 1) continue;
+      if (f1 + f2 != 1)
+        continue;
       if (!f1 && inp.verbosity & PRINTBIT__)
         os << "\nadapting section " << BLUE__ << cq->j2 << RESET__ << " <- "
            << BLUE__ << cq->j1 << RESET__;
@@ -300,15 +318,19 @@ void ll_hbondss::equalizeSigns(const ll_hbondss::pb& B,
       I1.reserve(std::distance(cq, q));
       std::vector<size_t> I2;
       I2.reserve(std::distance(cq, q));
-      std::for_each(cq, q, [&I1, &I2](const auto& rt) -> void {
+      std::for_each(cq, q, [&I1, &I2](const auto &rt) -> void {
         const auto itr1 = std::lower_bound(I1.cbegin(), I1.cend(), rt.i1);
-        if (itr1 == I1.cend() || *itr1 != rt.i1) I1.insert(itr1, rt.i1);
+        if (itr1 == I1.cend() || *itr1 != rt.i1)
+          I1.insert(itr1, rt.i1);
         const auto itr2 = std::lower_bound(I1.cbegin(), I1.cend(), rt.a2);
-        if (itr2 == I1.cend() || *itr2 != rt.a2) I1.insert(itr2, rt.a2);
+        if (itr2 == I1.cend() || *itr2 != rt.a2)
+          I1.insert(itr2, rt.a2);
         const auto itr3 = std::lower_bound(I2.cbegin(), I2.cend(), rt.i2);
-        if (itr3 == I1.cend() || *itr3 != rt.i2) I2.insert(itr3, rt.i2);
+        if (itr3 == I1.cend() || *itr3 != rt.i2)
+          I2.insert(itr3, rt.i2);
         const auto itr4 = std::lower_bound(I2.cbegin(), I2.cend(), rt.a1);
-        if (itr4 == I1.cend() || *itr4 != rt.a1) I2.insert(itr4, rt.a1);
+        if (itr4 == I1.cend() || *itr4 != rt.a1)
+          I2.insert(itr4, rt.a1);
       });
 
       // get indices and references to treat the larger and smaller
@@ -317,19 +339,21 @@ void ll_hbondss::equalizeSigns(const ll_hbondss::pb& B,
       const size_t is = I1.size() < I2.size() ? 0 : 1;
       const size_t jb = I1.size() > I2.size() ? cq->j1 : cq->j2;
       const size_t js = I1.size() < I2.size() ? cq->j1 : cq->j2;
-      const auto& Ib = I1.size() > I2.size() ? I1 : I2;
-      const auto& Is = I1.size() < I2.size() ? I1 : I2;
+      const auto &Ib = I1.size() > I2.size() ? I1 : I2;
+      const auto &Is = I1.size() < I2.size() ? I1 : I2;
 
       // find mapping of the section with less unique indices
       // onto those of the other section
       std::vector<size_t> MI;
       MI.reserve(Ib.size());
       for (const auto i : Ib) {
-        const auto& rt = *std::find_if(cq, q, [i, ib](const auto& rt) -> bool {
+        const auto &rt = *std::find_if(cq, q, [i, ib](const auto &rt) -> bool {
           return rt(ib, 1) == i || rt(2, ib) == i;
         });
-        if (rt(ib, 1) == i) MI.push_back(rt(2, is));
-        if (rt(2, ib) == i) MI.push_back(rt(is, 1));
+        if (rt(ib, 1) == i)
+          MI.push_back(rt(2, is));
+        if (rt(2, ib) == i)
+          MI.push_back(rt(is, 1));
       }
       if (inp.verbosity & VERBOBIT__) {
         os << "\n type mapping of section " << BLUE__ << jb << RESET__ << " <- "
@@ -424,9 +448,8 @@ void ll_hbondss::equalizeSigns(const ll_hbondss::pb& B,
       }
       if (std::any_of(P.cbegin(), P.cend(),
                       [](const double p) -> bool { return !p; }))
-        throw(
-            std::invalid_argument("solution to signs equations invalid,"
-                                  " try increasing tolerance"));
+        throw(std::invalid_argument("solution to signs equations invalid,"
+                                    " try increasing tolerance"));
       if (inp.verbosity & DEBUGBIT__) {
         const std::string fileName = inp.prefix + "P_" + std::to_string(jb) +
                                      "_" + std::to_string(js) + ".mat";
@@ -455,7 +478,8 @@ void ll_hbondss::equalizeSigns(const ll_hbondss::pb& B,
         std::vector<size_t> J;
         J.reserve(MI.size());
         for (size_t j = 0; j != MI.size(); ++j)
-          if (MI[j] == i) J.push_back(i);
+          if (MI[j] == i)
+            J.push_back(i);
 
         // check corresponding entries in DP are identical
         if (std::any_of(J.cbegin(), J.cend(),
@@ -470,13 +494,14 @@ void ll_hbondss::equalizeSigns(const ll_hbondss::pb& B,
       // tracker for inds flipped, and recursive flip matched inds lambda
       std::vector<size_t> fI;
       fI.reserve(std::max(I1.size(), I2.size()) + 2 * SI[cq->j1].size());
-      std::function<void(const size_t, const size_t, const std::vector<bool>&)>
+      std::function<void(const size_t, const size_t, const std::vector<bool> &)>
           flipper;
-      flipper = [this, &fI, &SI, &flipper, &inp, &os](
-                    const size_t j, const size_t i,
-                    const std::vector<bool>& p) -> void {
+      flipper = [this, &fI, &SI, &flipper, &inp,
+                 &os](const size_t j, const size_t i,
+                      const std::vector<bool> &p) -> void {
         const auto itr = std::lower_bound(fI.cbegin(), fI.cend(), i);
-        if (itr != fI.cend() && *itr == i) return;  // already flipped
+        if (itr != fI.cend() && *itr == i)
+          return; // already flipped
 
         // new ind, insert into fI
         fI.insert(itr, i);
@@ -488,14 +513,17 @@ void ll_hbondss::equalizeSigns(const ll_hbondss::pb& B,
         this->vec_[j].flipWannierSigns(i, p);
 
         // call recursively for all matched inds to this ind
-        for (auto& si : SI[j]) {
-          if (si.i1() == i) flipper(j, si.i2(), p);
-          if (si.i2() == i) flipper(j, si.i1(), p);
+        for (auto &si : SI[j]) {
+          if (si.i1() == i)
+            flipper(j, si.i2(), p);
+          if (si.i2() == i)
+            flipper(j, si.i1(), p);
         }
       };
 
       // all good, flip wannier signs!
-      if (inp.verbosity & VERBOBIT__) os << "\nflipping wannier signs...";
+      if (inp.verbosity & VERBOBIT__)
+        os << "\nflipping wannier signs...";
 
       if (!f1) {
         // leveling section 1
@@ -531,12 +559,14 @@ void ll_hbondss::equalizeSigns(const ll_hbondss::pb& B,
     }
   }
 
-  if (inp.verbosity & PRINTBIT__) os << "\n";
+  if (inp.verbosity & PRINTBIT__)
+    os << "\n";
 }
 
 // approximate searching in multiple hbonds
-ll_hbonds::am_ ll_hbondss::getApproximateInteraction(
-    const i_i& j, const fArray& b) const noexcept {
+ll_hbonds::am_
+ll_hbondss::getApproximateInteraction(const i_i &j,
+                                      const fArray &b) const noexcept {
   const auto I1 = decompInd_(j.i1()), I2 = decompInd_(j.i2());
   if (I1.j >= this->size() || I2.j >= this->size())
     return {eH(), NPOS__, NPOS__};
@@ -546,7 +576,8 @@ ll_hbonds::am_ ll_hbondss::getApproximateInteraction(
   for (i2 = 0; i2 != (*this)[I1.j].cell().N(); ++i2)
     if ((*this)[I1.j].Norb(i2) == (*this)[I2.j].Norb(I2.i)) {
       H12 = (*this)[I1.j].getInteraction({I1.i, i2}, b);
-      if (!H12.empty()) break;
+      if (!H12.empty())
+        break;
     }
 
   cMat H21;
@@ -554,7 +585,8 @@ ll_hbonds::am_ ll_hbondss::getApproximateInteraction(
   for (i1 = 0; i1 != (*this)[I2.j].cell().N(); ++i1)
     if ((*this)[I2.j].Norb(i1) == (*this)[I1.j].Norb(I1.i)) {
       H21 = T((*this)[I2.j].getInteraction({I2.i, i1}, -b));
-      if (!H21.empty()) break;
+      if (!H21.empty())
+        break;
     }
 
   if (!H12.empty()) {

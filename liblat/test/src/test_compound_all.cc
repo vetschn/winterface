@@ -42,7 +42,8 @@ void test_compound_all::test_mat_cb() {
 
   t.reserve(2 * t.N());
   CPPUNIT_ASSERT_EQUAL(2 * N, t.capacity());
-  for (auto i = rnd.ccBegin(), e = rnd.ccEnd(); i != e; ++i) t.push_back(*i);
+  for (auto i = rnd.ccBegin(), e = rnd.ccEnd(); i != e; ++i)
+    t.push_back(*i);
   CPPUNIT_ASSERT_EQUAL(2 * N, t.N());
   CPPUNIT_ASSERT_EQUAL(2 * N, t.capacity());
   for (size_t i = 0; i != N; ++i)
@@ -85,7 +86,8 @@ void test_compound_all::test_mat_b() {
 
   t.reserve(2 * t.N());
   CPPUNIT_ASSERT_EQUAL(2 * N, t.capacity());
-  for (auto i = rnd.ccBegin(), e = rnd.ccEnd(); i != e; ++i) t.push_back(*i);
+  for (auto i = rnd.ccBegin(), e = rnd.ccEnd(); i != e; ++i)
+    t.push_back(*i);
   CPPUNIT_ASSERT_EQUAL(2 * N, t.N());
   CPPUNIT_ASSERT_EQUAL(2 * N, t.capacity());
   for (size_t i = 0; i != N; ++i)
@@ -128,10 +130,12 @@ void test_compound_all::test_vec_cb() {
 
   v.reserve(2 * v.size());
   CPPUNIT_ASSERT_EQUAL(2 * N, v.capacity());
-  for (auto i = rnd.cbegin(), e = rnd.cend(); i != e; ++i) v.push_back(*i);
+  for (auto i = rnd.cbegin(), e = rnd.cend(); i != e; ++i)
+    v.push_back(*i);
   CPPUNIT_ASSERT_EQUAL(2 * N, v.size());
   CPPUNIT_ASSERT_EQUAL(2 * N, v.capacity());
-  for (size_t i = 0; i != N; ++i) CPPUNIT_ASSERT_EQUAL(rnd[i], v[i + N]);
+  for (size_t i = 0; i != N; ++i)
+    CPPUNIT_ASSERT_EQUAL(rnd[i], v[i + N]);
 
   v.resize(N + 1);
   CPPUNIT_ASSERT_EQUAL(N + 1, v.size());
@@ -170,10 +174,12 @@ void test_compound_all::test_vec_b() {
 
   v.reserve(2 * v.size());
   CPPUNIT_ASSERT_EQUAL(2 * N, v.capacity());
-  for (auto i = rnd.cbegin(), e = rnd.cend(); i != e; ++i) v.push_back(*i);
+  for (auto i = rnd.cbegin(), e = rnd.cend(); i != e; ++i)
+    v.push_back(*i);
   CPPUNIT_ASSERT_EQUAL(2 * N, v.size());
   CPPUNIT_ASSERT_EQUAL(2 * N, v.capacity());
-  for (size_t i = 0; i != N; ++i) CPPUNIT_ASSERT_EQUAL(rnd[i], v[i + N]);
+  for (size_t i = 0; i != N; ++i)
+    CPPUNIT_ASSERT_EQUAL(rnd[i], v[i + N]);
 
   v.resize(N + 1);
   CPPUNIT_ASSERT_EQUAL(N + 1, v.size());
@@ -319,7 +325,8 @@ void test_compound_all::test_compound_classes() {
   {
     const size_t Nw = genRndST();
     cMatv hVec(N);
-    for (auto& h : hVec) h = rand<cMat>(Nw, Nw);
+    for (auto &h : hVec)
+      h = rand<cMat>(Nw, Nw);
     auto tMat2 = randi<fMat>(D, N);
     std::sort(tMat2.cBegin(), tMat2.cEnd(), vcmp);
 
@@ -336,7 +343,8 @@ void test_compound_all::test_compound_classes() {
     const size_t Nb = genRndST();
 
     std::vector<cMat> uVec(N);
-    for (auto& u : uVec) u = rand<cMat>(Nb, Nw);
+    for (auto &u : uVec)
+      u = rand<cMat>(Nb, Nw);
 
     k_U tComp(tMat1, std::move(uVec));
     CPPUNIT_ASSERT(tComp.mat_ == tComp.k());
@@ -362,12 +370,12 @@ void test_compound_all::test_compound_classes() {
   }
 }
 
-const char* test_compound_all::test_id() noexcept {
+const char *test_compound_all::test_id() noexcept {
   return "test_compound_all";
 }
 
-CppUnit::Test* test_compound_all::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_compound_all::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_compound_all>(
       "test_mat_cb", &test_compound_all::test_mat_cb));

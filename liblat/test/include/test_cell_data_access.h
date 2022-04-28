@@ -9,12 +9,12 @@
 #include "ll_cell.h"
 
 class test_cell_data_access : public CppUnit::TestFixture {
- public:
+public:
   void test_B_Ap();
   void test_cAt_cFront_cBack();
 
-  static CppUnit::Test* suite();
-  static const char* test_id() noexcept;
+  static CppUnit::Test *suite();
+  static const char *test_id() noexcept;
 };
 
-#endif  // _TEST_CELL_DATA_ACCESS_
+#endif // _TEST_CELL_DATA_ACCESS_

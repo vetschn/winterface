@@ -76,7 +76,7 @@ void test_tMat_assign<RE__, RE__, CPX__>::test_operator_equal_cArray() {
 
 // test id
 template <>
-const char* test_tMat_assign<RE__, RE__, CPX__>::test_id() noexcept {
+const char *test_tMat_assign<RE__, RE__, CPX__>::test_id() noexcept {
   return "test_fMat_assign";
 }
 

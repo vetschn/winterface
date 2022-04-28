@@ -8,7 +8,7 @@
 
 using namespace ll__;
 
-void l_switch(const l_input& inp, std::ostream& os) {
+void l_switch(const l_input &inp, std::ostream &os) {
   if (det(inp.ROT) != 1.0)
     throw(std::invalid_argument("parameter ROT invalid"));
   if (inp.C != round(inp.C) || std::abs(det(inp.C)) < 1.0)
@@ -50,12 +50,14 @@ void l_switch(const l_input& inp, std::ostream& os) {
 
   // strip id
   if (inp.strip)
-    for (auto& i : P.id) i = ll_cell::stripId(i);
+    for (auto &i : P.id)
+      i = ll_cell::stripId(i);
 
   // adjust vacuum
   if (!inp.vac.empty())
     for (size_t i = 0; i != P.B.M(); ++i) {
-      if (!inp.r[i]) continue;
+      if (!inp.r[i])
+        continue;
 
       // vacuum in terms of current basis
       const double f =
@@ -104,7 +106,8 @@ void l_switch(const l_input& inp, std::ostream& os) {
   aTv T;
   T.reserve(std::accumulate(P.N.cbegin(), P.N.cend(), size_t(0)));
   for (size_t n = 0; n != P.N.size(); ++n)
-    for (size_t i = 0; i != P.N[n]; ++i) T.push_back(n);
+    for (size_t i = 0; i != P.N[n]; ++i)
+      T.push_back(n);
 
   // get R images
   fMat NAp(P.Ap.M(), 0);

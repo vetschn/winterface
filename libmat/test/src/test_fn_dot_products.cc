@@ -21,7 +21,8 @@ void test_fn_dot_products::test_dot() {
     const auto tMat2 = rnd<fMat>(M, N);
 
     RE__ ref(0.0);
-    for (size_t i = 0; i != tMat1.L(); ++i) ref += tMat1[i] * tMat2[i];
+    for (size_t i = 0; i != tMat1.L(); ++i)
+      ref += tMat1[i] * tMat2[i];
     const auto act = dot(tMat1, tMat2);
 
     CPPUNIT_ASSERT_DELTA(ref, act, delta);
@@ -31,7 +32,8 @@ void test_fn_dot_products::test_dot() {
     const auto tMat2 = rnd<cMat>(M, N);
 
     CPX__ ref(0.0);
-    for (size_t i = 0; i != tMat1.L(); ++i) ref += tMat1[i] * tMat2[i];
+    for (size_t i = 0; i != tMat1.L(); ++i)
+      ref += tMat1[i] * tMat2[i];
     const auto act = dot(tMat1, tMat2);
 
     CPPUNIT_ASSERT_DELTA(ref, act, delta);
@@ -68,7 +70,8 @@ void test_fn_dot_products::test_dot() {
       auto r2 = tMat2.rBegin();
       for (size_t m2 = 0; m2 != M; ++m2, ++r2) {
         RE__ ref(0.0);
-        for (size_t n = 0; n != N; ++n) ref += tMat1(m1, n) * tMat2(m2, n);
+        for (size_t n = 0; n != N; ++n)
+          ref += tMat1(m1, n) * tMat2(m2, n);
         const auto act = dot(*r1, *r2);
 
         CPPUNIT_ASSERT_DELTA(ref, act, delta);
@@ -84,7 +87,8 @@ void test_fn_dot_products::test_dot() {
       auto r2 = tMat2.rBegin();
       for (size_t m2 = 0; m2 != M; ++m2, ++r2) {
         CPX__ ref(0.0);
-        for (size_t n = 0; n != N; ++n) ref += tMat1(m1, n) * tMat2(m2, n);
+        for (size_t n = 0; n != N; ++n)
+          ref += tMat1(m1, n) * tMat2(m2, n);
         const auto act = dot(*r1, *r2);
 
         CPPUNIT_ASSERT_DELTA(ref, act, delta);
@@ -135,7 +139,8 @@ void test_fn_dot_products::test_dot() {
       auto c2 = tMat2.cBegin();
       for (size_t n2 = 0; n2 != N; ++n2, ++c2) {
         RE__ ref(0.0);
-        for (size_t m = 0; m != M; ++m) ref += tMat1(m, n1) * tMat2(m, n2);
+        for (size_t m = 0; m != M; ++m)
+          ref += tMat1(m, n1) * tMat2(m, n2);
         const auto act = dot(*c1, *c2);
 
         CPPUNIT_ASSERT_DELTA(ref, act, delta);
@@ -151,7 +156,8 @@ void test_fn_dot_products::test_dot() {
       auto c2 = tMat2.cBegin();
       for (size_t n2 = 0; n2 != N; ++n2, ++c2) {
         CPX__ ref(0.0);
-        for (size_t m = 0; m != M; ++m) ref += tMat1(m, n1) * tMat2(m, n2);
+        for (size_t m = 0; m != M; ++m)
+          ref += tMat1(m, n1) * tMat2(m, n2);
         const auto act = dot(*c1, *c2);
 
         CPPUNIT_ASSERT_DELTA(ref, act, delta);
@@ -203,7 +209,8 @@ void test_fn_dot_products::test_dotu() {
     const auto tMat2 = rnd<fMat>(M, N);
 
     RE__ ref(0.0);
-    for (size_t i = 0; i != tMat1.L(); ++i) ref += tMat1[i] * tMat2[i];
+    for (size_t i = 0; i != tMat1.L(); ++i)
+      ref += tMat1[i] * tMat2[i];
     const auto act = dotu(tMat1, tMat2);
 
     CPPUNIT_ASSERT_DELTA(ref, act, delta);
@@ -213,7 +220,8 @@ void test_fn_dot_products::test_dotu() {
     const auto tMat2 = rnd<cMat>(M, N);
 
     CPX__ ref(0.0);
-    for (size_t i = 0; i != tMat1.L(); ++i) ref += tMat1[i] * tMat2[i];
+    for (size_t i = 0; i != tMat1.L(); ++i)
+      ref += tMat1[i] * tMat2[i];
     const auto act = dotu(tMat1, tMat2);
 
     CPPUNIT_ASSERT_DELTA(ref, act, delta);
@@ -223,7 +231,8 @@ void test_fn_dot_products::test_dotu() {
     const auto tMat2 = rnd<fMat>(M, N);
 
     CPX__ ref(0.0);
-    for (size_t i = 0; i != tMat1.L(); ++i) ref += tMat1[i] * tMat2[i];
+    for (size_t i = 0; i != tMat1.L(); ++i)
+      ref += tMat1[i] * tMat2[i];
     const auto act = dotu(tMat1, tMat2);
 
     CPPUNIT_ASSERT_DELTA(ref, act, delta);
@@ -233,7 +242,8 @@ void test_fn_dot_products::test_dotu() {
     const auto tMat2 = rnd<cMat>(M, N);
 
     CPX__ ref(0.0);
-    for (size_t i = 0; i != tMat1.L(); ++i) ref += tMat1[i] * tMat2[i];
+    for (size_t i = 0; i != tMat1.L(); ++i)
+      ref += tMat1[i] * tMat2[i];
     const auto act = dotu(tMat1, tMat2);
 
     CPPUNIT_ASSERT_DELTA(ref, act, delta);
@@ -248,7 +258,8 @@ void test_fn_dot_products::test_dotu() {
       auto r2 = tMat2.rBegin();
       for (size_t m2 = 0; m2 != M; ++m2, ++r2) {
         RE__ ref(0.0);
-        for (size_t n = 0; n != N; ++n) ref += tMat1(m1, n) * tMat2(m2, n);
+        for (size_t n = 0; n != N; ++n)
+          ref += tMat1(m1, n) * tMat2(m2, n);
         const auto act = dotu(*r1, *r2);
 
         CPPUNIT_ASSERT_DELTA(ref, act, delta);
@@ -264,7 +275,8 @@ void test_fn_dot_products::test_dotu() {
       auto r2 = tMat2.rBegin();
       for (size_t m2 = 0; m2 != M; ++m2, ++r2) {
         CPX__ ref(0.0);
-        for (size_t n = 0; n != N; ++n) ref += tMat1(m1, n) * tMat2(m2, n);
+        for (size_t n = 0; n != N; ++n)
+          ref += tMat1(m1, n) * tMat2(m2, n);
         const auto act = dotu(*r1, *r2);
 
         CPPUNIT_ASSERT_DELTA(ref, act, delta);
@@ -280,7 +292,8 @@ void test_fn_dot_products::test_dotu() {
       auto r2 = tMat2.rBegin();
       for (size_t m2 = 0; m2 != M; ++m2, ++r2) {
         CPX__ ref(0.0);
-        for (size_t n = 0; n != N; ++n) ref += tMat1(m1, n) * tMat2(m2, n);
+        for (size_t n = 0; n != N; ++n)
+          ref += tMat1(m1, n) * tMat2(m2, n);
         const auto act = dotu(*r1, *r2);
 
         CPPUNIT_ASSERT_DELTA(ref, act, delta);
@@ -296,7 +309,8 @@ void test_fn_dot_products::test_dotu() {
       auto r2 = tMat2.rBegin();
       for (size_t m2 = 0; m2 != M; ++m2, ++r2) {
         CPX__ ref(0.0);
-        for (size_t n = 0; n != N; ++n) ref += tMat1(m1, n) * tMat2(m2, n);
+        for (size_t n = 0; n != N; ++n)
+          ref += tMat1(m1, n) * tMat2(m2, n);
         const auto act = dotu(*r1, *r2);
 
         CPPUNIT_ASSERT_DELTA(ref, act, delta);
@@ -313,7 +327,8 @@ void test_fn_dot_products::test_dotu() {
       auto c2 = tMat2.cBegin();
       for (size_t n2 = 0; n2 != N; ++n2, ++c2) {
         RE__ ref(0.0);
-        for (size_t m = 0; m != M; ++m) ref += tMat1(m, n1) * tMat2(m, n2);
+        for (size_t m = 0; m != M; ++m)
+          ref += tMat1(m, n1) * tMat2(m, n2);
         const auto act = dotu(*c1, *c2);
 
         CPPUNIT_ASSERT_DELTA(ref, act, delta);
@@ -329,7 +344,8 @@ void test_fn_dot_products::test_dotu() {
       auto c2 = tMat2.cBegin();
       for (size_t n2 = 0; n2 != N; ++n2, ++c2) {
         CPX__ ref(0.0);
-        for (size_t m = 0; m != M; ++m) ref += tMat1(m, n1) * tMat2(m, n2);
+        for (size_t m = 0; m != M; ++m)
+          ref += tMat1(m, n1) * tMat2(m, n2);
         const auto act = dotu(*c1, *c2);
 
         CPPUNIT_ASSERT_DELTA(ref, act, delta);
@@ -345,7 +361,8 @@ void test_fn_dot_products::test_dotu() {
       auto c2 = tMat2.cBegin();
       for (size_t n2 = 0; n2 != N; ++n2, ++c2) {
         CPX__ ref(0.0);
-        for (size_t m = 0; m != M; ++m) ref += tMat1(m, n1) * tMat2(m, n2);
+        for (size_t m = 0; m != M; ++m)
+          ref += tMat1(m, n1) * tMat2(m, n2);
         const auto act = dotu(*c1, *c2);
 
         CPPUNIT_ASSERT_DELTA(ref, act, delta);
@@ -361,7 +378,8 @@ void test_fn_dot_products::test_dotu() {
       auto c2 = tMat2.cBegin();
       for (size_t n2 = 0; n2 != N; ++n2, ++c2) {
         CPX__ ref(0.0);
-        for (size_t m = 0; m != M; ++m) ref += tMat1(m, n1) * tMat2(m, n2);
+        for (size_t m = 0; m != M; ++m)
+          ref += tMat1(m, n1) * tMat2(m, n2);
         const auto act = dotu(*c1, *c2);
 
         CPPUNIT_ASSERT_DELTA(ref, act, delta);
@@ -371,12 +389,12 @@ void test_fn_dot_products::test_dotu() {
 }
 
 // test id
-const char* test_fn_dot_products::test_id() noexcept {
+const char *test_fn_dot_products::test_id() noexcept {
   return "test_fn_dot_products";
 }
 
-CppUnit::Test* test_fn_dot_products::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_fn_dot_products::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_fn_dot_products>(
       "test_dot", &test_fn_dot_products::test_dot));

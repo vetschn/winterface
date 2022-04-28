@@ -84,8 +84,8 @@ void test_tMat_memory_management<TT, FT, CT>::test_move() {
 }
 
 template <class TT, class FT, class CT>
-CppUnit::Test* test_tMat_memory_management<TT, FT, CT>::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_tMat_memory_management<TT, FT, CT>::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_tMat_memory_management>(
       "test_reserve", &test_tMat_memory_management<TT, FT, CT>::test_reserve));

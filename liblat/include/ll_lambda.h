@@ -39,7 +39,8 @@ inline auto volnorm = [](const fMat &M) -> double {
  */
 inline auto rg = [](size_t s, const size_t d,
                     const size_t l) -> std::vector<size_t> {
-  if (!l) return {};
+  if (!l)
+    return {};
   std::vector<size_t> res(l);
   res.front() = s;
   std::generate(res.begin() + 1, res.end(), [&s, d] { return s += d; });
@@ -53,7 +54,8 @@ inline auto inds = [](const auto &inp) -> std::vector<size_t> {
   std::vector<size_t> res;
   res.reserve(inp.size());
   for (size_t i = 0; i != inp.size(); ++i)
-    if (inp[i]) res.push_back(i);
+    if (inp[i])
+      res.push_back(i);
   res.shrink_to_fit();
   return res;
 };
@@ -62,7 +64,8 @@ inline auto ninds = [](const auto &inp) -> std::vector<size_t> {
   std::vector<size_t> res;
   res.reserve(inp.size());
   for (size_t i = 0; i != inp.size(); ++i)
-    if (!inp[i]) res.push_back(i);
+    if (!inp[i])
+      res.push_back(i);
   res.shrink_to_fit();
   return res;
 };
@@ -70,19 +73,21 @@ inline auto ninds = [](const auto &inp) -> std::vector<size_t> {
 inline auto Ntrue = [](const auto &inp) -> size_t {
   size_t res = 0;
   for (const auto i : inp)
-    if (i) ++res;
+    if (i)
+      ++res;
   return res;
 };
 //! find the number false entries
 inline auto Nfalse = [](const auto &inp) -> size_t {
   size_t res = 0;
   for (const auto i : inp)
-    if (!i) ++res;
+    if (!i)
+      ++res;
   return res;
 };
-}  // namespace ll__
+} // namespace ll__
 
-#endif  // _LL_LAMBDA_
+#endif // _LL_LAMBDA_
 
 /** @}
  */

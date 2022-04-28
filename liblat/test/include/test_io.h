@@ -9,7 +9,7 @@
 #include "ll_types.h"
 
 class test_io : public CppUnit::TestFixture {
- public:
+public:
   void test_writePOSCAR();
   void test_readEf();
   void test_genr();
@@ -29,11 +29,11 @@ class test_io : public CppUnit::TestFixture {
   void test_readWannierTransf();
   void test_readChk();
 
-  static CppUnit::Test* suite();
-  static const char* test_id() noexcept;
+  static CppUnit::Test *suite();
+  static const char *test_id() noexcept;
 
- protected:
+protected:
   ll__::fMat genRndP_(const size_t d) const noexcept;
 };
 
-#endif  // _TEST_IO_
+#endif // _TEST_IO_

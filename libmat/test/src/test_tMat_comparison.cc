@@ -43,7 +43,8 @@ void test_tMat_comparison<TT, FT, CT>::test_operator_equal_unequal_() {
 
     CPPUNIT_ASSERT(tMat1 != tfMat1[0]);
     auto tMat2 = tfMat1;
-    for (auto& i : tMat2) i = tMat2[0];
+    for (auto &i : tMat2)
+      i = tMat2[0];
     CPPUNIT_ASSERT(tMat2 == tMat2[0]);
   }
   {
@@ -55,14 +56,16 @@ void test_tMat_comparison<TT, FT, CT>::test_operator_equal_unequal_() {
 
     CPPUNIT_ASSERT(tMat1 != tcMat1[0]);
     auto tMat2 = tcMat1;
-    for (auto& i : tMat2) i = tMat2[0];
+    for (auto &i : tMat2)
+      i = tMat2[0];
     CPPUNIT_ASSERT(tMat2 == tMat2[0]);
   }
   {
     fMat tfMat1 = rnd<fMat>(S.M, S.N);
     auto j = tfMat1.begin();
     for (auto i = tMat1.cbegin(), e = tMat1.cend(); i != e; ++i, ++j)
-      if (lm__::ops::lt(*i, *j)) *j = std::real(*i - FT(1.0));
+      if (lm__::ops::lt(*i, *j))
+        *j = std::real(*i - FT(1.0));
 
     CPPUNIT_ASSERT(tMat1 > tfMat1 || tMat1 >= tfMat1);
     CPPUNIT_ASSERT(!(tMat1 < tfMat1) || !(tMat1 == tfMat1));
@@ -71,7 +74,8 @@ void test_tMat_comparison<TT, FT, CT>::test_operator_equal_unequal_() {
     fMat tcMat1 = rnd<cMat>(S.M, S.N);
     auto j = tcMat1.begin();
     for (auto i = tMat1.cbegin(), e = tMat1.cend(); i != e; ++i, ++j)
-      if (lm__::ops::lt(*i, *j)) *j = std::real(*i - FT(1.0));
+      if (lm__::ops::lt(*i, *j))
+        *j = std::real(*i - FT(1.0));
 
     CPPUNIT_ASSERT(tMat1 > tcMat1 || tMat1 >= tcMat1);
     CPPUNIT_ASSERT(!(tMat1 < tcMat1) || !(tMat1 == tcMat1));
@@ -88,11 +92,13 @@ void test_tMat_comparison<TT, FT, CT>::test_operator_equal_unequal_() {
     CPPUNIT_ASSERT(ttMat1 != tfMat2);
 
     auto tMat2 = tfMat1;
-    for (auto& i : tMat2) i = tMat2[0] + mtol() * FT(.5);
+    for (auto &i : tMat2)
+      i = tMat2[0] + mtol() * FT(.5);
     CPPUNIT_ASSERT(tMat2 == tMat2[0]);
 
     auto tMat3 = tfMat1;
-    for (auto& i : tMat2) i = tMat3[0] + mtol() * FT(2.0);
+    for (auto &i : tMat2)
+      i = tMat3[0] + mtol() * FT(2.0);
     CPPUNIT_ASSERT(tMat2 != tMat3[0]);
   }
   {
@@ -103,11 +109,13 @@ void test_tMat_comparison<TT, FT, CT>::test_operator_equal_unequal_() {
     CPPUNIT_ASSERT(tMat1 != tcMat2);
 
     auto tMat2 = tcMat1;
-    for (auto& i : tMat2) i = tMat2[0] + mtol() * FT(.5);
+    for (auto &i : tMat2)
+      i = tMat2[0] + mtol() * FT(.5);
     CPPUNIT_ASSERT(tMat2 == tMat2[0]);
 
     auto tMat3 = tcMat1;
-    for (auto& i : tMat2) i = tMat3[0] + mtol() * FT(2.0);
+    for (auto &i : tMat2)
+      i = tMat3[0] + mtol() * FT(2.0);
     CPPUNIT_ASSERT(tMat2 != tMat3[0]);
   }
 #endif
@@ -142,14 +150,16 @@ void test_tMat_comparison<TT, FT, CT>::test_eq_neq_leq_() {
     CPPUNIT_ASSERT(tMat7 == sol7);
 
     tMat tMat8 = real(tMat1);
-    for (auto& i : tMat8) i = std::real(tMat1[0]);
+    for (auto &i : tMat8)
+      i = std::real(tMat1[0]);
     const auto tMat9 = tMat8.eq(std::real(tMat1[0]));
     const auto tMat10 = tMat8.eq(std::real(tMat1[1]));
     CPPUNIT_ASSERT(all(tMat9));
     CPPUNIT_ASSERT(all(~tMat10));
 
     tMat tMat11 = tMat1;
-    for (auto& i : tMat11) i = tMat1[0];
+    for (auto &i : tMat11)
+      i = tMat1[0];
     const auto tMat12 = tMat11.eq(tMat1[0]);
     const auto tMat13 = tMat11.eq(tMat1[1]);
     CPPUNIT_ASSERT(all(tMat12));
@@ -238,8 +248,8 @@ void test_tMat_comparison<TT, FT, CT>::test_eq_neq_leq_() {
 }
 
 template <class TT, class FT, class CT>
-CppUnit::Test* test_tMat_comparison<TT, FT, CT>::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_tMat_comparison<TT, FT, CT>::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_tMat_comparison>(
       "test_size_function",

@@ -10,7 +10,7 @@
 
 template <class TT, class FT, class CT>
 class test_tFn_comparison : public CppUnit::TestFixture {
- public:
+public:
   // types
   typedef lm_tMat<FT, FT, CT> fMat;
   typedef lm_tMat<CT, FT, CT> cMat;
@@ -34,11 +34,11 @@ class test_tFn_comparison : public CppUnit::TestFixture {
   static constexpr RE__ delta = 1e-5f;
 #endif
 
- protected:
-  static const char* test_id() noexcept;
+protected:
+  static const char *test_id() noexcept;
 
- public:
-  static CppUnit::Test* suite();
+public:
+  static CppUnit::Test *suite();
 };
 
-#endif  // _TEST_TFN_COMPARISON_
+#endif // _TEST_TFN_COMPARISON_

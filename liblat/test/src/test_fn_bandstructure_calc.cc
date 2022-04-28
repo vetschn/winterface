@@ -116,7 +116,8 @@ void test_fn_bandstructure_calc::test_calcFoldedBS() {
     k.pos().printToFile(prefix + "kpos_orth.dat");
 
     // compare energies at gamma point
-    for (const auto e : Eprim.cAt(Gi)) CPPUNIT_ASSERT(any(E.cAt(Gi).eq(e)));
+    for (const auto e : Eprim.cAt(Gi))
+      CPPUNIT_ASSERT(any(E.cAt(Gi).eq(e)));
 
     // compare number of bands
     const double f = std::abs(det(B) / det(RB));
@@ -126,7 +127,8 @@ void test_fn_bandstructure_calc::test_calcFoldedBS() {
   // random cell
   {
     fMat R;
-    do R = randi<fMat>(3, 3, -2, 2);
+    do
+      R = randi<fMat>(3, 3, -2, 2);
     while (std::abs(det(R)) < mtol());
 
     const auto RB = B.prod(R);
@@ -137,7 +139,8 @@ void test_fn_bandstructure_calc::test_calcFoldedBS() {
     k.pos().printToFile(prefix + "kpos_rand.dat");
 
     // compare energies at gamma point
-    for (const auto e : Eprim.cAt(Gi)) CPPUNIT_ASSERT(any(E.cAt(Gi).eq(e)));
+    for (const auto e : Eprim.cAt(Gi))
+      CPPUNIT_ASSERT(any(E.cAt(Gi).eq(e)));
 
     // compare number of bands
     const double f = std::abs(det(B) / det(RB));
@@ -145,12 +148,12 @@ void test_fn_bandstructure_calc::test_calcFoldedBS() {
   }
 }
 
-const char* test_fn_bandstructure_calc::test_id() noexcept {
+const char *test_fn_bandstructure_calc::test_id() noexcept {
   return "test_fn_bandstructure_calc";
 }
 
-CppUnit::Test* test_fn_bandstructure_calc::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_fn_bandstructure_calc::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_fn_bandstructure_calc>(
       "test_findBandEdges", &test_fn_bandstructure_calc::test_findBandEdges));

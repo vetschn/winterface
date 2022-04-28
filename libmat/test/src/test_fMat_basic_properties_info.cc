@@ -7,7 +7,7 @@
 
 // test id
 template <>
-const char*
+const char *
 test_tMat_basic_properties_info<RE__, RE__, CPX__>::test_id() noexcept {
   return "test_fMat_basic_properties_info";
 }

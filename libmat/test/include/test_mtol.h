@@ -9,15 +9,15 @@
 #include "lm_defs.h"
 
 class test_mtol : public CppUnit::TestFixture {
- public:
+public:
   // tests
   void test_all();
 
- protected:
-  static const char* test_id() noexcept;
+protected:
+  static const char *test_id() noexcept;
 
- public:
-  static CppUnit::Test* suite();
+public:
+  static CppUnit::Test *suite();
 };
 
-#endif  // _TEST_MTOL_
+#endif // _TEST_MTOL_

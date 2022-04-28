@@ -7,11 +7,11 @@
 #include <cppunit/extensions/HelperMacros.h>
 
 class test_aux_for_each : public CppUnit::TestFixture {
- public:
+public:
   void test_all();
 
-  static CppUnit::Test* suite();
-  static const char* test_id() noexcept;
+  static CppUnit::Test *suite();
+  static const char *test_id() noexcept;
 };
 
-#endif  // _TEST_AUX_FOR_EACH_
+#endif // _TEST_AUX_FOR_EACH_

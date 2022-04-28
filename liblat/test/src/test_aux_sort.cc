@@ -28,10 +28,12 @@ void test_aux_sort::test_all() {
     const auto I = aux::sorted_order(S.cbegin(), S.cend());
 
     CPPUNIT_ASSERT(std::is_permutation(S.begin(), S.end(), I.begin()));
-    for (size_t i = 0; i != N; ++i) CPPUNIT_ASSERT_EQUAL(S[i], I[i]);
+    for (size_t i = 0; i != N; ++i)
+      CPPUNIT_ASSERT_EQUAL(S[i], I[i]);
 
     aux::reorder(S.begin(), I);
-    for (size_t i = 0; i != N; ++i) CPPUNIT_ASSERT_EQUAL(i, S[i]);
+    for (size_t i = 0; i != N; ++i)
+      CPPUNIT_ASSERT_EQUAL(i, S[i]);
   }
 
   // sorted order, reorder for double
@@ -53,10 +55,10 @@ void test_aux_sort::test_all() {
   }
 }
 
-const char* test_aux_sort::test_id() noexcept { return "test_aux_sort"; }
+const char *test_aux_sort::test_id() noexcept { return "test_aux_sort"; }
 
-CppUnit::Test* test_aux_sort::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_aux_sort::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_aux_sort>(
       "test_all", &test_aux_sort::test_all));

@@ -9,7 +9,7 @@
 #include "lm_defs.h"
 
 class test_fn_R3_only : public CppUnit::TestFixture {
- public:
+public:
   // tests
   void test_cross_crossn();
   void test_getR();
@@ -22,11 +22,11 @@ class test_fn_R3_only : public CppUnit::TestFixture {
   static constexpr RE__ delta = 1e-3f;
 #endif
 
- protected:
-  static const char* test_id() noexcept;
+protected:
+  static const char *test_id() noexcept;
 
- public:
-  static CppUnit::Test* suite();
+public:
+  static CppUnit::Test *suite();
 };
 
-#endif  // _TEST_FN_R3_ONLY_
+#endif // _TEST_FN_R3_ONLY_

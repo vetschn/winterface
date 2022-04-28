@@ -7,12 +7,12 @@
 #include <cppunit/extensions/HelperMacros.h>
 
 class test_BStest_all : public CppUnit::TestFixture {
- public:
+public:
   void test_exceptions();
   void test_random_expansions();
 
-  static CppUnit::Test* suite();
-  static const char* test_id() noexcept;
+  static CppUnit::Test *suite();
+  static const char *test_id() noexcept;
 };
 
-#endif  // _TEST_BSTEST_ALL_
+#endif // _TEST_BSTEST_ALL_

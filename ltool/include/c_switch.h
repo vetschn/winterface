@@ -21,19 +21,19 @@
  * parseKey_ and printHelp_.
  */
 struct c_input : public virtual aux_parser {
- public:
+public:
   /** @name filenames
    */
-  std::string bh = "bh.wad";         //!< old wbh filename
-  std::string psc = "dbg/cell.psc";  //!< poscar file for the unit cell
-  std::string wbh = WBH__;           //!< new wbh filename
-  std::string outcar = "";           //!< VASP OUTCAR for optional Fermi energy
+  std::string bh = "bh.wad";        //!< old wbh filename
+  std::string psc = "dbg/cell.psc"; //!< poscar file for the unit cell
+  std::string wbh = WBH__;          //!< new wbh filename
+  std::string outcar = "";          //!< VASP OUTCAR for optional Fermi energy
 
   /** @name parameters
    */
-  double Ef = nan("");  //!< Fermi energy manual specification
+  double Ef = nan(""); //!< Fermi energy manual specification
 
- public:
+public:
   //! parseKey_ redefinition
   struct parseKey_ : public virtual aux_parser::parseKey_ {
     /** constructor defining keys
@@ -46,29 +46,29 @@ struct c_input : public virtual aux_parser {
       using namespace aux;
 
       switch (key) {
-        // filenames
-        case "bh"_h:
-          PARSE__(p.bh);
-          return;
-        case "psc"_h:
-          PARSE__(p.psc);
-          return;
-        case "wbh"_h:
-          PARSE__(p.wbh);
-          return;
-        case "outcar"_h:
-          PARSE__(p.outcar);
-          return;
+      // filenames
+      case "bh"_h:
+        PARSE__(p.bh);
+        return;
+      case "psc"_h:
+        PARSE__(p.psc);
+        return;
+      case "wbh"_h:
+        PARSE__(p.wbh);
+        return;
+      case "outcar"_h:
+        PARSE__(p.outcar);
+        return;
 
-        // parameters
-        case "Ef"_h:
-          PARSE__(p.Ef);
-          return;
+      // parameters
+      case "Ef"_h:
+        PARSE__(p.Ef);
+        return;
       }
     }
   };
 
- public:
+public:
   //! printHelp_ redefinition
   struct printHelp_ : public virtual aux_parser::printHelp_ {
     /** constructor defining help messages
@@ -97,7 +97,7 @@ struct c_input : public virtual aux_parser {
  */
 void c_switch(const c_input &inp, std::ostream &os = std::cout);
 
-#endif  // _C_SWITCH_
+#endif // _C_SWITCH_
 
 /** @}
  */

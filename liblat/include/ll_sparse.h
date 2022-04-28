@@ -21,10 +21,8 @@ namespace ll__ {
 R_H<ll_sparse> readHrSparse(const std::string &fileName);
 }
 
-template <class MT>
-class ll_writerMEM;
-template <class MT>
-class ll_writerR0;
+template <class MT> class ll_writerMEM;
+template <class MT> class ll_writerR0;
 
 /** simple sparse matrix class. This is essentially a wrapper for a sorted
  * std::vector holding bond indices and interaction data {i1,i2,h}. It is mostly
@@ -32,11 +30,11 @@ class ll_writerR0;
  */
 class ll_sparse final
     : public ll__::vec_cb<std::vector<ll__::sphel>, ll__::sphel> {
- public:
+public:
   /** @name types
    */
-  typedef ll__::hel hel;   //!< Hamiltonian element
-  typedef ll__::sphel el;  //!< sparse matrix element
+  typedef ll__::hel hel;  //!< Hamiltonian element
+  typedef ll__::sphel el; //!< sparse matrix element
 
   /** @name constructors
    */
@@ -56,57 +54,56 @@ class ll_sparse final
     using namespace aux;
 
     switch (fnvHash(mode.c_str())) {
-      case "OMEN"_h: {
-        auto file = aux::openFile<std::ifstream>(fileName, std::ios::binary);
+    case "OMEN"_h: {
+      auto file = aux::openFile<std::ifstream>(fileName, std::ios::binary);
 
-        // header
-        double head[3];
-        file.read((char *)&head, 3 * sizeof(double));
-        M_ = size_t(head[0]);
-        N_ = M_;
+      // header
+      double head[3];
+      file.read((char *)&head, 3 * sizeof(double));
+      M_ = size_t(head[0]);
+      N_ = M_;
 
-        this->vec_.reserve(size_t(head[1]));
-        const size_t ip = head[2];
+      this->vec_.reserve(size_t(head[1]));
+      const size_t ip = head[2];
 
-        // data
-        double el_[4];
-        while (this->vec_.size() != this->vec_.capacity()) {
-          file.read((char *)&el_, 4 * sizeof(double));
-          this->vec_.push_back(
-              {size_t(el_[0]) - ip, size_t(el_[1]) - ip, {el_[2], el_[3]}});
-        }
+      // data
+      double el_[4];
+      while (this->vec_.size() != this->vec_.capacity()) {
+        file.read((char *)&el_, 4 * sizeof(double));
+        this->vec_.push_back(
+            {size_t(el_[0]) - ip, size_t(el_[1]) - ip, {el_[2], el_[3]}});
+      }
 
-        file.close();
-        assert(std::is_sorted(begin(), end(),
-                              [](const el &i, const el &j) -> bool {
-                                return i.m == j.m ? i.n < j.n : i.m < j.m;
-                              }));
-      } break;
-      case "text"_h: {
-        auto file = aux::openFile<std::ifstream>(fileName);
-        std::string line;
+      file.close();
+      assert(
+          std::is_sorted(begin(), end(), [](const el &i, const el &j) -> bool {
+            return i.m == j.m ? i.n < j.n : i.m < j.m;
+          }));
+    } break;
+    case "text"_h: {
+      auto file = aux::openFile<std::ifstream>(fileName);
+      std::string line;
 
-        // M,N,size
-        {
-          uint32_t M, N, S;
-          std::getline(file, line);
-          sscanf(line.c_str(), "%u %u %u", &M, &N, &S);
-          M_ = M, N_ = N;
-          this->vec_.reserve(S);
-        }
+      // M,N,size
+      {
+        uint32_t M, N, S;
+        std::getline(file, line);
+        sscanf(line.c_str(), "%u %u %u", &M, &N, &S);
+        M_ = M, N_ = N;
+        this->vec_.reserve(S);
+      }
 
-        // read sparse data
-        uint32_t m, n;
-        double re, im;
-        while (this->vec_.size() < this->vec_.capacity()) {
-          std::getline(file, line);
-          sscanf(line.c_str(), "%u %u %lf %lf", &m, &n, &re, &im);
-          this->vec_.push_back({m, n, {re, im}});
-        }
-      } break;
-      default:
-        throw(
-            std::invalid_argument("sparse file mode \'" + mode + "\' invalid"));
+      // read sparse data
+      uint32_t m, n;
+      double re, im;
+      while (this->vec_.size() < this->vec_.capacity()) {
+        std::getline(file, line);
+        sscanf(line.c_str(), "%u %u %lf %lf", &m, &n, &re, &im);
+        this->vec_.push_back({m, n, {re, im}});
+      }
+    } break;
+    default:
+      throw(std::invalid_argument("sparse file mode \'" + mode + "\' invalid"));
     }
   }
 
@@ -159,9 +156,11 @@ class ll_sparse final
    */
   //! equality operator
   inline bool operator==(const ll_sparse &rhs) const noexcept {
-    if (rhs.M() != M() || rhs.nnz() != nnz()) return false;
+    if (rhs.M() != M() || rhs.nnz() != nnz())
+      return false;
     for (auto i = cbegin(), e = cend(), j = rhs.cbegin(); i != e; ++i, ++j)
-      if (*i != *j) return false;
+      if (*i != *j)
+        return false;
     return true;
   }
   //! inequality operator
@@ -216,7 +215,8 @@ class ll_sparse final
   //! conversion to full matrix
   inline ll__::cMat full() const noexcept {
     ll__::cMat res(M(), N());
-    for (const auto &i : vec_) res(i.m, i.n) = i.h;
+    for (const auto &i : vec_)
+      res(i.m, i.n) = i.h;
     return res;
   }
 
@@ -239,15 +239,16 @@ class ll_sparse final
   //! streaming operator
   friend inline std::ostream &operator<<(std::ostream &os,
                                          const ll_sparse &inp) noexcept {
-    for (const auto &i : inp) os << i << "\n";
+    for (const auto &i : inp)
+      os << i << "\n";
     return os;
   }
 
- protected:
+protected:
   /** @name member variables
    */
-  size_t M_;  //!< number of rows
-  size_t N_;  //!< number of columns
+  size_t M_; //!< number of rows
+  size_t N_; //!< number of columns
 
   /** @name friends
    */
@@ -259,7 +260,7 @@ class ll_sparse final
   friend class ll_writerR0<ll_sparse>;
 };
 
-#endif  // _LL_SPARSE_
+#endif // _LL_SPARSE_
 
 /** @}
  */

@@ -17,7 +17,7 @@
 #include <vector>
 
 #ifndef NPOS__
-#define NPOS__ std::string::npos  //!< npos value
+#define NPOS__ std::string::npos //!< npos value
 #endif
 
 namespace aux {
@@ -39,7 +39,8 @@ std::vector<size_t> sorted_order(IT b, const IT e, CF cmp) noexcept {
                    });
 
   std::vector<size_t> res(tmp.size());
-  for (size_t i = 0; i != res.size(); ++i) res[tmp[i]] = i;
+  for (size_t i = 0; i != res.size(); ++i)
+    res[tmp[i]] = i;
   return res;
 }
 //! overload using standard operator<
@@ -54,8 +55,7 @@ std::vector<size_t> sorted_order(IT b, const IT e) noexcept {
  * @param b iterator to the beginning of the range
  * @param I the sorted order vector as produced by sorted_order
  */
-template <class IT>
-void reorder(IT b, std::vector<size_t> I) noexcept {
+template <class IT> void reorder(IT b, std::vector<size_t> I) noexcept {
   assert(!I.empty());
 
   size_t r = I.size() - 1;
@@ -70,9 +70,9 @@ void reorder(IT b, std::vector<size_t> I) noexcept {
     }
   }
 }
-}  // namespace aux
+} // namespace aux
 
-#endif  // _AUX_SORT_SEARCH_
+#endif // _AUX_SORT_SEARCH_
 
 /** @}
  */

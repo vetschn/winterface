@@ -24,12 +24,12 @@
 
 //! base Hamiltonian writer virtual class
 class ll_writer {
- public:
+public:
   /** @name types
    */
-  typedef std::vector<ll__::sphel> hdat;  //!< Hamiltonian data
+  typedef std::vector<ll__::sphel> hdat; //!< Hamiltonian data
 
- public:
+public:
   /** @name contructors
    */
   /** constructor from R vectors
@@ -57,7 +57,8 @@ class ll_writer {
   inline bool nnzTest() const noexcept {
     for (auto i = R_.ccBegin(), e = R_.ccEnd(); i != e; ++i) {
       const auto j = std::lower_bound(R_.ccBegin(), R_.ccEnd(), -(*i));
-      if (j != R_.ccEnd() && nnz_[size_t(i)] != nnz_[size_t(j)]) return false;
+      if (j != R_.ccEnd() && nnz_[size_t(i)] != nnz_[size_t(j)])
+        return false;
     }
     return true;
   }
@@ -95,7 +96,7 @@ class ll_writer {
     ++r_, ++n_;
   }
 
- protected:
+protected:
   /** @name internals
    */
   //! the number of bytes for each Hamiltonian entry
@@ -107,20 +108,18 @@ class ll_writer {
   //! flush current block Hamiltonian function
   virtual void flush_() = 0;
 
- protected:
+protected:
   /** @name member variables
    */
-  lm__::fMat R_;               //!< R vectors
-  lm__::c_fColItr r_;          //!< iterator to current R vector
-  std::vector<uint64_t> nnz_;  //!< number of entries written vector
-  std::vector<uint64_t>::iterator
-      n_;  //!< iterator to current number of entries
+  lm__::fMat R_;                      //!< R vectors
+  lm__::c_fColItr r_;                 //!< iterator to current R vector
+  std::vector<uint64_t> nnz_;         //!< number of entries written vector
+  std::vector<uint64_t>::iterator n_; //!< iterator to current number of entries
 };
 
 //! write to memory writer
-template <class MT>
-class ll_writerMEM final : public ll_writer {
- public:
+template <class MT> class ll_writerMEM final : public ll_writer {
+public:
   /** @name constructors
    */
   /** constructors from R vectors and vector of matrices
@@ -151,7 +150,7 @@ class ll_writerMEM final : public ll_writer {
   //! new Hamiltonian block initialization
   inline void newBlock() {}
 
- private:
+private:
   /** @name internals
    */
   //! the number of bytes for each Hamiltonian entry
@@ -162,41 +161,40 @@ class ll_writerMEM final : public ll_writer {
    * @param inp vector of Hamiltonian entries
    */
   inline void insert_(const hdat &inp) {
-    for (const auto &i : inp) (*m_)(i.m, i.n) = i.h;
+    for (const auto &i : inp)
+      (*m_)(i.m, i.n) = i.h;
   }
   //! flush current Hamiltonian block function
   inline void flush_() { ++m_; }
 
- private:
+private:
   /** member variables
    */
-  typename std::vector<MT>::iterator m_;  //!< iterator to the current matrix
+  typename std::vector<MT>::iterator m_; //!< iterator to the current matrix
 };
 //! the number of bytes for each Hamiltonian entry, overload for real matrices
-template <>
-inline size_t ll_writerMEM<ll__::fMat>::bytes_() const noexcept {
+template <> inline size_t ll_writerMEM<ll__::fMat>::bytes_() const noexcept {
   return 2 * sizeof(size_t) + sizeof(double);
 }
 /** write data blob function, overload for real matrices
  * @param inp vector of Hamiltonian entries
  */
-template <>
-inline void ll_writerMEM<lm__::fMat>::insert_(const hdat &inp) {
-  for (const auto &i : inp) (*m_)(i.m, i.n) = std::real(i.h);
+template <> inline void ll_writerMEM<lm__::fMat>::insert_(const hdat &inp) {
+  for (const auto &i : inp)
+    (*m_)(i.m, i.n) = std::real(i.h);
 }
 /** write data blob function, overload for sparse matrices
  * @param inp vector of Hamiltonian entries
  */
-template <>
-inline void ll_writerMEM<ll_sparse>::insert_(const hdat &inp) {
+template <> inline void ll_writerMEM<ll_sparse>::insert_(const hdat &inp) {
   m_->vec_.reserve(m_->vec_.size() + inp.size());
-  for (const auto &i : inp) m_->vec_.push_back(i);
+  for (const auto &i : inp)
+    m_->vec_.push_back(i);
 }
 
 //! write to memory writer, only R=0 version
-template <class MT>
-class ll_writerR0 final : public ll_writer {
- public:
+template <class MT> class ll_writerR0 final : public ll_writer {
+public:
   /** @name constructors
    */
   /** constructor from matrix
@@ -218,7 +216,7 @@ class ll_writerR0 final : public ll_writer {
   //! new Hamiltonian block initialization
   inline void newBlock() {}
 
- private:
+private:
   /** @name internals
    */
   //! the number of bytes for each Hamiltonian entry
@@ -229,38 +227,38 @@ class ll_writerR0 final : public ll_writer {
    * @param inp vector of Hamiltonian entries
    */
   inline void insert_(const hdat &inp) {
-    for (const auto &i : inp) H_(i.m, i.n) = i.h;
+    for (const auto &i : inp)
+      H_(i.m, i.n) = i.h;
   }
   //! flush current Hamiltonian block function
   inline void flush_() {}
 
- private:
+private:
   MT &H_;
 };
 //! the number of bytes for each Hamiltonian entry, overload for real matrices
-template <>
-inline size_t ll_writerR0<ll__::fMat>::bytes_() const noexcept {
+template <> inline size_t ll_writerR0<ll__::fMat>::bytes_() const noexcept {
   return 2 * sizeof(size_t) + sizeof(double);
 }
 /** write data blob function, overload for real matrices
  * @param inp vector of Hamiltonian entries
  */
-template <>
-inline void ll_writerR0<lm__::fMat>::insert_(const hdat &inp) {
-  for (const auto &i : inp) H_(i.m, i.n) = std::real(i.h);
+template <> inline void ll_writerR0<lm__::fMat>::insert_(const hdat &inp) {
+  for (const auto &i : inp)
+    H_(i.m, i.n) = std::real(i.h);
 }
 /** write data blob function, overload for sparse matrices
  * @param inp vector of Hamiltonian entries
  */
-template <>
-inline void ll_writerR0<ll_sparse>::insert_(const hdat &inp) {
+template <> inline void ll_writerR0<ll_sparse>::insert_(const hdat &inp) {
   H_.vec_.reserve(H_.vec_.size() + inp.size());
-  for (const auto &i : inp) H_.vec_.push_back(i);
+  for (const auto &i : inp)
+    H_.vec_.push_back(i);
 }
 
 //! wannier90 hr style text writer
 class ll_writerW90 final : public ll_writer {
- public:
+public:
   /** @name constructors
    */
   /** constructor from filename
@@ -271,10 +269,8 @@ class ll_writerW90 final : public ll_writer {
    */
   inline ll_writerW90(const std::string &fileName, lm__::fMat R,
                       const size_t Nw, const size_t prec = 12)
-      : ll_writer(std::move(R)),
-        fileName_(fileName),
-        file_(aux::openFile<std::ofstream>(fileName)),
-        prec_(prec) {
+      : ll_writer(std::move(R)), fileName_(fileName),
+        file_(aux::openFile<std::ofstream>(fileName)), prec_(prec) {
     // write header
     {
       std::locale::global(std::locale("en_US.utf8"));
@@ -314,7 +310,7 @@ class ll_writerW90 final : public ll_writer {
   //! new Hamiltonian block initialization
   inline void newBlock() {}
 
- private:
+private:
   /** @name internals
    */
   //! the number of bytes for each Hamiltonian entry
@@ -326,7 +322,8 @@ class ll_writerW90 final : public ll_writer {
    */
   inline void insert_(const hdat &inp) {
     for (const auto &h : inp) {
-      for (const int i : c_R()) file_ << std::setw(8) << i;
+      for (const int i : c_R())
+        file_ << std::setw(8) << i;
       file_ << std::setw(8) << h.m << std::setw(8) << h.n
             << std::setw(precision() + 8) << std::fixed
             << std::setprecision(precision()) << std::real(h.h)
@@ -337,23 +334,22 @@ class ll_writerW90 final : public ll_writer {
   //! flush current Hamiltonian block function
   inline void flush_() noexcept {}
 
- private:
+private:
   /** @name member variables
    */
-  std::string fileName_;  //!< filename
-  std::ofstream file_;    //!< filestream
-  const size_t prec_;     //!< floating point precision
+  std::string fileName_; //!< filename
+  std::ofstream file_;   //!< filestream
+  const size_t prec_;    //!< floating point precision
 };
 
 //! binary all in one file hamiltonian writer
-template <class IT, class FT>
-class ll_writerBIN final : public ll_writer {
- public:
+template <class IT, class FT> class ll_writerBIN final : public ll_writer {
+public:
   /** @name types
    */
-  typedef typename ll_writer::hdat hdat;  //!< Hamiltonian data
+  typedef typename ll_writer::hdat hdat; //!< Hamiltonian data
 
- public:
+public:
   /** @name constructors
    */
   /** constructor from filename
@@ -363,11 +359,9 @@ class ll_writerBIN final : public ll_writer {
    */
   inline ll_writerBIN(const std::string &fileName, lm__::fMat R,
                       const size_t Nw)
-      : ll_writer(std::move(R)),
-        fileName_(fileName),
+      : ll_writer(std::move(R)), fileName_(fileName),
         file_(aux::openFile<std::ofstream>(fileName, std::ios::binary)),
-        spos_(this->R_.N()),
-        s_(spos_.begin()) {
+        spos_(this->R_.N()), s_(spos_.begin()) {
     // write header
     file_.write((char *)header_(), 5 * sizeof(char));
 
@@ -406,7 +400,8 @@ class ll_writerBIN final : public ll_writer {
   //! new Hamiltonian block initialization
   inline void newBlock() {
     // write current R to file
-    for (const auto &r : this->c_R()) file_.write((char *)&r, sizeof(double));
+    for (const auto &r : this->c_R())
+      file_.write((char *)&r, sizeof(double));
 
     // store stream position of nnz
     *s_ = file_.tellp();
@@ -416,7 +411,7 @@ class ll_writerBIN final : public ll_writer {
     file_.write((char *)&plh, sizeof(uint64_t));
   }
 
- private:
+private:
   /** @name internals
    */
   //! the number of bytes for each Hamiltonian entry
@@ -430,13 +425,13 @@ class ll_writerBIN final : public ll_writer {
   //! header string
   static inline const char *header_() noexcept { return "inval"; }
 
- private:
+private:
   /** @name member variables
    */
-  std::string fileName_;                     //!< filename
-  std::ofstream file_;                       //!< filestream
-  std::vector<std::streampos> spos_;         //!< stream positions
-  std::vector<std::streampos>::iterator s_;  //!< current stream position
+  std::string fileName_;                    //!< filename
+  std::ofstream file_;                      //!< filestream
+  std::vector<std::streampos> spos_;        //!< stream positions
+  std::vector<std::streampos>::iterator s_; //!< current stream position
 };
 
 //! insert specialization for 16bit indices and single precision Hamiltonian
@@ -464,8 +459,8 @@ inline void ll_writerBIN<uint32_t, float>::insert_(const hdat &inp) {
 //! insert specialization for 16bit indices and single precision complex
 //! Hamiltonian entries
 template <>
-inline void ll_writerBIN<uint16_t, std::complex<float>>::insert_(
-    const hdat &inp) {
+inline void
+ll_writerBIN<uint16_t, std::complex<float>>::insert_(const hdat &inp) {
   for (const auto &i : inp) {
     const uint16_t nm[] = {uint16_t(i.m), uint16_t(i.n)};
     file_.write((char *)&nm, 2 * sizeof(uint16_t));
@@ -477,8 +472,8 @@ inline void ll_writerBIN<uint16_t, std::complex<float>>::insert_(
 //! insert specialization for 32bit indices and single precision complex
 //! Hamiltonian entries
 template <>
-inline void ll_writerBIN<uint32_t, std::complex<float>>::insert_(
-    const hdat &inp) {
+inline void
+ll_writerBIN<uint32_t, std::complex<float>>::insert_(const hdat &inp) {
   for (const auto &i : inp) {
     const uint32_t nm[] = {uint32_t(i.m), uint32_t(i.n)};
     file_.write((char *)&nm, 2 * sizeof(uint32_t));
@@ -512,8 +507,8 @@ inline void ll_writerBIN<uint32_t, double>::insert_(const hdat &inp) {
 //! insert specialization for 16bit indices and double precision complex
 //! Hamiltonian entries
 template <>
-inline void ll_writerBIN<uint16_t, std::complex<double>>::insert_(
-    const hdat &inp) {
+inline void
+ll_writerBIN<uint16_t, std::complex<double>>::insert_(const hdat &inp) {
   for (const auto &i : inp) {
     const uint16_t nm[] = {uint16_t(i.m), uint16_t(i.n)};
     file_.write((char *)&nm, 2 * sizeof(uint16_t));
@@ -523,8 +518,8 @@ inline void ll_writerBIN<uint16_t, std::complex<double>>::insert_(
 //! insert specialization for 32bit indices and double precision complex
 //! Hamiltonian entries
 template <>
-inline void ll_writerBIN<uint32_t, std::complex<double>>::insert_(
-    const hdat &inp) {
+inline void
+ll_writerBIN<uint32_t, std::complex<double>>::insert_(const hdat &inp) {
   for (const auto &i : inp) {
     const uint32_t nm[] = {uint32_t(i.m), uint32_t(i.n)};
     file_.write((char *)&nm, 2 * sizeof(uint32_t));
@@ -716,9 +711,9 @@ void adaptWBH(ll_hbondss &W, const ll_hbondss_input &inp, const fMat &Ap,
 inline void adaptWBH(ll_hbonds &W, const ll_hbondss_input &inp, const fMat &Ap,
                      const aTv &T, std::ostream &os) {}
 
-}  // namespace ll__
+} // namespace ll__
 
-#endif  // _LL_HIO_
+#endif // _LL_HIO_
 
 /** @}
  */

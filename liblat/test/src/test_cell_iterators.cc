@@ -32,12 +32,12 @@ void test_cell_iterators::test_all() {
   CPPUNIT_ASSERT_EQUAL(tCell1.Ap().ccEnd(), tCell1.ccEnd());
 }
 
-const char* test_cell_iterators::test_id() noexcept {
+const char *test_cell_iterators::test_id() noexcept {
   return "test_cell_iterators";
 }
 
-CppUnit::Test* test_cell_iterators::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_cell_iterators::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_cell_iterators>(
       "test_all", &test_cell_iterators::test_all));

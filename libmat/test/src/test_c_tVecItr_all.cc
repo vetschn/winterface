@@ -44,35 +44,35 @@ void test_c_tVecItr_all<TT, FT, CT, VT>::test_ctor_assign() {
 
   // from tVecItr
   {
-    tVecItr tItr1(const_cast<tMat*>(&tMat1), i);
+    tVecItr tItr1(const_cast<tMat *>(&tMat1), i);
     c_tVecItr tItr2(tItr1);
-    CPPUNIT_ASSERT_EQUAL(const_cast<const tMat*>(tItr1.ptr()), tItr2.ptr());
+    CPPUNIT_ASSERT_EQUAL(const_cast<const tMat *>(tItr1.ptr()), tItr2.ptr());
     CPPUNIT_ASSERT_EQUAL(tItr1.i(), tItr2.i());
 
     tItr2 = tItr1;
-    CPPUNIT_ASSERT_EQUAL(const_cast<const tMat*>(tItr1.ptr()), tItr2.ptr());
+    CPPUNIT_ASSERT_EQUAL(const_cast<const tMat *>(tItr1.ptr()), tItr2.ptr());
     CPPUNIT_ASSERT_EQUAL(tItr1.i(), tItr2.i());
   }
   // from cr_tVecItr
   {
-    cr_tVecItr tItr1(const_cast<tMat*>(&tMat1), i);
+    cr_tVecItr tItr1(const_cast<tMat *>(&tMat1), i);
     c_tVecItr tItr2(tItr1);
-    CPPUNIT_ASSERT_EQUAL(const_cast<const tMat*>(tItr1.ptr()), tItr2.ptr());
+    CPPUNIT_ASSERT_EQUAL(const_cast<const tMat *>(tItr1.ptr()), tItr2.ptr());
     CPPUNIT_ASSERT_EQUAL(tItr1.i() + 1, tItr2.i());
 
     tItr2 = tItr1;
-    CPPUNIT_ASSERT_EQUAL(const_cast<const tMat*>(tItr1.ptr()), tItr2.ptr());
+    CPPUNIT_ASSERT_EQUAL(const_cast<const tMat *>(tItr1.ptr()), tItr2.ptr());
     CPPUNIT_ASSERT_EQUAL(tItr1.i() + 1, tItr2.i());
   }
   // from r_tVecItr
   {
-    r_tVecItr tItr1(const_cast<tMat*>(&tMat1), i);
+    r_tVecItr tItr1(const_cast<tMat *>(&tMat1), i);
     c_tVecItr tItr2(tItr1);
-    CPPUNIT_ASSERT_EQUAL(const_cast<const tMat*>(tItr1.ptr()), tItr2.ptr());
+    CPPUNIT_ASSERT_EQUAL(const_cast<const tMat *>(tItr1.ptr()), tItr2.ptr());
     CPPUNIT_ASSERT_EQUAL(tItr1.i() + 1, tItr2.i());
 
     tItr2 = tItr1;
-    CPPUNIT_ASSERT_EQUAL(const_cast<const tMat*>(tItr1.ptr()), tItr2.ptr());
+    CPPUNIT_ASSERT_EQUAL(const_cast<const tMat *>(tItr1.ptr()), tItr2.ptr());
     CPPUNIT_ASSERT_EQUAL(tItr1.i() + 1, tItr2.i());
   }
 }
@@ -126,7 +126,7 @@ void test_c_tVecItr_all<TT, FT, CT, VT>::test_comparison() {
 
   // to tVecItr
   {
-    tVecItr tItr2(const_cast<tMat*>(&tMat1), i2);
+    tVecItr tItr2(const_cast<tMat *>(&tMat1), i2);
 
     CPPUNIT_ASSERT(tItr1 == tItr1);
     CPPUNIT_ASSERT(tItr1 != tItr2);
@@ -202,8 +202,8 @@ void test_c_tVecItr_all<TT, FT, CT, VT>::test_arithmetic_difference() {
 }
 
 template <class TT, class FT, class CT, class VT>
-CppUnit::Test* test_c_tVecItr_all<TT, FT, CT, VT>::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_c_tVecItr_all<TT, FT, CT, VT>::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_c_tVecItr_all>(
       "test_ctor_assign",

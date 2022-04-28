@@ -44,7 +44,8 @@ void test_fn_R3_only::test_getR() {
 
     const auto cn = c / norm(c);
     const auto bn = b / norm(b);
-    for (size_t i = 0; i != 3; ++i) CPPUNIT_ASSERT_DELTA(bn[i], cn[i], delta);
+    for (size_t i = 0; i != 3; ++i)
+      CPPUNIT_ASSERT_DELTA(bn[i], cn[i], delta);
 
     const auto R2 = getR(a, b);
     CPPUNIT_ASSERT(R1 == R2);
@@ -62,10 +63,10 @@ void test_fn_R3_only::test_getR() {
 }
 
 // test id
-const char* test_fn_R3_only::test_id() noexcept { return "test_fn_R3_only"; }
+const char *test_fn_R3_only::test_id() noexcept { return "test_fn_R3_only"; }
 
-CppUnit::Test* test_fn_R3_only::suite() {
-  CppUnit::TestSuite* suite = new CppUnit::TestSuite(test_id());
+CppUnit::Test *test_fn_R3_only::suite() {
+  CppUnit::TestSuite *suite = new CppUnit::TestSuite(test_id());
 
   suite->addTest(new CppUnit::TestCaller<test_fn_R3_only>(
       "test_cross_crossn", &test_fn_R3_only::test_cross_crossn));

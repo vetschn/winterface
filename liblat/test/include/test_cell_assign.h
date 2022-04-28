@@ -9,16 +9,16 @@
 #include "ll_cell.h"
 
 class test_cell_assign : public CppUnit::TestFixture {
- public:
+public:
   // types
   typedef ll_cell unitCell;
 
- public:
+public:
   void test_swap();
   void test_operator_equal();
 
-  static CppUnit::Test* suite();
-  static const char* test_id() noexcept;
+  static CppUnit::Test *suite();
+  static const char *test_id() noexcept;
 };
 
-#endif  // _TEST_CELL_ASSIGN_
+#endif // _TEST_CELL_ASSIGN_

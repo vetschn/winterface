@@ -29,7 +29,7 @@ void test_r_tVecItr_all<RE__, RE__, CPX__,
 
 // test id
 template <>
-const char* test_r_tVecItr_all<RE__, RE__, CPX__,
+const char *test_r_tVecItr_all<RE__, RE__, CPX__,
                                lm_tCol<RE__, RE__, CPX__>>::test_id() noexcept {
   return "test_r_fColItr_all";
 }

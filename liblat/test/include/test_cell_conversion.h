@@ -9,19 +9,19 @@
 #include "ll_cell.h"
 
 class test_cell_conversion : public CppUnit::TestFixture {
- public:
+public:
   // types
   typedef ll_cell cell;
 
- public:
+public:
   void test_getRB();
   void test_getAp();
   void test_getcAp();
   void test_getSubCell();
   void test_getBonds();
 
-  static CppUnit::Test* suite();
-  static const char* test_id() noexcept;
+  static CppUnit::Test *suite();
+  static const char *test_id() noexcept;
 };
 
-#endif  // _TEST_CELL_CONVERSION_
+#endif // _TEST_CELL_CONVERSION_
