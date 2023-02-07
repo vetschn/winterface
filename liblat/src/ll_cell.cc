@@ -36,7 +36,8 @@ const std::string ll_cell::e_("");
 
 // contructors
 ll_cell::ll_cell(fMat B, fMat Ap, aCv N, idv id) noexcept
-    : mat_cb<fMat, fArray>(std::move(Ap)), B_(std::move(B)),
+    : mat_cb<fMat, fArray>(std::move(Ap)),
+      B_(std::move(B)),
       id_(std::move(id)) {
   // check basis B
   assert(!B_.empty());
@@ -80,7 +81,7 @@ ll_cell::ll_cell(fMat B, fMat Ap, idv id) noexcept {
   uid.resize(std::distance(uid.begin(), std::unique(uid.begin(), uid.end())));
   aCv N(uid.size());
   std::transform(uid.cbegin(), uid.cend(), N.begin(),
-                 [&id](const std::string &s) -> size_t {
+                 [&id](const std::string& s) -> size_t {
                    return std::distance(
                        std::lower_bound(id.cbegin(), id.cend(), s),
                        std::upper_bound(id.cbegin(), id.cend(), s));
@@ -89,35 +90,35 @@ ll_cell::ll_cell(fMat B, fMat Ap, idv id) noexcept {
   // create cell
   *this = ll_cell(std::move(B), std::move(Ap), N, std::move(uid));
 }
-ll_cell::ll_cell(const std::string &fileName, const size_t d) {
+ll_cell::ll_cell(const std::string& fileName, const size_t d) {
   switch (detectFileType(fileName)) {
-  case 0: // POSCAR file
-  {
-    auto P = readPOSCAR(fileName, d);
-    *this = P.id.empty() ? ll_cell(std::move(P.B), std::move(P.Ap), P.N)
-                         : ll_cell(std::move(P.B), std::move(P.Ap), P.N,
-                                   std::move(P.id));
-  } break;
-  case 1: // wannier90 wout file
-  {
-    const auto B = readB(fileName);
-    const auto p = readAp(fileName, false);
-    const auto Ap = B.leftDivide(p.Ap()) % 1.0;
-    *this = ll_cell(std::move(B), std::move(Ap), std::move(p.id()));
-  } break;
-  case 2: // OMEN lattice file
-  {
-    const auto olf = readOlf(fileName);
-    *this = ll_cell(std::move(olf.B), olf.B.leftDivide(olf.Ap) % 1.0,
-                    std::move(olf.id));
-  } break;
+    case 0:  // POSCAR file
+    {
+      auto P = readPOSCAR(fileName, d);
+      *this = P.id.empty() ? ll_cell(std::move(P.B), std::move(P.Ap), P.N)
+                           : ll_cell(std::move(P.B), std::move(P.Ap), P.N,
+                                     std::move(P.id));
+    } break;
+    case 1:  // wannier90 wout file
+    {
+      const auto B = readB(fileName);
+      const auto p = readAp(fileName, false);
+      const auto Ap = B.leftDivide(p.Ap()) % 1.0;
+      *this = ll_cell(std::move(B), std::move(Ap), std::move(p.id()));
+    } break;
+    case 2:  // OMEN lattice file
+    {
+      const auto olf = readOlf(fileName);
+      *this = ll_cell(std::move(olf.B), olf.B.leftDivide(olf.Ap) % 1.0,
+                      std::move(olf.id));
+    } break;
   }
 }
 
 // information
-lm__::c_fColItr ll_cell::find(const fArray &inp, const aT t) const noexcept {
+lm__::c_fColItr ll_cell::find(const fArray& inp, const aT t) const noexcept {
   assert(inp.M() == dim() && inp.N() == 1);
-  return std::find_if(ccBegin(t), ccEnd(t), [&inp](const fCol &c) -> bool {
+  return std::find_if(ccBegin(t), ccEnd(t), [&inp](const fCol& c) -> bool {
     return std::equal(c.cbegin(), c.cend(), inp.cbegin(),
                       [](const double a, const double b) -> bool {
                         // distance for numbers on integer grid < mtol
@@ -126,7 +127,7 @@ lm__::c_fColItr ll_cell::find(const fArray &inp, const aT t) const noexcept {
                       });
   });
 }
-bool ll_cell::lVec(const fCol &inp) const noexcept {
+bool ll_cell::lVec(const fCol& inp) const noexcept {
   assert(inp.L() == dim());
 
   // check for bad vector lambda
@@ -142,7 +143,7 @@ bool ll_cell::lVec(const fCol &inp) const noexcept {
       return false;
   return true;
 }
-bool ll_cell::lVec(const fMat &inp) const noexcept {
+bool ll_cell::lVec(const fMat& inp) const noexcept {
   if (inp.empty() || inp.M() != dim())
     return false;
 
@@ -211,7 +212,7 @@ double ll_cell::directTol(const double tol) const noexcept {
   const fMat IB = lm__::inv(B()) * tol;
   std::vector<double> tmp(dim());
   std::transform(IB.crBegin(), IB.crEnd(), tmp.begin(),
-                 [](const auto &r) -> double { return lm__::dot(r, r); });
+                 [](const auto& r) -> double { return lm__::dot(r, r); });
   return std::sqrt(*std::max_element(tmp.cbegin(), tmp.cend()));
 }
 
@@ -247,7 +248,7 @@ idv ll_cell::fundamentalIds() const noexcept {
 
   // find all contenders
   idv res;
-  for (const auto &s : id())
+  for (const auto& s : id())
     for (std::sregex_token_iterator i(s.cbegin(), s.cend(), rgx, -1), e; i != e;
          ++i)
       if (!i->str().empty())
@@ -267,7 +268,7 @@ idv ll_cell::compositeIds() const {
   // find all contenders
   std::vector<std::string> res;
   try {
-    for (const auto &s : id()) {
+    for (const auto& s : id()) {
       // look for parenthesis, ensure first is not ')'
       const size_t i = s.find_first_of("()");
       if (i == std::string::npos)
@@ -284,12 +285,12 @@ idv ll_cell::compositeIds() const {
             if (j == e || brcnt < 0)
               throw(std::invalid_argument(s));
             switch (*j++) {
-            case '(':
-              ++brcnt;
-              break;
-            case ')':
-              --brcnt;
-              break;
+              case '(':
+                ++brcnt;
+                break;
+              case ')':
+                --brcnt;
+                break;
             }
           } while (brcnt);
           while (j != e && (*j == '-' || std::isdigit(*j)))
@@ -297,7 +298,7 @@ idv ll_cell::compositeIds() const {
           res.push_back(std::string(i, j));
         }
     }
-  } catch (const std::invalid_argument &e) {
+  } catch (const std::invalid_argument& e) {
     throw(std::invalid_argument("id '" + std::string(e.what()) +
                                 "': bad format"));
   }
@@ -311,7 +312,7 @@ idv ll_cell::compositeIds() const {
 }
 
 // modification
-ll_cell &ll_cell::swapDim(const size_t n1, const size_t n2) noexcept {
+ll_cell& ll_cell::swapDim(const size_t n1, const size_t n2) noexcept {
   assert(n1 < dim());
   assert(n2 < dim());
 
@@ -320,7 +321,7 @@ ll_cell &ll_cell::swapDim(const size_t n1, const size_t n2) noexcept {
   sortAp_(types());
   return *this;
 }
-ll_cell &ll_cell::invDim(const size_t n) noexcept {
+ll_cell& ll_cell::invDim(const size_t n) noexcept {
   assert(n < dim());
 
   B_.cAt(n) = -B_.cAt(n);
@@ -328,7 +329,7 @@ ll_cell &ll_cell::invDim(const size_t n) noexcept {
   sortAp_(types());
   return *this;
 }
-ll_cell &ll_cell::orient(const double sgn, const rv &r) noexcept {
+ll_cell& ll_cell::orient(const double sgn, const rv& r) noexcept {
   if (std::signbit(sign()) == std::signbit(sgn))
     return *this;
 
@@ -339,7 +340,7 @@ ll_cell &ll_cell::orient(const double sgn, const rv &r) noexcept {
     return invDim(nri.front());
   return swapDim(nri.front(), nri.back());
 }
-ll_cell &ll_cell::permute(const fMat &P) noexcept {
+ll_cell& ll_cell::permute(const fMat& P) noexcept {
   assert(size(B()) == size(P));
   assert(P.permutation());
 
@@ -348,20 +349,20 @@ ll_cell &ll_cell::permute(const fMat &P) noexcept {
   sortAp_(types());
   return *this;
 }
-ll_cell &ll_cell::rotate(const fMat &R) noexcept {
+ll_cell& ll_cell::rotate(const fMat& R) noexcept {
   assert(size(B()) == size(R));
   assert(R.onb());
 
   B_ = R.prod(B_);
   return *this;
 }
-ll_cell &ll_cell::scale(const double f) noexcept {
+ll_cell& ll_cell::scale(const double f) noexcept {
   assert(f);
 
   B_ *= f;
   return *this;
 }
-ll_cell &ll_cell::scale(const fArray &f) noexcept {
+ll_cell& ll_cell::scale(const fArray& f) noexcept {
   assert(f.size() == dim());
   assert(std::none_of(f.cbegin(), f.cend(),
                       [](const auto i) -> bool { return !i; }));
@@ -372,7 +373,7 @@ ll_cell &ll_cell::scale(const fArray &f) noexcept {
   return *this;
 }
 
-ll_cell &ll_cell::changeBasis(const fMat &NB) noexcept {
+ll_cell& ll_cell::changeBasis(const fMat& NB) noexcept {
   assert(validBasis(NB));
 
   // transformation matrix and limits
@@ -445,19 +446,20 @@ ll_cell &ll_cell::changeBasis(const fMat &NB) noexcept {
   assert(false);
   return *this;
 }
-ll_cell &
-ll_cell::makePrimitive_(fMat C, const rv &r,
-                        const std::function<bool(const fMat &)> &p) noexcept {
+ll_cell& ll_cell::makePrimitive_(
+    fMat C,
+    const rv& r,
+    const std::function<bool(const fMat&)>& p) noexcept {
   assert(r.size() == dim());
   if (empty() || N() == 1 ||
       std::all_of(r.begin(), r.end(), [](const bool i) { return i; }))
     return *this;
 
   // recursive find smaller basis lambda
-  std::function<size_t(fMat &, const size_t)> recur;
-  recur = [this, &r, &p, &recur](fMat &C, const size_t id) -> size_t {
+  std::function<size_t(fMat&, const size_t)> recur;
+  recur = [this, &r, &p, &recur](fMat& C, const size_t id) -> size_t {
     // advance pos lambda
-    auto adv = [this, &r](size_t &pos) -> void {
+    auto adv = [this, &r](size_t& pos) -> void {
       while (r[pos] && pos != dim()) {
         ++pos;
       }
@@ -470,7 +472,7 @@ ll_cell::makePrimitive_(fMat C, const rv &r,
 
     // extend base vectors lambda
     const auto ebv = [&C, &pos, &adv, &R, &found,
-                      this](const fMat &vec) -> size_t {
+                      this](const fMat& vec) -> size_t {
       assert(pos < dim());
       C.cAt(pos) = vec;
       if (rank(C) != R)
@@ -518,15 +520,15 @@ ll_cell::makePrimitive_(fMat C, const rv &r,
   recur(C, 0);
   return orient(sgn, r);
 }
-ll_cell &ll_cell::makePrimitive(const rv &r) noexcept {
+ll_cell& ll_cell::makePrimitive(const rv& r) noexcept {
   fMat C(dim(), 0);
   C.reserve(dim());
   for (size_t i = 0; i != r.size(); ++i)
     C.push_back(r[i] ? lm__::cId<fMat>(dim(), i) : lm__::zeros<fMat>(dim(), 1));
 
-  return makePrimitive_(C, r, [](const fMat &vec) { return true; });
+  return makePrimitive_(C, r, [](const fMat& vec) { return true; });
 }
-ll_cell &ll_cell::makePrimitiveInSubspace(const rv &r) noexcept {
+ll_cell& ll_cell::makePrimitiveInSubspace(const rv& r) noexcept {
   assert(r.size() == dim());
 #ifndef NDEBUG
   {
@@ -540,7 +542,7 @@ ll_cell &ll_cell::makePrimitiveInSubspace(const rv &r) noexcept {
   for (size_t i = 0; i != r.size(); ++i)
     C.push_back(r[i] ? lm__::cId<fMat>(dim(), i) : lm__::zeros<fMat>(dim(), 1));
 
-  auto inSubspace = [ri = ll__::inds(r)](const auto &vec) -> bool {
+  auto inSubspace = [ri = ll__::inds(r)](const auto& vec) -> bool {
     const auto i = vec.cbegin();
     for (const auto j : ri)
       if (ops::nz(*(i + j)))
@@ -550,13 +552,13 @@ ll_cell &ll_cell::makePrimitiveInSubspace(const rv &r) noexcept {
 
   return makePrimitive_(C, r, inSubspace);
 }
-ll_cell &ll_cell::shift(const fCol &sh) noexcept {
+ll_cell& ll_cell::shift(const fCol& sh) noexcept {
   assert(sh.L() == dim());
   cadd(mat_, sh) %= 1.0;
   sortAp_(types());
   return *this;
 }
-ll_cell &ll_cell::autoShift(const rv &r) noexcept {
+ll_cell& ll_cell::autoShift(const rv& r) noexcept {
   assert(r.size() == dim());
 
   const auto nri = ll__::ninds(r);
@@ -599,7 +601,7 @@ ll_cell &ll_cell::autoShift(const rv &r) noexcept {
 
   return shift(*j);
 }
-ll_cell &ll_cell::diversify(const aTv &ts) noexcept {
+ll_cell& ll_cell::diversify(const aTv& ts) noexcept {
   assert(std::all_of(ts.cbegin(), ts.cend(),
                      [this](const size_t t) { return validType(t); }));
   assert(std::is_sorted(ts.cbegin(), ts.cend()));
@@ -650,7 +652,7 @@ ll_cell &ll_cell::diversify(const aTv &ts) noexcept {
 
   return *this;
 }
-ll_cell &ll_cell::collectivize(const aTv &ts) noexcept {
+ll_cell& ll_cell::collectivize(const aTv& ts) noexcept {
   assert(std::all_of(ts.cbegin(), ts.cend(),
                      [this](const size_t t) { return validType(t); }));
   assert(std::is_sorted(ts.cbegin(), ts.cend()));
@@ -679,7 +681,7 @@ ll_cell &ll_cell::collectivize(const aTv &ts) noexcept {
         for (const auto t_ : ts) {
           N += Ntype(t_);
           std::for_each(ccBegin(t_), ccEnd(t_),
-                        [&nAp](const auto &c) -> void { nAp.push_back(c); });
+                        [&nAp](const auto& c) -> void { nAp.push_back(c); });
         }
         nT_.push_back(nT_.back() + N);
       }
@@ -687,7 +689,7 @@ ll_cell &ll_cell::collectivize(const aTv &ts) noexcept {
         ++ct;
       else {
         std::for_each(ccBegin(t), ccEnd(t),
-                      [&nAp](const auto &c) -> void { nAp.push_back(c); });
+                      [&nAp](const auto& c) -> void { nAp.push_back(c); });
         nT_.push_back(nT_.back() + Ntype(t));
       }
     }
@@ -702,7 +704,7 @@ ll_cell &ll_cell::collectivize(const aTv &ts) noexcept {
 
   return *this;
 }
-ll_cell &ll_cell::merge(const ll_cell &inp) noexcept {
+ll_cell& ll_cell::merge(const ll_cell& inp) noexcept {
   assert(B() == inp.B());
   if (inp.empty())
     return *this;
@@ -712,10 +714,10 @@ ll_cell &ll_cell::merge(const ll_cell &inp) noexcept {
 
   // create union of both ids
   idv nid(this->Nspecies() + inp.Nspecies());
-  nid.resize(std::distance(nid.begin(),
-                           std::set_union(this->id().cbegin(),
-                                          this->id().cend(), inp.id().cbegin(),
-                                          inp.id().cend(), nid.begin())));
+  nid.resize(std::distance(
+      nid.begin(),
+      std::set_union(this->id().cbegin(), this->id().cend(), inp.id().cbegin(),
+                     inp.id().cend(), nid.begin())));
   nid.shrink_to_fit();
 
   // create new Ap and T_ vector omitting duplicates
@@ -725,7 +727,7 @@ ll_cell &ll_cell::merge(const ll_cell &inp) noexcept {
   fMat nAp(dim(), N() + inp.N());
 
   auto itr = nAp.cBegin();
-  for (const auto &s : nid) {
+  for (const auto& s : nid) {
     const aT t1 = this->type(s), t2 = inp.type(s);
     itr = (this->validType(t1) && this->validType(t2))
               ? std::set_union(this->ccBegin(t1), this->ccEnd(t1),
@@ -751,7 +753,7 @@ ll_cell &ll_cell::merge(const ll_cell &inp) noexcept {
 }
 
 // conversion
-fMat ll_cell::getAp(const aTv &ts) const noexcept {
+fMat ll_cell::getAp(const aTv& ts) const noexcept {
   assert(std::all_of(ts.begin(), ts.end(),
                      [this](const aT t) { return validType(t); }));
 
@@ -762,7 +764,7 @@ fMat ll_cell::getAp(const aTv &ts) const noexcept {
     res.push_back(getAp(t));
   return res;
 }
-ll_cell ll_cell::getSubCell(const aTv &ts) const noexcept {
+ll_cell ll_cell::getSubCell(const aTv& ts) const noexcept {
   assert(std::all_of(ts.cbegin(), ts.cend(),
                      [this](const aT t) { return validType(t); }));
   assert(std::is_sorted(ts.cbegin(), ts.cend()));
@@ -788,12 +790,14 @@ ll_cell ll_cell::getSubCell(const aTv &ts) const noexcept {
   return ll_cell(B_, std::move(nAp), std::move(nN), std::move(nid));
 }
 ll_bonds<> ll_cell::getBonds(
-    const fMat &NN,
-    const std::function<bool(const fMat &, const i_i &)> &keep) const noexcept {
+    const fMat& NN,
+    const std::function<bool(const fMat&, const i_i&)>& keep) const noexcept {
   return ll_bonds<>(*this, NN, keep);
 }
-ll_bonds<i_i_R> ll_cell::getBonds(const aTv &T1, const aTv &T2, const double f,
-                                  const fMat &NN) const noexcept {
+ll_bonds<i_i_R> ll_cell::getBonds(const aTv& T1,
+                                  const aTv& T2,
+                                  const double f,
+                                  const fMat& NN) const noexcept {
   // get indices for T1,T2
   auto I1 = inds(T1);
   std::sort(I1.begin(), I1.end());
@@ -802,7 +806,7 @@ ll_bonds<i_i_R> ll_cell::getBonds(const aTv &T1, const aTv &T2, const double f,
 
   // get distance matrix
   auto D = genDmat(B(), Ap().get({}, I1), Ap().get({}, I2), f, NN);
-  for (auto &d : D)
+  for (auto& d : D)
     if (lm__::ops::z(d))
       d = DBL_MAX;
 
@@ -826,7 +830,7 @@ ll_bonds<i_i_R> ll_cell::getBonds(const aTv &T1, const aTv &T2, const double f,
   return ll_bonds<i_i_R>(*this, NN, l, I1, I2);
 }
 ll_bonds<i_i_R> ll_cell::getBonds(const double f,
-                                  const fMat &NN) const noexcept {
+                                  const fMat& NN) const noexcept {
   assert(f < -1.0 || f >= 0.0);
   if (empty())
     return ll_bonds<i_i_R>();
@@ -856,7 +860,7 @@ ll_bonds<i_i_R> ll_cell::getBonds(const double f,
 }
 
 // comparison
-fMat ll_cell::getPmat(const ll_cell &inp) const noexcept {
+fMat ll_cell::getPmat(const ll_cell& inp) const noexcept {
   if (empty() || inp.empty() || dim() != inp.dim())
     return fMat(dim(), 0);
 
@@ -869,7 +873,7 @@ fMat ll_cell::getPmat(const ll_cell &inp) const noexcept {
   }
   return res;
 }
-fMat ll_cell::getAvec(const ll_cell &inp, const fMat &P) const noexcept {
+fMat ll_cell::getAvec(const ll_cell& inp, const fMat& P) const noexcept {
   if (empty() || inp.empty())
     return fMat(dim(), 0);
   if (size(P) != size(B()))
@@ -885,7 +889,7 @@ fMat ll_cell::getAvec(const ll_cell &inp, const fMat &P) const noexcept {
   const auto col = P.prod(Ap().cAt(T_[lft]));
 
   // check shift lambda
-  auto ckt = [this, &P, &inp](const fMat &sh) -> bool {
+  auto ckt = [this, &P, &inp](const fMat& sh) -> bool {
     for (const auto t : types())
       for (auto i = ccBegin(t), e = ccEnd(t); i != e; ++i)
         if (inp.find(P.prod(*i) + sh, t) == inp.ccEnd(t))
@@ -902,7 +906,7 @@ fMat ll_cell::getAvec(const ll_cell &inp, const fMat &P) const noexcept {
 
   return fMat(dim(), 0);
 }
-bool ll_cell::sameLattice(const ll_cell &inp) const noexcept {
+bool ll_cell::sameLattice(const ll_cell& inp) const noexcept {
   if (empty() && inp.empty())
     return true;
   if (dim() != inp.dim())
@@ -937,7 +941,7 @@ std::string ll_cell::print(const bool direct,
 
   return outp.str();
 }
-void ll_cell::printToFile(const std::string &fileName) const {
+void ll_cell::printToFile(const std::string& fileName) const {
   printPOSCAR(fileName, *this);
 }
 
@@ -982,7 +986,7 @@ void ll_cell::indexId_() noexcept {
       const size_t pos =
           std::accumulate(Nt.cbegin(), Nt.cbegin() + i, size_t(0));
       std::for_each(this->ccBegin() + pos, this->ccBegin() + pos + Nt[i],
-                    [&nAp](const auto &j) -> void { nAp.push_back(j); });
+                    [&nAp](const auto& j) -> void { nAp.push_back(j); });
     }
     mat_ = std::move(nAp);
 
@@ -1020,7 +1024,7 @@ void ll_cell::indexId_() noexcept {
 }
 
 // detect file type
-size_t ll_cell::detectFileType(const std::string &fileName) const {
+size_t ll_cell::detectFileType(const std::string& fileName) const {
   // check for wannier90 wout file
   {
     auto file = aux::openFile<std::ifstream>(fileName);
@@ -1039,7 +1043,7 @@ size_t ll_cell::detectFileType(const std::string &fileName) const {
   // check for OMEN lattice file
   {
     // check if line has 5 integers on it
-    const auto cl5i = [](const std::string &line) -> bool {
+    const auto cl5i = [](const std::string& line) -> bool {
       const std::regex rgx("[\\s]+");
 
       size_t cnt = 0;
@@ -1070,6 +1074,6 @@ size_t ll_cell::detectFileType(const std::string &fileName) const {
 }
 
 // streaming
-std::ostream &operator<<(std::ostream &os, const ll_cell &inp) noexcept {
+std::ostream& operator<<(std::ostream& os, const ll_cell& inp) noexcept {
   return (os << inp.print());
 }

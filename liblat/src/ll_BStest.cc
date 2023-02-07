@@ -9,9 +9,12 @@
 #include "ll_io.h"
 
 // bandstructure tests
-void ll__::meshBStest(const ll_hbonds &W, const fMat &EXP, const rv &r,
-                      const vb_cb &E, const ll_BStest_input &inp,
-                      std::ostream &os) {
+void ll__::meshBStest(const ll_hbonds& W,
+                      const fMat& EXP,
+                      const rv& r,
+                      const vb_cb& E,
+                      const ll_BStest_input& inp,
+                      std::ostream& os) {
   if (!(inp.rho_k && inp.verbosity))
     return;
   if (inp.rho_k < .0)
@@ -22,8 +25,8 @@ void ll__::meshBStest(const ll_hbonds &W, const fMat &EXP, const rv &r,
     throw(std::invalid_argument("bad expansion matrix"));
 
   // write to disk helper lambda
-  const auto wtd = [&inp, &os](const std::string &fileName, const auto &F,
-                               const std::string &discr = "file") -> void {
+  const auto wtd = [&inp, &os](const std::string& fileName, const auto& F,
+                               const std::string& discr = "file") -> void {
     if (~inp.verbosity & PRINTBIT__)
       return;
     F.writeToFile(fileName);
@@ -33,7 +36,7 @@ void ll__::meshBStest(const ll_hbonds &W, const fMat &EXP, const rv &r,
   };
 
   // generate test cell
-  set_mtol(WTOL__); // set tolerance due to wannier input precision
+  set_mtol(WTOL__);  // set tolerance due to wannier input precision
   const auto tCell = W.cell().copy().expand(EXP);
   const auto RB = tCell.getRB();
   reset_mtol();
@@ -52,18 +55,18 @@ void ll__::meshBStest(const ll_hbonds &W, const fMat &EXP, const rv &r,
   // generate kmesh
   std::vector<size_t> maj;
   switch (aux::fnvHash(inp.maj_style.c_str())) {
-  case "inorder"_h:
-    maj = maj_default(r.size());
-    break;
-  case "matlab"_h:
-    maj = maj_MATLAB(r);
-    break;
-  case "MATLAB"_h:
-    maj = maj_MATLAB(r);
-    break;
-  default:
-    throw(std::invalid_argument("maj style '" + inp.maj_style +
-                                "' not recognized"));
+    case "inorder"_h:
+      maj = maj_default(r.size());
+      break;
+    case "matlab"_h:
+      maj = maj_MATLAB(r);
+      break;
+    case "MATLAB"_h:
+      maj = maj_MATLAB(r);
+      break;
+    default:
+      throw(std::invalid_argument("maj style '" + inp.maj_style +
+                                  "' not recognized"));
   }
   const auto kmesh =
       genMesh_cell(inp.rho_k, RB, inp.bzbounds[0], inp.bzbounds[1], maj, r);
@@ -282,8 +285,11 @@ void ll__::meshBStest(const ll_hbonds &W, const fMat &EXP, const rv &r,
        << (Emin_cb_fold - Emax_vb_fold) << RESET__ << "\nEg scaled:" << BLUE__
        << (Emin_cb_scal - Emax_vb_scal) << RESET__ << "\n\n";
 }
-void ll__::traceBStest(const ll_hbonds &W, const fMat &EXP, const rv &r,
-                       const ll_BStest_input &inp, std::ostream &os) {
+void ll__::traceBStest(const ll_hbonds& W,
+                       const fMat& EXP,
+                       const rv& r,
+                       const ll_BStest_input& inp,
+                       std::ostream& os) {
   if (!(inp.Nk && inp.verbosity))
     return;
   if (inp.Nk > 1e6)
@@ -295,8 +301,8 @@ void ll__::traceBStest(const ll_hbonds &W, const fMat &EXP, const rv &r,
         "kpts may not be empty and must match dim of cell"));
 
   // write to disk helper lambda
-  const auto wtd = [&inp, &os](const std::string &fileName, const auto &F,
-                               const std::string &discr = "file") -> void {
+  const auto wtd = [&inp, &os](const std::string& fileName, const auto& F,
+                               const std::string& discr = "file") -> void {
     if (~inp.verbosity & PRINTBIT__)
       return;
     F.writeToFile(fileName);
@@ -306,7 +312,7 @@ void ll__::traceBStest(const ll_hbonds &W, const fMat &EXP, const rv &r,
   };
 
   // generate test cell
-  set_mtol(WTOL__); // set tolerance due to wannier input precision
+  set_mtol(WTOL__);  // set tolerance due to wannier input precision
   const auto tCell = W.cell().copy().expand(EXP);
   const auto RB = tCell.getRB();
   reset_mtol();

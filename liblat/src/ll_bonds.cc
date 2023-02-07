@@ -8,8 +8,9 @@ using namespace ll__;
 
 template <class ITYPE>
 ll_bonds<ITYPE>::ll_bonds(
-    ll_cell cell, const fMat &R,
-    const std::function<bool(const fMat &, const i_i &)> &keep) noexcept
+    ll_cell cell,
+    const fMat& R,
+    const std::function<bool(const fMat&, const i_i&)>& keep) noexcept
     : cell_(std::move(cell)) {
   assert(R == round(R));
 
@@ -36,5 +37,6 @@ ll_bonds<ITYPE>::ll_bonds(
   this->vec_.shrink_to_fit();
 }
 template ll_bonds<i_i_R>::ll_bonds(
-    ll_cell cell, const fMat &R,
-    const std::function<bool(const fMat &, const i_i &)> &keep) noexcept;
+    ll_cell cell,
+    const fMat& R,
+    const std::function<bool(const fMat&, const i_i&)>& keep) noexcept;

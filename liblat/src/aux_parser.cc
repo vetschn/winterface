@@ -7,22 +7,24 @@
 #include <fstream>
 #include <iostream>
 
-aux_parser::parseKey_::parseKey_(aux_parser &p, const uint32_t key,
-                                 std::ifstream &file, size_t &lcnt,
+aux_parser::parseKey_::parseKey_(aux_parser& p,
+                                 const uint32_t key,
+                                 std::ifstream& file,
+                                 size_t& lcnt,
                                  std::sregex_token_iterator i,
                                  std::sregex_token_iterator e) {
   using namespace aux;
 
   switch (key) {
-  case "verbosity"_h:
-    PARSE__(p.verbosity);
-    return;
-  case "prefix"_h:
-    PARSE__(p.prefix);
-    return;
+    case "verbosity"_h:
+      PARSE__(p.verbosity);
+      return;
+    case "prefix"_h:
+      PARSE__(p.prefix);
+      return;
   };
 }
-aux_parser::printHelp_::printHelp_(const aux_parser &p, std::ostream &os) {
+aux_parser::printHelp_::printHelp_(const aux_parser& p, std::ostream& os) {
   printHelpTuple_(
       os,
       std::make_tuple(
@@ -55,8 +57,9 @@ aux_parser::printHelp_::printHelp_(const aux_parser &p, std::ostream &os) {
 
 namespace aux {
 // screen file for keys and return file as screened stringstream
-void screenFile(std::ostream &sstr, const std::string &fileName,
-                const std::vector<std::string> &keys) {
+void screenFile(std::ostream& sstr,
+                const std::string& fileName,
+                const std::vector<std::string>& keys) {
   // open file
   auto file = aux::openFile<std::ifstream>(fileName);
 
@@ -75,7 +78,7 @@ void screenFile(std::ostream &sstr, const std::string &fileName,
       continue;
     }
     if (!i->length())
-      ++i; // line starts with delimiter
+      ++i;  // line starts with delimiter
     if (i == e) {
       sstr << line << "\n";
       continue;
@@ -88,7 +91,7 @@ void screenFile(std::ostream &sstr, const std::string &fileName,
       ++i;
       if (i != e && *i == "=")
         ++i;
-      if (i == e) // no argument after key or '=' -> matrix
+      if (i == e)  // no argument after key or '=' -> matrix
         do
           std::getline(file, line);
         while (!line.empty() && !file.eof());
@@ -100,7 +103,7 @@ void screenFile(std::ostream &sstr, const std::string &fileName,
       ++i;
       if (i != e && *i == "=")
         ++i;
-      if (i == e) // no argument after key or '=' -> matrix
+      if (i == e)  // no argument after key or '=' -> matrix
         do {
           std::getline(file, line);
           if (file.eof())
@@ -110,4 +113,4 @@ void screenFile(std::ostream &sstr, const std::string &fileName,
     }
   }
 }
-} // namespace aux
+}  // namespace aux
